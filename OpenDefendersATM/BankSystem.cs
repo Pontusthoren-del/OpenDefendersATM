@@ -8,10 +8,10 @@ namespace OpenDefendersATM
 {
     internal class BankSystem
     {
-        public List<User> users { get; set; }
-        public List<Account> accounts { get; set; }
-        public List<Transaction> transactions { get; set; }
-        public List<ExchangeRate> exchangeRates { get; set; }
+        public List<User> Users { get; set; } = new();
+        public List<Account> Accounts { get; set; }
+        public List<Transaction> Transactions { get; set; }
+        public List<ExchangeRate> ExchangeRates { get; set; }
         public void ProcessScheduleTransaction()
         {
 
