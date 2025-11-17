@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OpenDefendersATM
 {
-    internal class Admin:User
+    internal class Admin : User
     {
         public void CreateNewUser()
         {
