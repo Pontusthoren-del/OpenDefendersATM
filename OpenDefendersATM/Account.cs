@@ -37,7 +37,12 @@ namespace OpenDefendersATM
             Console.WriteLine($"Från konto: {AccountID}");
             Console.Write($" Till konto: ");
             int toAccount;
-            while (!int.TryParse(Console.ReadLine(), out toAccount))     // gör så att man bara kan skicka till konton som existerar sen....
+            foreach (var acc in BankSystem.Accounts)
+            {
+
+            }
+
+            while (!int.TryParse(Console.ReadLine(), out toAccount)) // gör så att man bara kan skicka till konton som existerar sen, boolean?....
             {
                 Console.WriteLine("Du måste skriva in ett giltigt kontonummer.");
             }

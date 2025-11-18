@@ -12,7 +12,7 @@ namespace OpenDefendersATM
         public Dictionary<string, User> Users { get; set; } = new();
         public List<Account> Accounts { get; set; }
         public List<Transaction> Transactions { get; set; }
-        public static Dictionary<string, decimal> ExchangeRates { get; } // Visual dictionary
+        public static Dictionary<string, decimal> ExchangeRates { get; } // Visual only dictionary
         public void ProcessScheduleTransaction()
         {
 
