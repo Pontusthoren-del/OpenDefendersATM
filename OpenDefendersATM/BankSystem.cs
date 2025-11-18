@@ -8,7 +8,7 @@ namespace OpenDefendersATM
 {
     internal class BankSystem
     {
-        public List<User> Users { get; set; } = new();
+        public Dictionary<string, User> Users { get; set; } = new();
         public List<Account> Accounts { get; set; }
         public List<Transaction> Transactions { get; set; }
         public List<ExchangeRate> ExchangeRates { get; set; }

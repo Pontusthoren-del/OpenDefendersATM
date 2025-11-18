@@ -26,6 +26,7 @@ namespace OpenDefendersATM
         public void SetPin(int pin)
         {
             _pin = pin;
+            Console.WriteLine("PIN ändrad.");
             //Skapa en ny pin här också kanske?
         }
         public bool CheckPin(int enteredPin)
@@ -43,7 +44,7 @@ namespace OpenDefendersATM
             return false;
 
         }
-        public User Login(List<User> users)
+        public static User? Login(Dictionary<string,User> users)
         {
             Console.Write("Användarnamn: ");
             string? name = Console.ReadLine();
@@ -55,8 +56,7 @@ namespace OpenDefendersATM
                 Console.WriteLine("Felaktigt format på PIN!");
                 return null;
             }
-            var user = users.FirstOrDefault(u => u.Name == name);
-            if (user == null)
+            if (!users.TryGetValue(name, out User user))
             {
                 Console.WriteLine("Användaren finns inte.");
                 return null;

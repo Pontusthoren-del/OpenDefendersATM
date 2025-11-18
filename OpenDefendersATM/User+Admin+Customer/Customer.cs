@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace OpenDefendersATM
 {
-    internal class Customer:User
+    internal class Customer : User
     {
         List<Account> account = new List<Account>();
+        public int AccountID { get; set; }
 
         public void ViewAccounts()
         {
