@@ -44,7 +44,7 @@ namespace OpenDefendersATM
             return false;
 
         }
-        public static User? Login(Dictionary<string,User> users)
+        public static User? Login(List<User> users)
         {
             Console.Write("Användarnamn: ");
             string? name = Console.ReadLine();
@@ -56,7 +56,8 @@ namespace OpenDefendersATM
                 Console.WriteLine("Felaktigt format på PIN!");
                 return null;
             }
-            if (!users.TryGetValue(name, out User user))
+            User? user = users.FirstOrDefault(u => u.Name == name);
+            if (user == null)
             {
                 Console.WriteLine("Användaren finns inte.");
                 return null;
