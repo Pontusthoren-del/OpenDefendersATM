@@ -32,7 +32,7 @@ namespace OpenDefendersATM
         public void AddTransaction()
         {
             //amount, currency, status, Timestamp
-            Console.WriteLine("Ange information för överföring:");
+            Console.WriteLine("Ny överföring:");
 
             Console.WriteLine($"Från konto: {AccountID}");
             Console.Write($" Till konto: ");
