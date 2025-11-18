@@ -10,7 +10,7 @@ namespace OpenDefendersATM
     {
         public void CreateNewUser()
         {
-            //Skapar en ny kontohavare
+            Console.WriteLine("Are you a new user? Register here.");
         }
         public void CreateNewAdmin()
         {
