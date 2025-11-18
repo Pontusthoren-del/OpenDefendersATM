@@ -17,7 +17,7 @@ namespace OpenDefendersATM
         public float Amount { get; set; }
         public string Currency { get; set; }
 
-        //public DateTime Timestamp { get; set; }     - la till den direkt i Account.AddTransaction();
+        public DateTime Timestamp { get; set; }   
         public string Status { get; set; }
 
         public Transaction(float amount, int fromAccount, int toAccount, string currency)
