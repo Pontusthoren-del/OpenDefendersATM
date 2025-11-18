@@ -19,6 +19,10 @@ namespace OpenDefendersATM
             _users = users;
         }
         
+        public Dictionary<string, User> Users { get; set; } = new();
+        public List<Account> Accounts { get; set; }
+        public List<Transaction> Transactions { get; set; }
+        public static Dictionary<string, decimal> ExchangeRates { get; } // Visual only dictionary
         public void ProcessScheduleTransaction()
         {
 
