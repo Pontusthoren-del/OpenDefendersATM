@@ -64,8 +64,8 @@ namespace OpenDefendersATM
                             Console.WriteLine($"Från konto: {AccountID}");
                             Console.WriteLine($"{amount} - {Currency}");
                             Console.WriteLine($"Till konto: {toAccount}");
-                            trans.GetStatus();
-                            Console.WriteLine($"Tidpunkt: {DateTime.Now}");
+                            trans.GetTransactionStatus();
+                            Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
                             success = true;
                         }
                     }
