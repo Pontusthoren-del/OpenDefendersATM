@@ -15,20 +15,52 @@ namespace OpenDefendersATM
         private float Balance { get; set; }
         private string Currency { get; set; } = "Unknown";
         
-
+        // Deposit method:
         public void Deposit()
         {
+            
 
         }
 
+        // Withdraw method:
         public void Withdraw()
         {
 
         }
 
+        // Method to add new transaction:
         public void AddTransaction()
         {
+            //amount, currency, status, Timestamp
+            Console.WriteLine("Ange information för överföring:");
 
+            Console.WriteLine($"Från konto: {AccountID}");
+            Console.Write($" Till konto: ");
+            int toAccount;
+            while (!int.TryParse(Console.ReadLine(), out toAccount))     // gör så att man bara kan skicka till konton som existerar sen....
+            {
+                Console.WriteLine("Du måste skriva in ett giltigt kontonummer.");
+            }
+
+            // User enters amount:
+            Console.Write("Summa: ");
+            float amount;
+            while (!float.TryParse(Console.ReadLine(), out amount) || amount < 0 || amount > Balance)
+            {
+                Console.WriteLine("Du måste ange en possitiv summa.");
+            }
+
+            // Add the transaction to transactionLog:
+            Transaction trans = new Transaction(amount, AccountID, toAccount, Currency);
+            transactionLog.Add(trans);
+
+            // Print transaction info;
+            Console.WriteLine("Transaktion genomfördes:");
+            Console.WriteLine($"Från konto: {AccountID}");
+            Console.WriteLine($"Till konto: {toAccount}");
+            Console.WriteLine($"{amount} {Currency}");
+            trans.GetStatus();
+            Console.WriteLine($"Tidpunkt: {DateTime.Now}");
         }
     }
 }
