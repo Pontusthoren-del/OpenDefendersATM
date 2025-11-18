@@ -11,6 +11,12 @@ namespace OpenDefendersATM
         List<Account> account = new List<Account>();
         public int AccountID { get; set; }
 
+        // Add a constructor that calls the base User constructor
+        public Customer(string name, int role, int accountId) : base(name, role, accountId)
+        {
+            this.AccountID = accountId;
+        }
+
         public void ViewAccounts()
         {
             //Visar kundens alla konton
