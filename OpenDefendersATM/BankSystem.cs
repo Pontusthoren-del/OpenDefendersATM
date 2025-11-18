@@ -13,11 +13,6 @@ namespace OpenDefendersATM
         private List<Account> _accounts { get; set; }
         private List<Transaction> _transactions { get; set; }
         public static Dictionary<string, decimal> ExchangeRates { get; } // Visual dictionary
-
-        public BankSystem(List<User> users)
-        {
-            _users = users;
-        }
         
         public void ProcessScheduleTransaction()
         {
