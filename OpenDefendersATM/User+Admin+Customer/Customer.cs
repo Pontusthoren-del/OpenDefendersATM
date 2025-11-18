@@ -39,7 +39,7 @@ namespace OpenDefendersATM
         {
             //Flytta pengar till en annan kund
         }
-        public void LockedOut()
+        public static void LockedOut()
         {
             //Utelåst från kontot, vänta på att admin ska låsa upp det.
         }
