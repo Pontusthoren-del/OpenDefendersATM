@@ -14,11 +14,11 @@ namespace OpenDefendersATM
         private int AccountID { get; set; }
         private float Balance { get; set; }
         private string Currency { get; set; } = "Unknown";
-        
+
         // Deposit method:
         public void Deposit()
         {
-            
+
 
         }
 
@@ -33,20 +33,28 @@ namespace OpenDefendersATM
         {
             //amount, currency, status, Timestamp
             Console.WriteLine("Ny överföring:");
-
             Console.WriteLine($"Från konto: {AccountID}");
-            Console.Write($" Till konto: ");
+            Console.Write($"Till konto: ");
             int toAccount;
-            foreach (var acc in BankSystem.Accounts)
+            bool success = false;
+            while (!success)
             {
-
+                while (!int.TryParse(Console.ReadLine(), out toAccount)) // gör så att man bara kan skicka till konton som existerar sen, boolean?....
+                {
+                    foreach (var acc in BankSystem._accounts)
+                    {
+                        if (acc.AccountID != toAccount)
+                        {
+                            Console.WriteLine("Det här kontot hittades inte.");
+                        }
+                        else
+                        {
+                            Console.WriteLine(toAccount);
+                            success = true;
+                        }
+                    }
+                }
             }
-
-            while (!int.TryParse(Console.ReadLine(), out toAccount)) // gör så att man bara kan skicka till konton som existerar sen, boolean?....
-            {
-                Console.WriteLine("Du måste skriva in ett giltigt kontonummer.");
-            }
-
             // User enters amount:
             Console.Write("Summa: ");
             float amount;
