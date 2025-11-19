@@ -32,6 +32,7 @@ namespace OpenDefendersATM
         {
             //Flytta pengar mellan egna konton
         }
+
         //Method to open a new account with a unique account ID and the print it.
         public void OpenAccount()
         {
@@ -41,7 +42,7 @@ namespace OpenDefendersATM
             do
             {
                 newID = random.Next(100000, 999999);
-            } while (BankSystem.AllAccounts().Any(a => a.GetAccountID() == newID));
+            } while (BankSystem.AllAccounts().Any(a => a.GetAccountID() == newID)); //Keep generating a new ID **as long as** it already exists in the bank
             Account newAccount = new Account(newID, "SEK");
             Accounts.Add(newAccount);
             Console.WriteLine($"Nytt konto har skapats med KontoID: {newID}.");
