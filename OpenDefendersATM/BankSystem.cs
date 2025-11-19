@@ -26,6 +26,13 @@ namespace OpenDefendersATM
         {
 
         }
+        public static List<Account> AllAccounts()
+        {
+            return _users
+            .OfType<Customer>() //Only Customers
+            .SelectMany(c => c.Accounts ) //Adding all accounts to a list.
+            .ToList();
+        }
 
         // Method for adding exchange rates to private dictionary _exchangeRates
         public static void AddExchangeRate(string currencyCode, decimal value)
