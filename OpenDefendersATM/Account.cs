@@ -25,7 +25,7 @@ namespace OpenDefendersATM
         // Deposit method:
         public void Deposit()
         {
-            
+
 
         }
 
@@ -40,34 +40,49 @@ namespace OpenDefendersATM
         {
             //amount, currency, status, Timestamp
             Console.WriteLine("Ny överföring:");
-
-            Console.WriteLine($"Från konto: {AccountID}");
-            Console.Write($" Till konto: ");
-            int toAccount;
-            while (!int.TryParse(Console.ReadLine(), out toAccount))     // gör så att man bara kan skicka till konton som existerar sen....
-            {
-                Console.WriteLine("Du måste skriva in ett giltigt kontonummer.");
-            }
-
             // User enters amount:
             Console.Write("Summa: ");
             float amount;
             while (!float.TryParse(Console.ReadLine(), out amount) || amount < 0 || amount > Balance)
             {
-                Console.WriteLine("Du måste ange en possitiv summa.");
+                Console.WriteLine("Du måste ange en possitiv summa som inte överstiger ditt saldo.");
             }
-
-            // Add the transaction to transactionLog:
-            Transaction trans = new Transaction(amount, AccountID, toAccount, Currency);
-            transactionLog.Add(trans);
-
-            // Print transaction info;
-            Console.WriteLine("Transaktion genomfördes:");
             Console.WriteLine($"Från konto: {AccountID}");
-            Console.WriteLine($"Till konto: {toAccount}");
-            Console.WriteLine($"{amount} {Currency}");
-            trans.GetStatus();
-            Console.WriteLine($"Tidpunkt: {DateTime.Now}");
+            Console.Write($"Till konto: ");
+            int toAccount;
+            bool success = false;
+            while (!success)
+            {
+                while (!int.TryParse(Console.ReadLine(), out toAccount)) 
+                {
+                    foreach (var acc in BankSystem._accounts)
+                    {
+                        if (acc.AccountID != toAccount)
+                        {
+                            Console.WriteLine("Det här kontot hittades inte.");
+                        }
+                        else
+                        {
+                            // Add the transaction to transactionLog:
+                            Transaction trans = new Transaction(amount, AccountID, toAccount, Currency);
+                            transactionLog.Add(trans);
+                            // Print transaction info;
+                            Console.WriteLine("Transaktion genomfördes:");
+                            Console.WriteLine($"Från konto: {AccountID}");
+                            Console.WriteLine($"{amount} - {Currency}");
+                            Console.WriteLine($"Till konto: {toAccount}");
+                            trans.GetTransactionStatus();
+                            Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
+                            success = true;
+                        }
+                    }
+                }
+            }
+            
+
+            
+
+            
         }
         public int GetAccountID()
         {
