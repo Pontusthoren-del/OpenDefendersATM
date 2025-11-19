@@ -8,6 +8,8 @@ namespace OpenDefendersATM
 {
     internal class Account
     {
+        // Ide till när konto skapas: skapa en random som genererar tex 8 siffror och sätt så att den inte kan generera ett nummer som finns.
+
         // List that logs user transactions:
         private List<Transaction> transactionLog = new List<Transaction>();
 
@@ -15,6 +17,9 @@ namespace OpenDefendersATM
         private float Balance { get; set; }
         private string Currency { get; set; } = "Unknown";
         
+
+        // When you make a deposit, it is stored from account "CashDeposit" (00000000):
+        private static int CashDeposit = 00000000;
 
         public Account(int accountID, string currency)
         {
@@ -25,8 +30,24 @@ namespace OpenDefendersATM
         // Deposit method:
         public void Deposit()
         {
+            Console.WriteLine("=====|| Insättning ||=====\n");
+            Console.WriteLine("Ange summa du vill sätta in (max 50 000):");
+            // decimal deposit stores the users input:
+            float deposit;
+            while (!float.TryParse(Console.ReadLine(), out deposit) || deposit <= 0 || deposit > 50000)
+            {
+                Console.WriteLine("Ogiltig inmatning.");
+            }
+            // Display deposit info:
+            Console.WriteLine($"Du satte in {deposit} {Currency} till konto {AccountID}");
+            // Add deposit to account balance:
+            deposit += Balance;
+            Console.WriteLine($"kontots saldo är nu {Balance} {Currency}.");
 
-
+            // Create transaction:
+            var trans = new Transaction(deposit, CashDeposit, AccountID, Currency);
+            // Add transaction
+            transactionLog.Add(trans);
         }
 
         // Withdraw method:
@@ -39,7 +60,7 @@ namespace OpenDefendersATM
         public void AddTransaction()
         {
             //amount, currency, status, Timestamp
-            Console.WriteLine("Ny överföring:");
+            Console.WriteLine("=====|| Ny överföring ||=====");
             // User enters amount:
             Console.Write("Summa: ");
             float amount;
