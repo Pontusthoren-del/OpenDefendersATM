@@ -8,6 +8,10 @@ namespace OpenDefendersATM
 {
     internal class Admin : User
     {
+        public Admin(string name, int role, int pin) : base(name, role, pin)
+        {
+        }
+
         public void CreateNewUser()
         {
             //Skapar en ny kontohavare
