@@ -15,6 +15,13 @@ namespace OpenDefendersATM
         private float Balance { get; set; }
         private string Currency { get; set; } = "Unknown";
         
+
+        public Account(int accountID, string currency)
+        {
+            AccountID = accountID;
+            Balance = 0;
+            Currency = currency;
+        }
         // Deposit method:
         public void Deposit()
         {
@@ -61,6 +68,18 @@ namespace OpenDefendersATM
             Console.WriteLine($"{amount} {Currency}");
             trans.GetStatus();
             Console.WriteLine($"Tidpunkt: {DateTime.Now}");
+        }
+        public int GetAccountID()
+        {
+            return AccountID;
+        }
+        public float GetBalance()
+        {
+            return Balance;
+        }
+        public string GetCurrency()
+        {
+            return Currency;
         }
     }
 }
