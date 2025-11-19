@@ -16,10 +16,17 @@ namespace OpenDefendersATM
         private int AccountID { get; set; }
         private float Balance { get; set; }
         private string Currency { get; set; } = "Unknown";
+        
 
         // When you make a deposit, it is stored from account "CashDeposit" (00000000):
         private static int CashDeposit = 00000000;
 
+        public Account(int accountID, string currency)
+        {
+            AccountID = accountID;
+            Balance = 0;
+            Currency = currency;
+        }
         // Deposit method:
         public void Deposit()
         {
@@ -85,8 +92,8 @@ namespace OpenDefendersATM
                             Console.WriteLine($"Från konto: {AccountID}");
                             Console.WriteLine($"{amount} - {Currency}");
                             Console.WriteLine($"Till konto: {toAccount}");
-                            trans.GetStatus();
-                            Console.WriteLine($"Tidpunkt: {DateTime.Now}");
+                            trans.GetTransactionStatus();
+                            Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
                             success = true;
                         }
                     }
@@ -97,6 +104,18 @@ namespace OpenDefendersATM
             
 
             
+        }
+        public int GetAccountID()
+        {
+            return AccountID;
+        }
+        public float GetBalance()
+        {
+            return Balance;
+        }
+        public string GetCurrency()
+        {
+            return Currency;
         }
     }
 }
