@@ -8,7 +8,7 @@ namespace OpenDefendersATM
 {
     internal class Loan
     {
-        public decimal MaxLoan { get; set; }
+        public float MaxLoan { get; set; }
         public int LoanID { get; set; }
         public float Amount { get; set; }
         public float InterestRate { get; set; }
@@ -19,24 +19,22 @@ namespace OpenDefendersATM
 
         }
 
-        //// DET STOD STILL I BELLAS OCH ROBINS HUVUD SÅ VI TAR EN PAUS FRÅN DENNA TASK.
-        //public void CheckLoanLimit()
-        //{
-        //    checkLoanLimit userBalance = new userBalance;
-        //    Customer.TotalBalance();
 
-        //    // show amount user can loan at max, based on the user's total balance
-        //    // customerID, account, amount, InterestRate, 
-        //    // if sats + uträkning
-        //    Console.WriteLine("--LÅN--");
-        //    Console.WriteLine("Ange summna du vill låna: ");
+        public void CheckLoanLimit(Customer customer)
+        {
+            Console.WriteLine("Ange det lönebelopp du vill låna:");
+            float loanLimit = customer.TotalBalance();
+            MaxLoan = loanLimit * 5;
 
+            float userInput;
+            while (!float.TryParse(Console.ReadLine(), out userInput) || userInput <= 0 || userInput > MaxLoan)
+            {
+                Console.WriteLine("Du kan inte låna ett negativt belopp. Vänligen ange din önskad lånesumma." +
+                    "Du får låna max 5 gånger ditt totala saldo");
+            }
 
-        //    float balance;
-
-        //    decimal loan;
-        //    while (!decimal.TryParse(Console.ReadLine(), out loan);
-
-
+        }
     }
+}
+}
 }
