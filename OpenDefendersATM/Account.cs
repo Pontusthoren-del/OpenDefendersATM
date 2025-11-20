@@ -60,7 +60,14 @@ namespace OpenDefendersATM
         // Withdraw method:
         public void Withdraw()
         {
-
+            Console.WriteLine("Welcome to Widrawl:");
+            float withdrawl;
+            while (!float.TryParse(Console.ReadLine(), out withdrawl) || withdrawl > Balance || withdrawl <= 0)
+            {
+                Console.WriteLine("Ogilitg inmatning, försök igen");
+                withdrawl -= Balance; // abreviation (simple 'minus' mathematics for withdrawl - balance: we want to update the balance from withdrawl) by using this line of code
+            }
+            
         }
 
         
