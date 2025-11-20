@@ -10,7 +10,7 @@ namespace OpenDefendersATM
     {
         public List<Account> Accounts { get; set; } = new();
 
-        public Customer(string name, int role, int pin) : base(name, role, pin)
+        public Customer(string name, string role, int pin) : base(name, role, pin)
         {
 
         }
