@@ -88,37 +88,71 @@ namespace OpenDefendersATM
             bool loggedin = true;
             while (loggedin)
             {
-                Console.WriteLine("-*-*-*-*-*-ADMIN MENY-*-*-*-*-*-");
-                Console.WriteLine("Var vänligen välj mellan nedan alternativ:");
+                Console.WriteLine($"[ADMIN] Inloggad som " + user.Name);
+                Console.WriteLine("Välj ett alternativ.");
+                Console.WriteLine(new string('*', 30));
                 Console.WriteLine("1. Skapa ny användare");
                 Console.WriteLine("2. Skapa ny admin");
                 Console.WriteLine("3. Aktuell växlingskurs");
-                
-                string choice = Console.ReadLine();
+                Console.WriteLine("4. Återgå till huvudmeny.");
+                Console.WriteLine(new string('*', 30));
 
-                switch (choice)
+                string inputStr = Console.ReadLine() ?? "";
+                int input;
+                if (!int.TryParse(inputStr, out input))
                 {
-                    case "1":
+                    Admin? admin = user as Admin;
+                    switch (input)
+                    {
+                        case 1:
+                            admin?.CreateNewUser();
+                            break;
+                        case 2:
+                            admin?.CreateNewAdmin();
+                            break;
+                        case 3:
+                            admin?.ExChangeRate();
+                            break;
+                        case 4:
+                            ShowMainMenu(user);
+                            break;
+
+                        default:
+                            Console.WriteLine("Felaktigt val.");
+                            break;
+                    }
+
                 }
+                Console.WriteLine("Tryck Enter för att fortsätta...");
+                Console.ReadLine();
+                Console.ReadKey();
+                return;
 
-
-
+              
             }
         }
+
+
+
+
+
+
+
+
 
         //meny för customer 
         static void CustomerMenu(User user)
         {
             Console.WriteLine($"[KUND] Inloggad som " + user.Name);
             Console.WriteLine("Välj ett alternativ.");
-            Console.WriteLine(new string('*',30));
+            Console.WriteLine(new string('*', 30));
             Console.WriteLine("1. Visa konton.");
             Console.WriteLine("2. Öppna nytt konto.");
             Console.WriteLine("3. Överföring.");
             Console.WriteLine("4. Lån.");
             Console.WriteLine("5. Transaktionslog.");
             Console.WriteLine("6. Återgå till huvudmeny.");
-            Console.WriteLine(new string('*',30));
+            Console.WriteLine(new string('*', 30));
 
             string inputStr = Console.ReadLine() ?? "";
             int input;
@@ -127,8 +161,8 @@ namespace OpenDefendersATM
                 switch (input)
                 {
                     case 1:
-                        if(user is Customer customer)
-                        customer.ViewAccounts();
+                        if (user is Customer customer)
+                            customer.ViewAccounts();
                         break;
                     case 2:
                         break;
