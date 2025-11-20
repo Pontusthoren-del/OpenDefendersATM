@@ -21,7 +21,17 @@ namespace OpenDefendersATM
 
         public void CheckLoanLimit()
         {
+            // customerID, account, amount, InterestRate, 
+            // if sats + uträkning
+            Console.WriteLine("--LÅN--");
+            Console.WriteLine("Ange summna du vill låna: ");
 
+            float balance;
+
+            decimal loan;
+            while(!decimal.TryParse(Console.ReadLine(), out loan)
+
+           
         }
     }
 }
