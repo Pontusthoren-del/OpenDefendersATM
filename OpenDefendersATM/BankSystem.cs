@@ -9,20 +9,15 @@ namespace OpenDefendersATM
     internal class BankSystem
     {
         private static Dictionary<string, decimal> _exchangeRates;  // Private dictionary
-        public static List<User> _users { get; set; } = new();
+        public static List<User> _users { get; set; } = new()
+        {
+         new User("admin", "Admin", 1234),
+         new User("kalle", "Customer", 1111)
+        };
         public static List<Account> _accounts { get; set; }
         private List<Transaction> _transactions { get; set; }
         public static Dictionary<string, decimal> ExchangeRates { get; } // Visual dictionary
 
-        private static List<User> users = new List<User>()
-        {
-        new User("admin", "Admin", 1234),
-        new User("kalle", "Customer", 1111)
-        };
-        public BankSystem(List<User> users)
-        {
-            _users = users;
-        }
         public void ProcessScheduleTransaction()
         {
 
@@ -31,6 +26,7 @@ namespace OpenDefendersATM
         {
 
         }
+        //A list with AllAccounts, but we just sorting out the customers.
         public static List<Account> AllAccounts()
         {
             return _users
