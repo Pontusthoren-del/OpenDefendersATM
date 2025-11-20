@@ -21,7 +21,7 @@ namespace OpenDefendersATM
 
         // When you make a deposit, it is stored from account "CashDeposit" (00000000):
         private static int CashDeposit = 00000000;
-
+        public static int CashWithdrawl = 00000001;
         public Account(int accountID, string currency)
         {
             AccountID = accountID;
@@ -66,8 +66,17 @@ namespace OpenDefendersATM
             {
                 Console.WriteLine("Ogilitg inmatning, försök igen");
                 withdrawl -= Balance; // abreviation (simple 'minus' mathematics for withdrawl - balance: we want to update the balance from withdrawl) by using this line of code
+
             }
-            
+
+            Transaction trans = new Transaction(withdrawl, AccountID, CashWithdrawl, Currency); // skapas en transaction
+            transactionLog.Add(trans);
+            Console.WriteLine("\nUttag genomfördes:");
+            Console.WriteLine($"Från konto: {AccountID}");
+            Console.WriteLine($"{withdrawl} - {Currency}");
+            Console.WriteLine($"Nytt saldo: {Balance} {Currency}.");
+            trans.GetTransactionStatus();
+            Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
         }
 
         
