@@ -8,7 +8,7 @@ namespace OpenDefendersATM
 {
     internal class Customer : User
     {
-        public List<Account> CustomerAccounts { get; set; } = new();
+        public List<Account> CustomerAccount { get; set; } = new();
 
         public Customer(string name, string role, int pin) : base(name, role, pin)
         {
@@ -28,13 +28,13 @@ namespace OpenDefendersATM
         //Method to show our accounts.
         public void ViewAccounts()
         {
-            if (CustomerAccounts.Count == 0)
+            if (CustomerAccount.Count == 0)
             {
                 Console.WriteLine("Du har inga öppna konton.");
                 return;
             }
             Console.Write("Dina konton.");
-            foreach (var acc in CustomerAccounts)
+            foreach (var acc in CustomerAccount)
             {
                 Console.WriteLine($"KontoID: {acc.GetAccountID()} | Saldo:{acc.GetBalance()} {acc.GetCurrency()}. ");
             }
@@ -53,9 +53,10 @@ namespace OpenDefendersATM
             do
             {
                 newID = random.Next(100000, 999999);
-            } while (BankSystem.AllAccounts().Any(a => a.GetAccountID() == newID)); //Keep generating a new ID **as long as** it already exists in the bank
+            } 
+            while (BankSystem.AllAccounts().Any(a => a.GetAccountID() == newID)); //Keep generating a new ID **as long as** it already exists in the bank
             Account newAccount = new Account(newID, "SEK");
-            CustomerAccounts.Add(newAccount);
+            CustomerAccount.Add(newAccount);
             Console.WriteLine($"Nytt konto har skapats med KontoID: {newID}.");
         }
         public void OpenSavingsAccount()
@@ -73,6 +74,39 @@ namespace OpenDefendersATM
         public void TransferToOtherCustomers()
         {
             //Flytta pengar till en annan kund
+        }
+        public void TransferMenu()
+        {
+            Console.WriteLine("Välj ett alternativ.");
+            Console.WriteLine(new string('*',30));
+            Console.WriteLine("1. Överföring mellan egna konton.");
+            Console.WriteLine("2. Överföring till annan kund. ");
+            Console.WriteLine("3. Återgå.");
+            string inputStr = Console.ReadLine() ?? "";
+            int input;
+            if (int.TryParse(inputStr, out input))
+            {
+
+                switch (input)
+                {
+                    case 1:
+                        TransferBetweenAccounts();
+                        break;
+                    case 2:
+                        TransferToOtherCustomers();
+                        break;
+                    case 3:
+                        UI.CustomerMenu(this);
+                        break;
+                    default:
+                        Console.WriteLine("Felaktigt val.");
+                        break;
+                }
+                Console.WriteLine("Felaktigt val.");
+                Console.WriteLine("Tryck Enter för att fortsätta...");
+                Console.ReadLine();
+                Console.ReadKey();
+            }
         }
         public static void LockedOut()
         {

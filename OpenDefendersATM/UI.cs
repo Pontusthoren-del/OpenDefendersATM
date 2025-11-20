@@ -83,7 +83,7 @@ namespace OpenDefendersATM
 
 
         //meny för admin
-        static void AdminMenu(User user)
+        public static void AdminMenu(User user)
         {
             bool loggedin = true;
             while (loggedin)
@@ -94,6 +94,8 @@ namespace OpenDefendersATM
                 Console.WriteLine("1. Skapa ny användare");
                 Console.WriteLine("2. Skapa ny admin");
                 Console.WriteLine("3. Aktuell växlingskurs");
+
+                string choice = Console.ReadLine();
                 Console.WriteLine("4. Återgå till huvudmeny.");
                 Console.WriteLine(new string('*', 30));
 
@@ -141,7 +143,7 @@ namespace OpenDefendersATM
 
 
         //meny för customer 
-        static void CustomerMenu(User user)
+        public static void CustomerMenu(User user)
         {
             Console.WriteLine($"[KUND] Inloggad som " + user.Name);
             Console.WriteLine("Välj ett alternativ.");
@@ -156,22 +158,34 @@ namespace OpenDefendersATM
 
             string inputStr = Console.ReadLine() ?? "";
             int input;
-            if (!int.TryParse(inputStr, out input))
+            if (int.TryParse(inputStr, out input))
             {
+                Customer? customer = user as Customer;
                 switch (input)
                 {
                     case 1:
-                        if (user is Customer customer)
-                            customer.ViewAccounts();
+                        customer?.ViewAccounts();
                         break;
                     case 2:
+                        customer?.OpenAccount();
                         break;
                     case 3:
+                        customer?.TransferMenu();
                         break;
                     case 4:
+                        customer?.RequestLoan();
                         break;
                     case 5:
-                        break;
+                        if (customer.CustomerAccount.Count > 0)
+                        {
+
+                            customer?.CustomerAccount[0].ViewAllTransactions();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Du har inga transaktioner.");
+                        }
+                            break;
                     case 6:
                         break;
 
@@ -179,7 +193,6 @@ namespace OpenDefendersATM
                         Console.WriteLine("Felaktigt val.");
                         break;
                 }
-                Console.WriteLine("Felaktigt val.");
                 Console.WriteLine("Tryck Enter för att fortsätta...");
                 Console.ReadLine();
                 Console.ReadKey();

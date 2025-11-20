@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace OpenDefendersATM
         private int AccountID { get; set; }
         private float Balance { get; set; }
         private string Currency { get; set; } = "Unknown";
-        
+
 
         // When you make a deposit, it is stored from account "CashDeposit" (00000000):
         private static int CashDeposit = 00000000;
@@ -53,8 +54,8 @@ namespace OpenDefendersATM
             trans.GetTransactionStatus();
             Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
 
-            
-            
+
+
         }
 
         // Withdraw method:
@@ -79,7 +80,7 @@ namespace OpenDefendersATM
             Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
         }
 
-        
+
         // Method to add new transaction:
         public void AddTransaction()
         {
@@ -98,7 +99,7 @@ namespace OpenDefendersATM
             bool success = false;
             while (!success)
             {
-                while (!int.TryParse(Console.ReadLine(), out toAccount)) 
+                while (!int.TryParse(Console.ReadLine(), out toAccount))
                 {
                     foreach (var acc in BankSystem._accounts)
                     {
@@ -123,11 +124,21 @@ namespace OpenDefendersATM
                     }
                 }
             }
-            
-
-            
-
-            
+        }
+        public void ViewAllTransactions()
+        {
+            if (transactionLog.Count == 0)
+            {
+                Console.WriteLine($"Konto {AccountID} har ingen historik.");
+            }
+            Console.WriteLine($"Transaktionsloggen för {AccountID}");
+            Console.WriteLine(new string('*',30));
+            foreach (var t in transactionLog)
+            {
+                t.GetTransactionStatus();
+                Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
+                Console.WriteLine(new string('*',30));
+            }
         }
         public int GetAccountID()
         {
