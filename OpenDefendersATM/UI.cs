@@ -127,6 +127,8 @@ namespace OpenDefendersATM
                 switch (input)
                 {
                     case 1:
+                        if(user is Customer customer)
+                        customer.ViewAccounts();
                         break;
                     case 2:
                         break;
