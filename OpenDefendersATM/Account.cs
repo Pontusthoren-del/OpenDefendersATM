@@ -63,6 +63,7 @@ namespace OpenDefendersATM
 
         }
 
+        
         // Method to add new transaction:
         public void AddTransaction()
         {
