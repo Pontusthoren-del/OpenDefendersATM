@@ -14,6 +14,17 @@ namespace OpenDefendersATM
         {
 
         }
+
+        // Method to bring/show a specific user's TOTAL balance within their account
+        public float TotalBalance()
+        {
+            float totalBalance = 0;
+            foreach (var acc in CustomerAccounts)
+            {
+                totalBalance += acc.GetBalance();
+            }
+            return totalBalance;
+        }
         //Method to show our accounts.
         public void ViewAccounts()
         {
