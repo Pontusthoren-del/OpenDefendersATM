@@ -8,7 +8,7 @@ namespace OpenDefendersATM
 {
     internal class Admin : User
     {
-        public Admin(string name, int role, int pin) : base(name, role, pin)
+        public Admin(string name, string role, int pin) : base(name, role, pin)
         {
         }
 

@@ -4,9 +4,10 @@
     {
         static void Main(string[] args)
         {
-         
-        {      
-            UI.RunBankApp();
+
+            {
+                UI.RunBankApp();
+            }
         }
     }
 }

@@ -12,12 +12,12 @@ namespace OpenDefendersATM
     internal class User
     {
         public string Name { get; set; }
-        public int Role { get; set; }
+        public string Role { get; set; }
         public int FailedAttempts { get; set; }
         public bool IsLocked { get; set; }
         private int _pin;
 
-        public User(string name, int role, int pin)
+        public User(string name, string role, int pin)
         {
             Name = name;
             Role = role;
