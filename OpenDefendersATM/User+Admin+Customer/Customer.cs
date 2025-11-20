@@ -19,7 +19,7 @@ namespace OpenDefendersATM
         public float TotalBalance()
         {
             float totalBalance = 0;
-            foreach (var acc in CustomerAccounts)
+            foreach (var acc in CustomerAccount)
             {
                 totalBalance += acc.GetBalance();
             }
