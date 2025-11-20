@@ -14,6 +14,11 @@ namespace OpenDefendersATM
         private List<Transaction> _transactions { get; set; }
         public static Dictionary<string, decimal> ExchangeRates { get; } // Visual dictionary
 
+        private static List<User> users = new List<User>()
+        {
+        new User("admin", "Admin", 1234),
+        new User("kalle", "Customer", 1111)
+        };
         public BankSystem(List<User> users)
         {
             _users = users;
@@ -30,7 +35,7 @@ namespace OpenDefendersATM
         {
             return _users
             .OfType<Customer>() //Only Customers
-            .SelectMany(c => c.Accounts ) //Adding all accounts to a list.
+            .SelectMany(c => c.Accounts) //Adding all accounts to a list.
             .ToList();
         }
 
