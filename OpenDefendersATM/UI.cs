@@ -85,7 +85,25 @@ namespace OpenDefendersATM
         //meny för admin
         static void AdminMenu(User user)
         {
+            bool loggedin = true;
+            while (loggedin)
+            {
+                Console.WriteLine("-*-*-*-*-*-ADMIN MENY-*-*-*-*-*-");
+                Console.WriteLine("Var vänligen välj mellan nedan alternativ:");
+                Console.WriteLine("1. Skapa ny användare");
+                Console.WriteLine("2. Skapa ny admin");
+                Console.WriteLine("3. Aktuell växlingskurs");
+                
+                string choice = Console.ReadLine();
 
+                switch (choice)
+                {
+                    case "1":
+                }
+
+
+
+            }
         }
 
         //meny för customer 
