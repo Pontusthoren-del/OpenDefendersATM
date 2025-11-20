@@ -66,6 +66,18 @@ namespace OpenDefendersATM
                 }
             }
         }
+
+        //meny för admin
+        public void AdminMenu()
+        {
+
+        }
+
+        //meny för customer 
+        public void CustomerMenu()
+        {
+            
+        }
     }
 }
 
