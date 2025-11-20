@@ -8,22 +8,33 @@ namespace OpenDefendersATM
 {
     internal class Customer : User
     {
-        public List<Account> Accounts { get; set; } = new();
+        public List<Account> CustomerAccounts { get; set; } = new();
 
         public Customer(string name, string role, int pin) : base(name, role, pin)
         {
 
         }
+
+        // Method to bring/show a specific user's TOTAL balance within their account
+        public float TotalBalance()
+        {
+            float totalBalance = 0;
+            foreach (var acc in CustomerAccounts)
+            {
+                totalBalance += acc.GetBalance();
+            }
+            return totalBalance;
+        }
         //Method to show our accounts.
         public void ViewAccounts()
         {
-            if (Accounts.Count == 0)
+            if (CustomerAccounts.Count == 0)
             {
                 Console.WriteLine("Du har inga öppna konton.");
                 return;
             }
             Console.Write("Dina konton.");
-            foreach (var acc in Accounts)
+            foreach (var acc in CustomerAccounts)
             {
                 Console.WriteLine($"KontoID: {acc.GetAccountID()} | Saldo:{acc.GetBalance()} {acc.GetCurrency()}. ");
             }
@@ -44,7 +55,7 @@ namespace OpenDefendersATM
                 newID = random.Next(100000, 999999);
             } while (BankSystem.AllAccounts().Any(a => a.GetAccountID() == newID)); //Keep generating a new ID **as long as** it already exists in the bank
             Account newAccount = new Account(newID, "SEK");
-            Accounts.Add(newAccount);
+            CustomerAccounts.Add(newAccount);
             Console.WriteLine($"Nytt konto har skapats med KontoID: {newID}.");
         }
         public void OpenSavingsAccount()

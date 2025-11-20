@@ -35,7 +35,7 @@ namespace OpenDefendersATM
         {
             return _users
             .OfType<Customer>() //Only Customers
-            .SelectMany(c => c.Accounts) //Adding all accounts to a list.
+            .SelectMany(c => c.CustomerAccounts) //Adding all accounts to a list.
             .ToList();
         }
 
