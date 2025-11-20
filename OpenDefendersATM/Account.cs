@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,16 +39,22 @@ namespace OpenDefendersATM
             {
                 Console.WriteLine("Ogiltig inmatning.");
             }
-            // Display deposit info:
-            Console.WriteLine($"Du satte in {deposit} {Currency} till konto {AccountID}");
             // Add deposit to account balance:
             deposit += Balance;
-            Console.WriteLine($"kontots saldo är nu {Balance} {Currency}.");
-
             // Create transaction:
             var trans = new Transaction(deposit, CashDeposit, AccountID, Currency);
             // Add transaction
             transactionLog.Add(trans);
+            // Print deposit info;
+            Console.WriteLine("\nInsättning genomfördes:");
+            Console.WriteLine($"Till konto: {AccountID}");
+            Console.WriteLine($"{deposit} - {Currency}");
+            Console.WriteLine($"Nytt saldo: {Balance} {Currency}.");
+            trans.GetTransactionStatus();
+            Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
+
+            
+            
         }
 
         // Withdraw method:
