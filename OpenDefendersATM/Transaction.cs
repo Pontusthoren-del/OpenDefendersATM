@@ -8,14 +8,31 @@ namespace OpenDefendersATM
 {
     internal class Transaction
     {
-        public int transactionID { get; set; }
-        public List<Account> fromAccount { get; set; }
-        public List<Account> toAccount { get; set; }
+        private static int TransactionIDCounter = 1;
+        public int FromAccount { get; set; }
+        public int ToAccount { get; set; }
+        public int TransactionID { get; set; }
+        public float Amount { get; set; }
+        public string Currency { get; set; }
+        public DateTime Timestamp { get; set; }   
+        public string Status { get; set; }
 
-        public float amount { get; set; }
-        public string currency { get; set; }
-        public DateTime timestamp { get; set; }
-        public string status { get; set; }
+        public Transaction(float amount, int fromAccount, int toAccount, string currency)
+        {
+            TransactionID = TransactionIDCounter;
+            TransactionIDCounter++;
+            Amount = amount;
+            Currency = currency;
+            Status = "Pending"; // pending, complete, declined
+            FromAccount = fromAccount;
+            ToAccount = toAccount;
+            Timestamp = DateTime.Now;
+        }
+
+        public void GetTransactionStatus()
+        {
+            Console.WriteLine($"Status: {Status}");
+        }
 
         public void Execute()
         {

@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace OpenDefendersATM
 {
-    internal class Admin:User
+    internal class Admin : User
     {
+        public Admin(string name, int role, int pin) : base(name, role, pin)
+        {
+        }
+
         public void CreateNewUser()
         {
             Console.WriteLine("Are you a new user? Register here.");

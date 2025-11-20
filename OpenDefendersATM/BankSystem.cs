@@ -8,10 +8,16 @@ namespace OpenDefendersATM
 {
     internal class BankSystem
     {
-        public List<User> users { get; set; }
-        public List<Account> accounts { get; set; }
-        public List<Transaction> transactions { get; set; }
-        public List<ExchangeRate> exchangeRates { get; set; }
+        private static Dictionary<string, decimal> _exchangeRates;  // Private dictionary
+        public static List<User> _users { get; set; } = new();
+        public static List<Account> _accounts { get; set; }
+        private List<Transaction> _transactions { get; set; }
+        public static Dictionary<string, decimal> ExchangeRates { get; } // Visual dictionary
+
+        public BankSystem(List<User> users)
+        {
+            _users = users;
+        }
         public void ProcessScheduleTransaction()
         {
 
@@ -19,6 +25,27 @@ namespace OpenDefendersATM
         public void LogTransaction()
         {
 
+        }
+        public static List<Account> AllAccounts()
+        {
+            return _users
+            .OfType<Customer>() //Only Customers
+            .SelectMany(c => c.Accounts ) //Adding all accounts to a list.
+            .ToList();
+        }
+
+        // Method for adding exchange rates to private dictionary _exchangeRates
+        public static void AddExchangeRate(string currencyCode, decimal value)
+        {
+            if (value <= 0)
+            {
+                // - "Värdet måste vara över 0."
+            }
+            if (currencyCode.Length != 3)
+            {
+                // - "En landskod måste ha 3 tecken." 
+            }
+            _exchangeRates.Add(currencyCode, value);
         }
     }
 }
