@@ -8,7 +8,7 @@ namespace OpenDefendersATM
 {
     internal class Customer : User
     {
-        public List<Account> CustomerAccount { get; set; } = new();
+        public List<Account> CustomerAccounts { get; set; } = new();
 
         public Customer(string name, string role, int pin) : base(name, role, pin)
         {
@@ -28,13 +28,13 @@ namespace OpenDefendersATM
         //Method to show our accounts.
         public void ViewAccounts()
         {
-            if (CustomerAccount.Count == 0)
+            if (CustomerAccounts.Count == 0)
             {
                 Console.WriteLine("Du har inga öppna konton.");
                 return;
             }
-            Console.Write("Dina konton.");
-            foreach (var acc in CustomerAccount)
+            Console.Write("Dina konton: ");
+            foreach (var acc in CustomerAccounts)
             {
                 Console.WriteLine($"KontoID: {acc.GetAccountID()} | Saldo:{acc.GetBalance()} {acc.GetCurrency()}. ");
             }
@@ -56,7 +56,7 @@ namespace OpenDefendersATM
             } 
             while (BankSystem.AllAccounts().Any(a => a.GetAccountID() == newID)); //Keep generating a new ID **as long as** it already exists in the bank
             Account newAccount = new Account(newID, "SEK");
-            CustomerAccount.Add(newAccount);
+            CustomerAccounts.Add(newAccount);
             Console.WriteLine($"Nytt konto har skapats med KontoID: {newID}.");
         }
         public void OpenSavingsAccount()
@@ -96,16 +96,13 @@ namespace OpenDefendersATM
                         TransferToOtherCustomers();
                         break;
                     case 3:
-                        UI.CustomerMenu(this);
-                        break;
+                        return;
                     default:
                         Console.WriteLine("Felaktigt val.");
                         break;
                 }
-                Console.WriteLine("Felaktigt val.");
                 Console.WriteLine("Tryck Enter för att fortsätta...");
                 Console.ReadLine();
-                Console.ReadKey();
             }
         }
         public static void LockedOut()

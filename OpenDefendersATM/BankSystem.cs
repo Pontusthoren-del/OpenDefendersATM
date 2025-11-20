@@ -11,8 +11,8 @@ namespace OpenDefendersATM
         private static Dictionary<string, decimal> _exchangeRates;  // Private dictionary
         public static List<User> _users { get; set; } = new()
         {
-         new User("admin", "Admin", 1234),
-         new User("kalle", "Customer", 1111)
+         new Admin("admin", "Admin", 1234),
+         new Customer("kalle", "Customer", 1111)
         };
         public static List<Account> _accounts { get; set; }
         private List<Transaction> _transactions { get; set; }

@@ -94,14 +94,12 @@ namespace OpenDefendersATM
                 Console.WriteLine("1. Skapa ny användare");
                 Console.WriteLine("2. Skapa ny admin");
                 Console.WriteLine("3. Aktuell växlingskurs");
-
-                string choice = Console.ReadLine();
                 Console.WriteLine("4. Återgå till huvudmeny.");
                 Console.WriteLine(new string('*', 30));
 
                 string inputStr = Console.ReadLine() ?? "";
                 int input;
-                if (!int.TryParse(inputStr, out input))
+                if (int.TryParse(inputStr, out input))
                 {
                     Admin? admin = user as Admin;
                     switch (input)
@@ -127,76 +125,69 @@ namespace OpenDefendersATM
                 }
                 Console.WriteLine("Tryck Enter för att fortsätta...");
                 Console.ReadLine();
-                Console.ReadKey();
-                return;
-
-              
             }
         }
-
-
-
-
-
-
-
-
 
         //meny för customer 
         public static void CustomerMenu(User user)
         {
-            Console.WriteLine($"[KUND] Inloggad som " + user.Name);
-            Console.WriteLine("Välj ett alternativ.");
-            Console.WriteLine(new string('*', 30));
-            Console.WriteLine("1. Visa konton.");
-            Console.WriteLine("2. Öppna nytt konto.");
-            Console.WriteLine("3. Överföring.");
-            Console.WriteLine("4. Lån.");
-            Console.WriteLine("5. Transaktionslog.");
-            Console.WriteLine("6. Återgå till huvudmeny.");
-            Console.WriteLine(new string('*', 30));
-
-            string inputStr = Console.ReadLine() ?? "";
-            int input;
-            if (int.TryParse(inputStr, out input))
+            bool running = true;
+            while (running)
             {
-                Customer? customer = user as Customer;
-                switch (input)
+
+                Console.WriteLine($"[KUND] Inloggad som " + user.Name);
+                Console.WriteLine("Välj ett alternativ.");
+                Console.WriteLine(new string('*', 30));
+                Console.WriteLine("1. Visa konton.");
+                Console.WriteLine("2. Öppna nytt konto.");
+                Console.WriteLine("3. Överföring.");
+                Console.WriteLine("4. Lån.");
+                Console.WriteLine("5. Transaktionslog.");
+                Console.WriteLine("6. Återgå till huvudmeny.");
+                Console.WriteLine(new string('*', 30));
+
+                string inputStr = Console.ReadLine() ?? "";
+                int input;
+                if (int.TryParse(inputStr, out input))
                 {
-                    case 1:
-                        customer?.ViewAccounts();
-                        break;
-                    case 2:
-                        customer?.OpenAccount();
-                        break;
-                    case 3:
-                        customer?.TransferMenu();
-                        break;
-                    case 4:
-                        customer?.RequestLoan();
-                        break;
-                    case 5:
-                        if (customer.CustomerAccount.Count > 0)
-                        {
-
-                            customer?.CustomerAccount[0].ViewAllTransactions();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Du har inga transaktioner.");
-                        }
+                    Customer? customer = user as Customer;
+                    switch (input)
+                    {
+                        case 1:
+                            customer?.ViewAccounts();
+                            Console.WriteLine("Tryck Enter för att fortsätta...");
+                            Console.ReadLine();
                             break;
-                    case 6:
-                        break;
+                        case 2:
+                            customer?.OpenAccount();
+                            break;
+                        case 3:
+                            customer?.TransferMenu();
+                            break;
+                        case 4:
+                            customer?.RequestLoan();
+                            break;
+                        case 5:
+                            if (customer.CustomerAccounts.Count > 0)
+                            {
 
-                    default:
-                        Console.WriteLine("Felaktigt val.");
-                        break;
+                                customer?.CustomerAccounts[0].ViewAllTransactions();
+                            }
+                            else
+                            {
+                                Console.WriteLine("Du har inga transaktioner.");
+                            }
+                            break;
+                        case 6:
+                            running = false;
+                            break;
+
+                        default:
+                            Console.WriteLine("Felaktigt val.");
+                            break;
+                    }
+
                 }
-                Console.WriteLine("Tryck Enter för att fortsätta...");
-                Console.ReadLine();
-                Console.ReadKey();
-                return;
             }
         }
     }

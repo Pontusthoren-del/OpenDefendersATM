@@ -19,25 +19,24 @@ namespace OpenDefendersATM
 
         }
 
-        // DET STOD STILL I BELLAS OCH ROBINS HUVUD SÅ VI TAR EN PAUS FRÅN DENNA TASK.
-        public void CheckLoanLimit()
-        {
-            checkLoanLimit userBalance = new userBalance;
-            Customer.TotalBalance();
+        //// DET STOD STILL I BELLAS OCH ROBINS HUVUD SÅ VI TAR EN PAUS FRÅN DENNA TASK.
+        //public void CheckLoanLimit()
+        //{
+        //    checkLoanLimit userBalance = new userBalance;
+        //    Customer.TotalBalance();
 
-            // show amount user can loan at max, based on the user's total balance
-            // customerID, account, amount, InterestRate, 
-            // if sats + uträkning
-            Console.WriteLine("--LÅN--");
-            Console.WriteLine("Ange summna du vill låna: ");
+        //    // show amount user can loan at max, based on the user's total balance
+        //    // customerID, account, amount, InterestRate, 
+        //    // if sats + uträkning
+        //    Console.WriteLine("--LÅN--");
+        //    Console.WriteLine("Ange summna du vill låna: ");
 
 
-            float balance;
+        //    float balance;
 
-            decimal loan;
-            while (!decimal.TryParse(Console.ReadLine(), out loan);
+        //    decimal loan;
+        //    while (!decimal.TryParse(Console.ReadLine(), out loan);
 
-           
-        }
+
     }
 }
