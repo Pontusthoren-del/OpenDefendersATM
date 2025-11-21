@@ -88,7 +88,7 @@ namespace OpenDefendersATM
             bool loggedin = true;
             while (loggedin)
             {
-                Console.WriteLine($"[ADMIN] Inloggad som " + user.Name);
+                Console.WriteLine($"\t[ADMIN] Inloggad som " + user.Name);
                 Console.WriteLine("Välj ett alternativ.");
                 Console.WriteLine(new string('*', 30));
                 Console.WriteLine("1. Skapa ny användare");
@@ -134,8 +134,9 @@ namespace OpenDefendersATM
             bool running = true;
             while (running)
             {
-
-                Console.WriteLine($"[KUND] Inloggad som " + user.Name);
+                Console.Clear();
+                Console.WriteLine($"\t[KUND] Inloggad som " + user.Name);
+                Console.WriteLine();
                 Console.WriteLine("Välj ett alternativ.");
                 Console.WriteLine(new string('*', 30));
                 Console.WriteLine("1. Visa konton.");
@@ -168,7 +169,7 @@ namespace OpenDefendersATM
                             customer?.RequestLoan();
                             break;
                         case 5:
-                            if (customer.CustomerAccounts.Count > 0)
+                            if (customer?.CustomerAccounts.Count > 0)
                             {
 
                                 customer?.CustomerAccounts[0].ViewAllTransactions();

@@ -46,6 +46,8 @@ namespace OpenDefendersATM
         }
         public static User? Login(List<User> users)
         {
+            Console.WriteLine("\t" + new string('*', 30));
+            Console.WriteLine("*****VÄLKOMNA TILL OPEN DEFENDERS ATM*****");
             Console.Write("Användarnamn: ");
             string? name = Console.ReadLine();
             Console.Write("PIN: ");
