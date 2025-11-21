@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OpenDefendersATM
 {
-    internal class Account
+    public class Account
     {
         // Ide till när konto skapas: skapa en random som genererar tex 8 siffror och sätt så att den inte kan generera ett nummer som finns.
 
@@ -132,12 +132,12 @@ namespace OpenDefendersATM
                 Console.WriteLine($"Konto {AccountID} har ingen historik.");
             }
             Console.WriteLine($"Transaktionsloggen för {AccountID}");
-            Console.WriteLine(new string('*',30));
+            Console.WriteLine(new string('*', 30));
             foreach (var t in transactionLog)
             {
                 t.GetTransactionStatus();
                 Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
-                Console.WriteLine(new string('*',30));
+                Console.WriteLine(new string('*', 30));
             }
         }
         public int GetAccountID()
