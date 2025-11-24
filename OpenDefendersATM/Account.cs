@@ -5,13 +5,12 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace OpenDefendersATM
 {
-    public class Account
+    internal class Account
     {
-        // Ide till när konto skapas: skapa en random som genererar tex 8 siffror och sätt så att den inte kan generera ett nummer som finns.
-
         // List that logs user transactions:
         private List<Transaction> transactionLog = new List<Transaction>();
 
@@ -20,9 +19,9 @@ namespace OpenDefendersATM
         private string Currency { get; set; } = "Unknown";
         public string Name { get; set; }
 
-
         // When you make a deposit, it is stored from account "CashDeposit" (00000000):
         private static int CashDeposit = 00000000;
+        // When you make a withdrawl, it is stored from account "CashWithdrawl" (00000001):
         public static int CashWithdrawl = 00000001;
         public Account(int accountID, string currency, string name = "Nytt Konto.")
         {
@@ -31,6 +30,10 @@ namespace OpenDefendersATM
             Currency = currency;
             Name = name;
         }
+
+        // Method that adds transaction to transactionLog:
+        public void LogTransaction(Transaction trans) => transactionLog.Add(trans);
+
         // Deposit method:
         public virtual float Deposit()
         {
@@ -47,7 +50,7 @@ namespace OpenDefendersATM
             // Create transaction:
             var trans = new Transaction(deposit, CashDeposit, AccountID, Currency);
             // Add transaction
-            transactionLog.Add(trans);
+            LogTransaction(trans);
             // Print deposit info;
             Console.WriteLine("\nInsättning genomfördes:");
             Console.WriteLine($"Till konto: {AccountID}");
@@ -55,7 +58,6 @@ namespace OpenDefendersATM
             Console.WriteLine($"Nytt saldo: {Balance} {Currency}.");
             trans.GetTransactionStatus();
             Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
-            return deposit;
         }
 
         // Withdraw method:
@@ -71,7 +73,7 @@ namespace OpenDefendersATM
             }
 
             Transaction trans = new Transaction(withdrawl, AccountID, CashWithdrawl, Currency); // skapas en transaction
-            transactionLog.Add(trans);
+            LogTransaction(trans);
             Console.WriteLine("\nUttag genomfördes:");
             Console.WriteLine($"Från konto: {AccountID}");
             Console.WriteLine($"{withdrawl} - {Currency}");
@@ -111,7 +113,7 @@ namespace OpenDefendersATM
                         {
                             // Add the transaction to transactionLog:
                             Transaction trans = new Transaction(amount, AccountID, toAccount, Currency);
-                            transactionLog.Add(trans);
+                            LogTransaction(trans);
                             // Print transaction info;
                             Console.WriteLine("Transaktion genomfördes:");
                             Console.WriteLine($"Från konto: {AccountID}");

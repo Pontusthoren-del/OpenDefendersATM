@@ -15,17 +15,14 @@ namespace OpenDefendersATM
          new Customer("kalle", "Customer", 1111)
         };
         public static List<Account> _accounts { get; set; }
-        private List<Transaction> _transactions { get; set; }
+        //private List<Transaction> _transactions { get; set; }  // Do we need this one?
         public static Dictionary<string, decimal> ExchangeRates { get; } // Visual dictionary
 
         public void ProcessScheduleTransaction()
         {
 
         }
-        public void LogTransaction()
-        {
-
-        }
+        
         //A list with AllAccounts, but we just sorting out the customers.
         public static List<Account> AllAccounts()
         {
