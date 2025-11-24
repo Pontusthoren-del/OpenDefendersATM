@@ -26,11 +26,11 @@ namespace OpenDefendersATM
         public Account(int accountID, string currency)
         {
             AccountID = accountID;
-            Balance = 0;
+            Balance = 10000;
             Currency = currency;
         }
         // Deposit method:
-        public void Deposit()
+        public virtual float Deposit()
         {
             Console.WriteLine("=====|| Insättning ||=====\n");
             Console.WriteLine("Ange summa du vill sätta in (max 50 000):");
@@ -41,7 +41,7 @@ namespace OpenDefendersATM
                 Console.WriteLine("Ogiltig inmatning.");
             }
             // Add deposit to account balance:
-            deposit += Balance;
+            Balance += deposit;
             // Create transaction:
             var trans = new Transaction(deposit, CashDeposit, AccountID, Currency);
             // Add transaction
@@ -53,9 +53,7 @@ namespace OpenDefendersATM
             Console.WriteLine($"Nytt saldo: {Balance} {Currency}.");
             trans.GetTransactionStatus();
             Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
-
-
-
+            return deposit;
         }
 
         // Withdraw method:
