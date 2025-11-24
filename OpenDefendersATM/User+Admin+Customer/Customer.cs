@@ -67,7 +67,7 @@ namespace OpenDefendersATM
         }
 
         //Method to open a new account with a unique account ID and the print it.
-        public void OpenAccount()
+        public void OpenRegularAccount()
         {
             //Generate a random unique AccountID and put it in newID.
             Random random = new Random();
@@ -84,7 +84,44 @@ namespace OpenDefendersATM
         }
         public void OpenSavingsAccount()
         {
-            //Öppnar ett nytt sparkonto
+            Random random = new Random();
+            int newID;
+            do
+            {
+                newID = random.Next(100000, 999999);
+            }
+            while (BankSystem.AllAccounts().Any(a => a.GetAccountID() == newID)); //Keep generating a new ID **as long as** it already exists in the bank
+            SavingsAccount newAccount = new SavingsAccount(newID, "SEK");
+            CustomerAccounts.Add(newAccount);
+            Console.WriteLine($"Nytt sparkonto har skapats med KontoID: {newID} och i valören SEK.");
+            Console.WriteLine($"Räntan: {newAccount.GetInterestRate() * 100}% per år.");
+            Console.ReadKey();
+        }
+        public void OpenAccount()
+        {
+            Console.WriteLine("Välj ett alternativ.");
+            Console.WriteLine(new string('*', 30));
+            Console.WriteLine("1. Öppna ett vanligt konto.");
+            Console.WriteLine("2. Öppna ett sparkonto med 2% ränta. ");
+            Console.WriteLine("3. Återgå.");
+
+            int input = Backup.ReadInt("Ditt val: ");
+            switch (input)
+            {
+                case 1:
+                    OpenRegularAccount();
+                    break;
+                case 2:
+                    OpenSavingsAccount();
+                    break;
+                case 3:
+                    return;
+                default:
+                    Console.WriteLine("Felaktigt val.");
+                    break;
+            }
+            Console.WriteLine("Tryck Enter för att fortsätta...");
+            Console.ReadLine();
         }
         public void RequestLoan()
         {
@@ -105,28 +142,24 @@ namespace OpenDefendersATM
             Console.WriteLine("1. Överföring mellan egna konton.");
             Console.WriteLine("2. Överföring till annan kund. ");
             Console.WriteLine("3. Återgå.");
-            string inputStr = Console.ReadLine() ?? "";
-            int input;
-            if (int.TryParse(inputStr, out input))
+            int input = Backup.ReadInt("Ditt val: ");
+            switch (input)
             {
-
-                switch (input)
-                {
-                    case 1:
-                        TransferBetweenAccounts();
-                        break;
-                    case 2:
-                        TransferToOtherCustomers();
-                        break;
-                    case 3:
-                        return;
-                    default:
-                        Console.WriteLine("Felaktigt val.");
-                        break;
-                }
-                Console.WriteLine("Tryck Enter för att fortsätta...");
-                Console.ReadLine();
+                case 1:
+                    TransferBetweenAccounts();
+                    break;
+                case 2:
+                    TransferToOtherCustomers();
+                    break;
+                case 3:
+                    return;
+                default:
+                    Console.WriteLine("Felaktigt val.");
+                    break;
             }
+            Console.WriteLine("Tryck Enter för att fortsätta...");
+            Console.ReadLine();
+
         }
         public static void LockedOut()
         {
