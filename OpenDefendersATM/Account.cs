@@ -14,26 +14,28 @@ namespace OpenDefendersATM
         // List that logs user transactions:
         private List<Transaction> transactionLog = new List<Transaction>();
 
-        private int AccountID { get; set; }
+        public int AccountID { get; private set; }
         private float Balance { get; set; }
         private string Currency { get; set; } = "Unknown";
+        public string Name { get; set; }
 
         // When you make a deposit, it is stored from account "CashDeposit" (00000000):
         private static int CashDeposit = 00000000;
         // When you make a withdrawl, it is stored from account "CashWithdrawl" (00000001):
         public static int CashWithdrawl = 00000001;
-        public Account(int accountID, string currency)
+        public Account(int accountID, string currency, string name = "Nytt Konto.")
         {
             AccountID = accountID;
-            Balance = 0;
+            Balance = 10000;
             Currency = currency;
+            Name = name;
         }
 
         // Method that adds transaction to transactionLog:
         public void LogTransaction(Transaction trans) => transactionLog.Add(trans);
 
         // Deposit method:
-        public void Deposit()
+        public virtual float Deposit()
         {
             Console.WriteLine("=====|| Insättning ||=====\n");
             Console.WriteLine("Ange summa du vill sätta in (max 50 000):");
@@ -44,7 +46,7 @@ namespace OpenDefendersATM
                 Console.WriteLine("Ogiltig inmatning.");
             }
             // Add deposit to account balance:
-            deposit += Balance;
+            Balance += deposit;
             // Create transaction:
             var trans = new Transaction(deposit, CashDeposit, AccountID, Currency);
             // Add transaction
