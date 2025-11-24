@@ -147,48 +147,45 @@ namespace OpenDefendersATM
                 Console.WriteLine("6. Återgå till huvudmeny.");
                 Console.WriteLine(new string('*', 30));
 
-                string inputStr = Console.ReadLine() ?? "";
-                int input;
-                if (int.TryParse(inputStr, out input))
+                int input = Backup.ReadInt("Ditt val: ");
+                Customer? customer = user as Customer;
+                switch (input)
                 {
-                    Customer? customer = user as Customer;
-                    switch (input)
-                    {
-                        case 1:
-                            customer?.ViewAccounts();
-                            Console.WriteLine("Tryck Enter för att fortsätta...");
-                            Console.ReadLine();
-                            break;
-                        case 2:
-                            customer?.OpenAccount();
-                            break;
-                        case 3:
-                            customer?.TransferMenu();
-                            break;
-                        case 4:
-                            customer?.RequestLoan();
-                            break;
-                        case 5:
-                            if (customer?.CustomerAccounts.Count > 0)
-                            {
+                    case 1:
+                        customer?.ViewAccounts();
+                        Console.WriteLine("Tryck Enter för att fortsätta...");
+                        Console.ReadLine();
+                        break;
+                    case 2:
+                        customer?.OpenAccount();
+                        break;
+                    case 3:
+                        customer?.TransferMenu();
+                        break;
+                    case 4:
+                        customer?.RequestLoan();
+                        break;
+                    case 5:
+                        if (customer?.CustomerAccounts.Count > 0)
+                        {
 
-                                customer?.CustomerAccounts[0].ViewAllTransactions();
-                            }
-                            else
-                            {
-                                Console.WriteLine("Du har inga transaktioner.");
-                            }
-                            break;
-                        case 6:
-                            running = false;
-                            break;
+                            customer?.CustomerAccounts[0].ViewAllTransactions();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Du har inga transaktioner.");
+                        }
+                        break;
+                    case 6:
+                        running = false;
+                        break;
 
-                        default:
-                            Console.WriteLine("Felaktigt val.");
-                            break;
-                    }
-
+                    default:
+                        Console.WriteLine("Felaktigt val.");
+                        break;
                 }
+
+
             }
         }
     }

@@ -15,19 +15,21 @@ namespace OpenDefendersATM
         // List that logs user transactions:
         private List<Transaction> transactionLog = new List<Transaction>();
 
-        private int AccountID { get; set; }
+        public int AccountID { get; private set; }
         private float Balance { get; set; }
         private string Currency { get; set; } = "Unknown";
+        public string Name { get; set; }
 
 
         // When you make a deposit, it is stored from account "CashDeposit" (00000000):
         private static int CashDeposit = 00000000;
         public static int CashWithdrawl = 00000001;
-        public Account(int accountID, string currency)
+        public Account(int accountID, string currency, string name = "Nytt Konto.")
         {
             AccountID = accountID;
             Balance = 10000;
             Currency = currency;
+            Name = name;
         }
         // Deposit method:
         public virtual float Deposit()
