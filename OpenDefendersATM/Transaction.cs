@@ -14,8 +14,8 @@ namespace OpenDefendersATM
         public int TransactionID { get; set; }
         public float Amount { get; set; }
         public string Currency { get; set; }
-        public DateTime Timestamp { get; set; }   
-        public string Status { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string Status { get; set; } = TransactionStatus.Pending;
 
         public Transaction(float amount, int fromAccount, int toAccount, string currency)
         {
@@ -23,10 +23,19 @@ namespace OpenDefendersATM
             TransactionIDCounter++;
             Amount = amount;
             Currency = currency;
-            Status = "Pending"; // pending, complete, declined
+            /*Status = "pending"; */// pending, complete, declined
             FromAccount = fromAccount;
             ToAccount = toAccount;
             Timestamp = DateTime.Now;
+        }
+        
+        public void TransactionComplete()
+        {
+            Status = TransactionStatus.Complete;
+        }
+        public void TransactionDeclined()
+        {
+            Status = TransactionStatus.Declined;
         }
 
         public void GetTransactionStatus()

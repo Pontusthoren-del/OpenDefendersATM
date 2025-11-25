@@ -41,23 +41,48 @@ namespace OpenDefendersATM
             Console.WriteLine("Ange summa du vill sätta in (max 50 000):");
             // decimal deposit stores the users input:
             float deposit;
-            while (!float.TryParse(Console.ReadLine(), out deposit) || deposit <= 0 || deposit > 50000)
+            while (!float.TryParse(Console.ReadLine(), out deposit))
             {
                 Console.WriteLine("Ogiltig inmatning.");
             }
-            // Add deposit to account balance:
-            Balance += deposit;
+
             // Create transaction:
             var trans = new Transaction(deposit, CashDeposit, AccountID, Currency);
-            // Add transaction
-            LogTransaction(trans);
-            // Print deposit info;
-            Console.WriteLine("\nInsättning genomfördes:");
-            Console.WriteLine($"Till konto: {AccountID}");
-            Console.WriteLine($"{deposit} - {Currency}");
-            Console.WriteLine($"Nytt saldo: {Balance} {Currency}.");
-            trans.GetTransactionStatus();
-            Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
+
+            // If the user puts in unvalid numbers, transaction status = declined:
+            if (deposit <= 0 || deposit > 50000)
+            {
+                // Log transaction
+                LogTransaction(trans);
+                // Print deposit info;
+                Console.WriteLine("\nInsättning misslyckades:");
+                Console.WriteLine($"Till konto: {AccountID}");
+                Console.WriteLine($"{deposit} - {Currency}");
+                Console.WriteLine($"Nytt saldo: {Balance} {Currency}.");
+                trans.TransactionDeclined();
+                trans.GetTransactionStatus();
+                Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
+                return deposit;
+            }
+            else
+            {
+                // Add deposit to account balance:
+                Balance += deposit;
+
+                // Log transaction
+                LogTransaction(trans);
+                // Print deposit info;
+                Console.WriteLine("\nInsättning lyckades:");
+                Console.WriteLine($"Till konto: {AccountID}");
+                Console.WriteLine($"{deposit} - {Currency}");
+                Console.WriteLine($"Nytt saldo: {Balance} {Currency}.");
+                trans.TransactionComplete();
+                trans.GetTransactionStatus();
+                Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
+                return deposit;
+            }
+
+                
         }
 
         // Withdraw method:
