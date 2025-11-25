@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
@@ -12,11 +13,11 @@ namespace OpenDefendersATM
     internal class Account
     {
         // List that logs user transactions:
-        private List<Transaction> transactionLog = new List<Transaction>();
+        private List<Transaction> _transactionLog = new List<Transaction>();
 
         public int AccountID { get; private set; }
-        private float Balance { get; set; }
-        private string Currency { get; set; } = "Unknown";
+        public decimal Balance { get; set; }
+        public string Currency { get; set; } = "Unknown";
         public string Name { get; set; }
 
         // When you make a deposit, it is stored from account "CashDeposit" (00000000):
@@ -32,81 +33,7 @@ namespace OpenDefendersATM
         }
 
         // Method that adds transaction to transactionLog:
-        public void LogTransaction(Transaction trans) => transactionLog.Add(trans);
-
-        // Deposit method:
-        public virtual float Deposit()
-        {
-            Console.WriteLine("=====|| Insättning ||=====\n");
-            Console.WriteLine("Ange summa du vill sätta in (max 50 000):");
-            // decimal deposit stores the users input:
-            float deposit;
-            while (!float.TryParse(Console.ReadLine(), out deposit))
-            {
-                Console.WriteLine("Ogiltig inmatning.");
-            }
-
-            // Create transaction:
-            var trans = new Transaction(deposit, CashDeposit, AccountID, Currency);
-
-            // If the user puts in unvalid numbers, transaction status = declined:
-            if (deposit <= 0 || deposit > 50000)
-            {
-                // Log transaction
-                LogTransaction(trans);
-                // Print deposit info;
-                Console.WriteLine("\nInsättning misslyckades:");
-                Console.WriteLine($"Till konto: {AccountID}");
-                Console.WriteLine($"{deposit} - {Currency}");
-                Console.WriteLine($"Nytt saldo: {Balance} {Currency}.");
-                trans.TransactionDeclined();
-                trans.GetTransactionStatus();
-                Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
-                return deposit;
-            }
-            else
-            {
-                // Add deposit to account balance:
-                Balance += deposit;
-
-                // Log transaction
-                LogTransaction(trans);
-                // Print deposit info;
-                Console.WriteLine("\nInsättning lyckades:");
-                Console.WriteLine($"Till konto: {AccountID}");
-                Console.WriteLine($"{deposit} - {Currency}");
-                Console.WriteLine($"Nytt saldo: {Balance} {Currency}.");
-                trans.TransactionComplete();
-                trans.GetTransactionStatus();
-                Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
-                return deposit;
-            }
-
-                
-        }
-
-        // Withdraw method:
-        public void Withdraw()
-        {
-            Console.WriteLine("Welcome to Widrawl:");
-            float withdrawl;
-            while (!float.TryParse(Console.ReadLine(), out withdrawl) || withdrawl > Balance || withdrawl <= 0)
-            {
-                Console.WriteLine("Ogilitg inmatning, försök igen");
-                withdrawl -= Balance; // abreviation (simple 'minus' mathematics for withdrawl - balance: we want to update the balance from withdrawl) by using this line of code
-
-            }
-
-            Transaction trans = new Transaction(withdrawl, AccountID, CashWithdrawl, Currency); // skapas en transaction
-            LogTransaction(trans);
-            Console.WriteLine("\nUttag genomfördes:");
-            Console.WriteLine($"Från konto: {AccountID}");
-            Console.WriteLine($"{withdrawl} - {Currency}");
-            Console.WriteLine($"Nytt saldo: {Balance} {Currency}.");
-            trans.GetTransactionStatus();
-            Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
-        }
-
+        public void LogTransaction(Transaction trans) => _transactionLog.Add(trans);
 
         // Method to add new transaction:
         public void AddTransaction()
@@ -115,8 +42,8 @@ namespace OpenDefendersATM
             Console.WriteLine("=====|| Ny överföring ||=====");
             // User enters amount:
             Console.Write("Summa: ");
-            float amount;
-            while (!float.TryParse(Console.ReadLine(), out amount) || amount < 0 || amount > Balance)
+            decimal amount;
+            while (!decimal.TryParse(Console.ReadLine(), out amount) || amount < 0 || amount > Balance)
             {
                 Console.WriteLine("Du måste ange en possitiv summa som inte överstiger ditt saldo.");
             }
@@ -154,13 +81,13 @@ namespace OpenDefendersATM
         }
         public void ViewAllTransactions()
         {
-            if (transactionLog.Count == 0)
+            if (_transactionLog.Count == 0)
             {
                 Console.WriteLine($"Konto {AccountID} har ingen historik.");
             }
             Console.WriteLine($"Transaktionsloggen för {AccountID}");
             Console.WriteLine(new string('*', 30));
-            foreach (var t in transactionLog)
+            foreach (var t in _transactionLog)
             {
                 t.GetTransactionStatus();
                 Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
@@ -171,7 +98,7 @@ namespace OpenDefendersATM
         {
             return AccountID;
         }
-        public float GetBalance()
+        public decimal GetBalance()
         {
             return Balance;
         }
@@ -179,5 +106,60 @@ namespace OpenDefendersATM
         {
             return Currency;
         }
+        public void NewWithdrawl(decimal withdrawl)
+        {
+            Transaction trans = new Transaction(withdrawl, AccountID, CashWithdrawl, Currency);
+
+            if (withdrawl > Balance || withdrawl <1)
+            {
+                // Print fail-info;
+                Console.WriteLine("\nUttag misslyckades:");
+                trans.TransactionDeclined();
+                trans.GetTransactionStatus();
+            }
+            else
+            {
+                // Add deposit to account balance:
+                Balance -= withdrawl;
+                // Log transaction
+                LogTransaction(trans);
+
+                // Print transaction info
+                UI.PrintTransactionInfo(withdrawl, AccountID, Currency, Balance);
+
+                // Set status to complete
+                trans.TransactionComplete();
+                trans.GetTransactionStatus();
+            }
+        }
+        public void NewDeposit(decimal deposit)
+        {
+            // Create transaction:
+            var trans = new Transaction(deposit, CashDeposit, AccountID, Currency);
+            
+            // If the user puts in unvalid numbers, transaction status = declined:
+            if (deposit <= 0 || deposit > 50000)
+            {
+                // Print fail-info;
+                Console.WriteLine("\nInsättning misslyckades:");
+                trans.TransactionDeclined();
+                trans.GetTransactionStatus();
+            }
+            else
+            {
+                // Add deposit to account balance:
+                Balance += deposit;
+                // Log transaction
+                LogTransaction(trans);
+                
+                // Print transaction info
+                UI.PrintTransactionInfo(deposit, AccountID, Currency, Balance);
+                
+                // Set status to complete
+                trans.TransactionComplete();
+                trans.GetTransactionStatus();
+            }
+        }
+
     }
 }

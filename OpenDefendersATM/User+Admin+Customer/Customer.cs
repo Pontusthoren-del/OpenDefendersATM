@@ -16,9 +16,9 @@ namespace OpenDefendersATM
         }
 
         // Method to bring/show a specific user's TOTAL balance within their account
-        public float TotalBalance()
+        public decimal TotalBalance()
         {
-            float totalBalance = 0;
+            decimal totalBalance = 0;
             foreach (var acc in CustomerAccounts)
             {
                 totalBalance += acc.GetBalance();
@@ -62,10 +62,10 @@ namespace OpenDefendersATM
                 switch (input)
                 {
                     case 1:
-                        selectedAccount.Deposit();
+                        UI.DepositInteraction(selectedAccount);
                         break;
                     case 2:
-                        selectedAccount.Withdraw();
+                        UI.WithdrawInteraction(selectedAccount);
                         break;
                     case 3:
                         RenameAccount(selectedAccount);
