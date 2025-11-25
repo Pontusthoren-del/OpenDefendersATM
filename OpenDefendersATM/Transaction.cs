@@ -12,12 +12,12 @@ namespace OpenDefendersATM
         public int FromAccount { get; set; }
         public int ToAccount { get; set; }
         public int TransactionID { get; set; }
-        public float Amount { get; set; }
+        public decimal Amount { get; set; }
         public string Currency { get; set; }
         public DateTime Timestamp { get; set; }
         public string Status { get; set; } = TransactionStatus.Pending;
 
-        public Transaction(float amount, int fromAccount, int toAccount, string currency)
+        public Transaction(decimal amount, int fromAccount, int toAccount, string currency)
         {
             TransactionID = TransactionIDCounter;
             TransactionIDCounter++;
@@ -51,5 +51,7 @@ namespace OpenDefendersATM
         {
 
         }
+
+
     }
 }

@@ -184,9 +184,36 @@ namespace OpenDefendersATM
                         Console.WriteLine("Felaktigt val.");
                         break;
                 }
-
-
             }
+        }
+        public static void WithdrawInteraction(Account account)
+        {
+            Console.WriteLine("=====|| Uttag ||=====\n");
+
+            decimal withdrawl = Backup.ReadDecimal("Ange summa du vill ta ut:");
+
+            // Create withdrawl-transaction
+            account.NewWithdrawl(withdrawl);
+
+        }
+        public static void DepositInteraction(Account account)
+        {
+            Console.WriteLine("=====|| Insättning ||=====\n");
+            
+            decimal deposit = Backup.ReadDecimal("Ange summa du vill sätta in (max 50 000):");
+
+            // Create deposit-transaction:
+            account.NewDeposit(deposit);
+        }
+        public static decimal PrintTransactionInfo(decimal deposit, int accountID, string currency, decimal balance)
+        {
+            Console.WriteLine("\nTransaktion lyckades:");
+            Console.WriteLine($"Till konto: {accountID}");
+            Console.WriteLine($"{deposit} - {currency}");
+            Console.WriteLine($"Nytt saldo: {balance} {currency}.");
+
+            //Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
+            return deposit;
         }
     }
 }

@@ -22,14 +22,14 @@ namespace OpenDefendersATM
         {
             return amount * interestRate;
         }
-        public override float Deposit()
-        {
-            float amount = base.Deposit();
-            float interest = CalculateInterest(amount);
+        //public override float Deposit()
+        //{
+        //    float amount = base.Deposit();
+        //    float interest = CalculateInterest(amount);
 
-            Console.WriteLine($"Du satte in {amount} - {GetCurrency()}.");
-            Console.WriteLine($"Med denna insättning kommer du tjäna {interest} {GetCurrency()} i ränta per år. ");
-            return amount;
-        }
+        //    Console.WriteLine($"Du satte in {amount} - {GetCurrency()}.");
+        //    Console.WriteLine($"Med denna insättning kommer du tjäna {interest} {GetCurrency()} i ränta per år. ");
+        //    return amount;
+        //}
     }
 }

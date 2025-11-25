@@ -10,6 +10,7 @@ namespace OpenDefendersATM
     {
         public Admin(string name, string role, int pin) : base(name, role, pin)
         {
+
         }
 
         public void CreateNewUser()
