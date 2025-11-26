@@ -185,37 +185,61 @@ namespace OpenDefendersATM
         }
         public void TransferToOtherCustomers()
         {
-            Customer reciver = null;
+            //Show all customers with a number 
+            int counter = 1;
             foreach (User user in BankSystem._users)
             {
                 if (user is Customer c && c != this)
                 {
-                    reciver = c;
-                    break;
+                    Console.WriteLine($"{counter}. {c.Name}.");
+                    counter++;
                 }
             }
-            if (reciver == null) return;
+            if (counter == 1) return; //no customers
 
-            Account receiverAccount = null;
-            if (reciver.CustomerAccounts.Count > 0)
+            int choice = Backup.ReadInt("Välj kund att föra över till: ");
+            if (choice <= 0 || choice >= counter) return;
+            //Find the right customer through this loop again.
+            int current = 1;
+            Customer reciver = null;
+            foreach (User user in BankSystem._users)
             {
-                receiverAccount = reciver.CustomerAccounts[0];
+                if (user is Customer c)
+                {
+                    if (current == choice)
+                    {
+                        reciver = c;
+                        break;
+                    }
+                    current++;
+                }
             }
-            else return;
 
-            Account senderAccount = null;
-            if (CustomerAccounts.Count > 0)
+            // Select your account which you wanna transfer money from.
+            Console.WriteLine("Dina konton:");
+            for (int i = 0; i < CustomerAccounts.Count; i++)
             {
-                senderAccount = CustomerAccounts[0];
+                Console.WriteLine($"{i + 1}. {CustomerAccounts[i].Name} | Saldo: {CustomerAccounts[i].GetBalance()} {CustomerAccounts[i].GetCurrency()}");
             }
-            else return;
+
+            int fromChoice = Backup.ReadInt("Välj konto att föra över från: ") - 1;
+            if (fromChoice < 0 || fromChoice >= CustomerAccounts.Count) return;
+
+            Account senderAccount = CustomerAccounts[fromChoice];
+
+            // Reciver account will always be there top account(for now)
+            if (reciver.CustomerAccounts.Count == 0) return;
+            Account receiverAccount = reciver.CustomerAccounts[0];
+
+            // Amount
             decimal amount = Backup.ReadDecimal("Ange summa att föra över: ");
-            if (amount <= 0) return;
-            if (senderAccount.GetBalance() >= amount)
-            {
-                senderAccount.NewWithdrawl(amount);
-                receiverAccount.NewDeposit(amount);
-            }
+            if (amount <= 0 || senderAccount.GetBalance() < amount) return;
+
+            //Logging the transaction
+            senderAccount.NewWithdrawl(amount);
+            receiverAccount.NewDeposit(amount);
+
+
         }
         public void TransferMenu()
         {
