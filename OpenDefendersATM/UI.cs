@@ -12,6 +12,7 @@ namespace OpenDefendersATM
     {
         public static void RunBankApp()
         {
+            BankSystem.InitializeStartAccounts();
             bool loggedIn = true;
             int loggedInTries = 0;
             while (loggedIn && loggedInTries < 3)
@@ -40,47 +41,25 @@ namespace OpenDefendersATM
             }
 
         }
+        //Console.WriteLine("···················································································\r\n: _______  _______  _______  _                                                    :\r\n:(  ___  )(  ____ )(  ____ \\( (    /|                                             :\r\n:| (   ) || (    )|| (    \\/|  \\  ( |                                             :\r\n:| |   | || (____)|| (__    |   \\ | |                                             :\r\n:| |   | ||  _____)|  __)   | (\\ \\) |                                             :\r\n:| |   | || (      | (      | | \\   |                                             :\r\n:| (___) || )      | (____/\\| )  \\  |                                             :\r\n:(_______)|/       (_______/|/    )_)                                             :\r\n:                                                                                 :\r\n: ______   _______  _______  _______  _        ______   _______  _______  _______ :\r\n:(  __  \\ (  ____ \\(  ____ \\(  ____ \\( (    /|(  __  \\ (  ____ \\(  ____ )(  ____ \\:\r\n:| (  \\  )| (    \\/| (    \\/| (    \\/|  \\  ( || (  \\  )| (    \\/| (    )|| (    \\/:\r\n:| |   ) || (__    | (__    | (__    |   \\ | || |   ) || (__    | (____)|| (_____ :\r\n:| |   | ||  __)   |  __)   |  __)   | (\\ \\) || |   | ||  __)   |     __)(_____  ):\r\n:| |   ) || (      | (      | (      | | \\   || |   ) || (      | (\\ (         ) |:\r\n:| (__/  )| (____/\\| )      | (____/\\| )  \\  || (__/  )| (____/\\| ) \\ \\__/\\____) |:\r\n:(______/ (_______/|/       (_______/|/    )_)(______/ (_______/|/   \\__/\\_______):\r\n:                                                                                 :\r\n: _______ _________ _______                                                       :\r\n:(  ___  )\\__   __/(       )                                                      :\r\n:| (   ) |   ) (   | () () |                                                      :\r\n:| (___) |   | |   | || || |                                                      :\r\n:|  ___  |   | |   | |(_)| |                                                      :\r\n:| (   ) |   | |   | |   | |                                                      :\r\n:| )   ( |   | |   | )   ( |                                                      :\r\n:|/     \\|   )_(   |/     \\|                                                      :\r\n···················································································\n");
         static void ShowMainMenu(User loggedinUser)
         {
             bool runMenu = true;
 
             while (runMenu)
             {
-                Console.Clear();
-                Console.WriteLine("···················································································\r\n: _______  _______  _______  _                                                    :\r\n:(  ___  )(  ____ )(  ____ \\( (    /|                                             :\r\n:| (   ) || (    )|| (    \\/|  \\  ( |                                             :\r\n:| |   | || (____)|| (__    |   \\ | |                                             :\r\n:| |   | ||  _____)|  __)   | (\\ \\) |                                             :\r\n:| |   | || (      | (      | | \\   |                                             :\r\n:| (___) || )      | (____/\\| )  \\  |                                             :\r\n:(_______)|/       (_______/|/    )_)                                             :\r\n:                                                                                 :\r\n: ______   _______  _______  _______  _        ______   _______  _______  _______ :\r\n:(  __  \\ (  ____ \\(  ____ \\(  ____ \\( (    /|(  __  \\ (  ____ \\(  ____ )(  ____ \\:\r\n:| (  \\  )| (    \\/| (    \\/| (    \\/|  \\  ( || (  \\  )| (    \\/| (    )|| (    \\/:\r\n:| |   ) || (__    | (__    | (__    |   \\ | || |   ) || (__    | (____)|| (_____ :\r\n:| |   | ||  __)   |  __)   |  __)   | (\\ \\) || |   | ||  __)   |     __)(_____  ):\r\n:| |   ) || (      | (      | (      | | \\   || |   ) || (      | (\\ (         ) |:\r\n:| (__/  )| (____/\\| )      | (____/\\| )  \\  || (__/  )| (____/\\| ) \\ \\__/\\____) |:\r\n:(______/ (_______/|/       (_______/|/    )_)(______/ (_______/|/   \\__/\\_______):\r\n:                                                                                 :\r\n: _______ _________ _______                                                       :\r\n:(  ___  )\\__   __/(       )                                                      :\r\n:| (   ) |   ) (   | () () |                                                      :\r\n:| (___) |   | |   | || || |                                                      :\r\n:|  ___  |   | |   | |(_)| |                                                      :\r\n:| (   ) |   | |   | |   | |                                                      :\r\n:| )   ( |   | |   | )   ( |                                                      :\r\n:|/     \\|   )_(   |/     \\|                                                      :\r\n···················································································\n");
-                Console.WriteLine($"Välkommen {loggedinUser.Name}!");
-                Console.WriteLine("Välj ett alternativ:");
                 if (loggedinUser.Role == "Admin")
-                    Console.WriteLine("1. Admin-meny"); // senare kan du lägga fler alternativ
-                else
-                    Console.WriteLine("1. Customer-meny");
-
-                Console.WriteLine("0. Logga ut");
-
-                string input = Console.ReadLine() ?? "";
-
-                switch (input)
                 {
-                    case "1":
-                        if (loggedinUser.Role == "Admin")
-                            AdminMenu(loggedinUser);
-                        else
-                            CustomerMenu(loggedinUser);
-                        break;
-                    case "0":
-                        runMenu = false; // avsluta loop och logga ut
-                        Console.WriteLine("Du har loggats ut.");
-                        break;
-                    default:
-                        Console.WriteLine("Felaktigt val.");
-                        break;
+                    AdminMenu(loggedinUser);
+                    break;
                 }
-                Console.WriteLine("Tryck Enter för att fortsätta...");
-                Console.ReadLine();
+                else
+                {
+                    CustomerMenu(loggedinUser);
+                    break;
+                }
             }
         }
-
-
 
         //meny för admin
         public static void AdminMenu(User user)
@@ -94,7 +73,7 @@ namespace OpenDefendersATM
                 Console.WriteLine("1. Skapa ny användare");
                 Console.WriteLine("2. Skapa ny admin");
                 Console.WriteLine("3. Aktuell växlingskurs");
-                Console.WriteLine("4. Återgå till huvudmeny.");
+                Console.WriteLine("4. Logga ut.");
                 Console.WriteLine(new string('*', 30));
 
                 string inputStr = Console.ReadLine() ?? "";
@@ -114,7 +93,7 @@ namespace OpenDefendersATM
                             admin?.ExChangeRate();
                             break;
                         case 4:
-                            ShowMainMenu(user);
+                            loggedin = false;
                             break;
 
                         default:
@@ -144,7 +123,7 @@ namespace OpenDefendersATM
                 Console.WriteLine("3. Överföring.");
                 Console.WriteLine("4. Lån.");
                 Console.WriteLine("5. Transaktionslog.");
-                Console.WriteLine("6. Återgå till huvudmeny.");
+                Console.WriteLine("6. Logga ut.");
                 Console.WriteLine(new string('*', 30));
 
                 int input = Backup.ReadInt("Ditt val: ");

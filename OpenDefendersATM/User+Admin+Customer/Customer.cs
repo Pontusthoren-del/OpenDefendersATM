@@ -8,11 +8,12 @@ namespace OpenDefendersATM
 {
     internal class Customer : User
     {
+        public int StartBalance = 0;
         public List<Account> CustomerAccounts { get; set; } = new();
 
-        public Customer(string name, string role, int pin) : base(name, role, pin)
+        public Customer(string name, string role, int pin, int startbalance) : base(name, role, pin)
         {
-
+            this.StartBalance = startbalance;
         }
 
         // Method to bring/show a specific user's TOTAL balance within their account
@@ -78,6 +79,7 @@ namespace OpenDefendersATM
                 }
             }
         }
+        //Method to transfer betweeen our own accounts
         public void TransferBetweenAccounts()
         {
             if (CustomerAccounts.Count < 2)
@@ -183,7 +185,37 @@ namespace OpenDefendersATM
         }
         public void TransferToOtherCustomers()
         {
-            //Flytta pengar till en annan kund
+            Customer reciver = null;
+            foreach (User user in BankSystem._users)
+            {
+                if (user is Customer c && c != this)
+                {
+                    reciver = c;
+                    break;
+                }
+            }
+            if (reciver == null) return;
+
+            Account receiverAccount = null;
+            if (reciver.CustomerAccounts.Count > 0)
+            {
+                receiverAccount = reciver.CustomerAccounts[0];
+            }
+            else return;
+
+            Account senderAccount = null;
+            if (CustomerAccounts.Count > 0)
+            {
+                senderAccount = CustomerAccounts[0];
+            }
+            else return;
+            decimal amount = Backup.ReadDecimal("Ange summa att föra över: ");
+            if (amount <= 0) return;
+            if (senderAccount.GetBalance() >= amount)
+            {
+                senderAccount.NewWithdrawl(amount);
+                receiverAccount.NewDeposit(amount);
+            }
         }
         public void TransferMenu()
         {

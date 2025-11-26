@@ -110,7 +110,7 @@ namespace OpenDefendersATM
         {
             Transaction trans = new Transaction(withdrawl, AccountID, CashWithdrawl, Currency);
 
-            if (withdrawl > Balance || withdrawl <1)
+            if (withdrawl > Balance || withdrawl < 1)
             {
                 // Print fail-info;
                 Console.WriteLine("\nUttag misslyckades:");
@@ -132,18 +132,21 @@ namespace OpenDefendersATM
                 trans.GetTransactionStatus();
             }
         }
-        public void NewDeposit(decimal deposit)
+        public void NewDeposit(decimal deposit, bool showMessage = true)
         {
             // Create transaction:
             var trans = new Transaction(deposit, CashDeposit, AccountID, Currency);
-            
+
             // If the user puts in unvalid numbers, transaction status = declined:
             if (deposit <= 0 || deposit > 50000)
             {
+                if (showMessage)
+                {
+                    Console.WriteLine("\nInsättning misslyckades:");
+                }
                 // Print fail-info;
-                Console.WriteLine("\nInsättning misslyckades:");
                 trans.TransactionDeclined();
-                trans.GetTransactionStatus();
+                if (showMessage) trans.GetTransactionStatus();
             }
             else
             {
@@ -151,13 +154,13 @@ namespace OpenDefendersATM
                 Balance += deposit;
                 // Log transaction
                 LogTransaction(trans);
-                
+
                 // Print transaction info
-                UI.PrintTransactionInfo(deposit, AccountID, Currency, Balance);
-                
+                if (showMessage) UI.PrintTransactionInfo(deposit, AccountID, Currency, Balance);
+
                 // Set status to complete
                 trans.TransactionComplete();
-                trans.GetTransactionStatus();
+                if (showMessage) trans.GetTransactionStatus();
             }
         }
 

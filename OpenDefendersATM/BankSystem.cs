@@ -11,18 +11,41 @@ namespace OpenDefendersATM
         private static Dictionary<string, decimal> _exchangeRates;  // Private dictionary
         public static List<User> _users { get; set; } = new()
         {
-         new Admin("admin", "Admin", 1234),
-         new Customer("kalle", "Customer", 1111)
+         new Admin("Petter", "Admin", 1234),
+         new Customer("Pontus", "Customer", 1111,1000),
+         new Customer("Bella", "Customer", 2222,1000),
+         new Customer("Robin", "Customer", 3333,1000),
+         new Customer("Julia", "Customer", 4444,1000),
+         new Customer("Kalle", "Customer", 5555,1000)
         };
         public static List<Account> _accounts { get; set; }
         //private List<Transaction> _transactions { get; set; }  // Do we need this one?
         public static Dictionary<string, decimal> ExchangeRates { get; } // Visual dictionary
 
+        public static void InitializeStartAccounts()
+        {
+            foreach (User user in _users)
+            {
+                if (user is Customer c && c.CustomerAccounts.Count == 0)
+                {
+                    Random random = new Random();
+                    int newID;
+                    do
+                    {
+                        newID = random.Next(100000, 999999);
+                    } while (AllAccounts().Any(a => a.GetAccountID() == newID));
+
+                    Account startAccount = new Account(newID, "SEK", "Privatkonto");
+                    startAccount.NewDeposit(c.StartBalance,false);
+                    c.CustomerAccounts.Add(startAccount);
+                }
+            }
+        }
         public void ProcessScheduleTransaction()
         {
 
         }
-        
+
         //A list with AllAccounts, but we just sorting out the customers.
         public static List<Account> AllAccounts()
         {
