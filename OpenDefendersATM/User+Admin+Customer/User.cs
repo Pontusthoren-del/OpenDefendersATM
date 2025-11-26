@@ -15,6 +15,7 @@ namespace OpenDefendersATM
         public string Role { get; set; }
         public int FailedAttempts { get; set; }
         public bool IsLocked { get; set; }
+
         private int _pin;
 
         public User(string name, string role, int pin)
@@ -23,6 +24,7 @@ namespace OpenDefendersATM
             Role = role;
             _pin = pin;
         }
+       
         public void SetPin(int pin)
         {
             _pin = pin;

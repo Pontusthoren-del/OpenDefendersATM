@@ -36,49 +36,69 @@ namespace OpenDefendersATM
         public void LogTransaction(Transaction trans) => _transactionLog.Add(trans);
 
         // Method to add new transaction:
-        public void AddTransaction()
+
+        public void AddTransaction(Account fromAccount, Account toAccount)
         {
-            //amount, currency, status, Timestamp
-            Console.WriteLine("=====|| Ny överföring ||=====");
-            // User enters amount:
-            Console.Write("Summa: ");
-            decimal amount;
-            while (!decimal.TryParse(Console.ReadLine(), out amount) || amount < 0 || amount > Balance)
+            decimal userInput = Backup.ReadDecimal("\nAnge summa du vill föra över:");
+            if (userInput > Balance)
             {
-                Console.WriteLine("Du måste ange en possitiv summa som inte överstiger ditt saldo.");
+                Console.WriteLine("Du har inte tillräckligt på ditt konto.");
+                return;
             }
-            Console.WriteLine($"Från konto: {AccountID}");
-            Console.Write($"Till konto: ");
-            int toAccount;
-            bool success = false;
-            while (!success)
+            if (userInput < 1)
             {
-                while (!int.TryParse(Console.ReadLine(), out toAccount))
-                {
-                    foreach (var acc in BankSystem._accounts)
-                    {
-                        if (acc.AccountID != toAccount)
-                        {
-                            Console.WriteLine("Det här kontot hittades inte.");
-                        }
-                        else
-                        {
-                            // Add the transaction to transactionLog:
-                            Transaction trans = new Transaction(amount, AccountID, toAccount, Currency);
-                            LogTransaction(trans);
-                            // Print transaction info;
-                            Console.WriteLine("Transaktion genomfördes:");
-                            Console.WriteLine($"Från konto: {AccountID}");
-                            Console.WriteLine($"{amount} - {Currency}");
-                            Console.WriteLine($"Till konto: {toAccount}");
-                            trans.GetTransactionStatus();
-                            Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
-                            success = true;
-                        }
-                    }
-                }
+                Console.WriteLine("Minsta belopp för överföring är 1 kr.");
+                return;
+            }
+            else
+            {
+                fromAccount.Balance -= userInput;
+                toAccount.Balance += userInput;
+                Console.WriteLine("\nÖverföring lyckades:");
+                Console.WriteLine($"{userInput} kr");
+                Console.WriteLine($"Från konto: {fromAccount.AccountID} - Nytt saldo: {fromAccount.Balance}");
+                Console.WriteLine($"Till konto: {toAccount.AccountID} - Nytt saldo: {toAccount.Balance}");
             }
         }
+
+        //public void AddTransaction()
+        //{
+        //    //amount, currency, status, Timestamp
+        //    Console.WriteLine("=====|| Ny överföring ||=====");
+        //    // User enters amount:
+        //    decimal amount = Backup.ReadDecimal("Summa: ");
+        //    Console.WriteLine($"Från konto: {AccountID}");
+        //    int toAccount = Backup.ReadInt("Till konto:");
+
+        //    bool success = false;
+        //    while (!success)
+        //    {
+        //        while (!int.TryParse(Console.ReadLine(), out toAccount))
+        //        {
+        //            foreach (var acc in BankSystem.Accounts)
+        //            {
+        //                if (acc.AccountID != toAccount)
+        //                {
+        //                    Console.WriteLine("Det här kontot hittades inte.");
+        //                }
+        //                else
+        //                {
+        //                    // Add the transaction to transactionLog:
+        //                    Transaction trans = new Transaction(amount, AccountID, toAccount, Currency);
+        //                    LogTransaction(trans);
+        //                    // Print transaction info;
+        //                    Console.WriteLine("Transaktion genomfördes:");
+        //                    Console.WriteLine($"Från konto: {AccountID}");
+        //                    Console.WriteLine($"{amount} - {Currency}");
+        //                    Console.WriteLine($"Till konto: {toAccount}");
+        //                    trans.GetTransactionStatus();
+        //                    Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
+        //                    success = true;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
         public void ViewAllTransactions()
         {
             if (_transactionLog.Count == 0)

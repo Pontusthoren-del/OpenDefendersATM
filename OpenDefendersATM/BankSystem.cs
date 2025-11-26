@@ -9,7 +9,7 @@ namespace OpenDefendersATM
     internal class BankSystem
     {
         private static Dictionary<string, decimal> _exchangeRates;  // Private dictionary
-        public static List<User> _users { get; set; } = new()
+        public static List<User> Users { get; set; } = new()
         {
          new Admin("Petter", "Admin", 1234),
          new Customer("Pontus", "Customer", 1111,1000),
@@ -18,13 +18,13 @@ namespace OpenDefendersATM
          new Customer("Julia", "Customer", 4444,1000),
          new Customer("Kalle", "Customer", 5555,1000)
         };
-        public static List<Account> _accounts { get; set; }
+        public static List<Account> Accounts { get; set; } = new List<Account>();
         //private List<Transaction> _transactions { get; set; }  // Do we need this one?
         public static Dictionary<string, decimal> ExchangeRates { get; } // Visual dictionary
 
         public static void InitializeStartAccounts()
         {
-            foreach (User user in _users)
+            foreach (User user in Users)
             {
                 if (user is Customer c && c.CustomerAccounts.Count == 0)
                 {
@@ -49,7 +49,7 @@ namespace OpenDefendersATM
         //A list with AllAccounts, but we just sorting out the customers.
         public static List<Account> AllAccounts()
         {
-            return _users
+            return Users
             .OfType<Customer>() //Only Customers
             .SelectMany(c => c.CustomerAccounts) //Adding all accounts to a list.
             .ToList();
