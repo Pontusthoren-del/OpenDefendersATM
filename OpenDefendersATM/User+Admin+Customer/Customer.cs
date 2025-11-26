@@ -87,7 +87,7 @@ namespace OpenDefendersATM
                 Console.WriteLine("Du måste ha minst två konton för att föra över mellan dina egna konton.");
                 return;
             }
-
+            Console.WriteLine(new string('*', 30));
             Console.WriteLine("Dina konton:");
             foreach (var acc in CustomerAccounts)
             {
@@ -104,8 +104,24 @@ namespace OpenDefendersATM
                 return;
             }
 
+            // Välj mottagarkonto
+            int toID = Backup.ReadInt("Ange KontoID du vill överföra TILL: ");
+            Account? toAccount = CustomerAccounts.FirstOrDefault(a => a.GetAccountID() == toID);
+
+            if (toAccount == null)
+            {
+                Console.WriteLine("Avsändarkontot hittades inte.");
+                return;
+            }
+
+            if (fromAccount == toAccount)
+            {
+                Console.WriteLine("Du kan inte göra en överföring till samma konto.");
+                return;
+            }
+
             // Anropa AddTransaction() på det valda kontot
-            fromAccount.AddTransaction();
+            fromAccount.AddTransaction(fromAccount, toAccount);
         }
 
         //Method to open a new account with a unique account ID and the print it.
@@ -187,7 +203,7 @@ namespace OpenDefendersATM
         {
             //Show all customers with a number 
             int counter = 1;
-            foreach (User user in BankSystem._users)
+            foreach (User user in BankSystem.Users)
             {
                 if (user is Customer c && c != this)
                 {
@@ -202,7 +218,7 @@ namespace OpenDefendersATM
             //Find the right customer through this loop again.
             int current = 1;
             Customer reciver = null;
-            foreach (User user in BankSystem._users)
+            foreach (User user in BankSystem.Users)
             {
                 if (user is Customer c)
                 {

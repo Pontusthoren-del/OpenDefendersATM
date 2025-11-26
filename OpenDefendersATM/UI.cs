@@ -17,7 +17,7 @@ namespace OpenDefendersATM
             int loggedInTries = 0;
             while (loggedIn && loggedInTries < 3)
             {
-                User? user = User.Login(BankSystem._users);
+                User? user = User.Login(BankSystem.Users);
                 if (user != null)
                 {
                     ShowMainMenu(user);
@@ -164,6 +164,10 @@ namespace OpenDefendersATM
                         break;
                 }
             }
+        }
+        public static void TransferInteraction(Account account)
+        {
+
         }
         public static void WithdrawInteraction(Account account)
         {
