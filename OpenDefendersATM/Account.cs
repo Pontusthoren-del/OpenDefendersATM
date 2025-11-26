@@ -27,7 +27,7 @@ namespace OpenDefendersATM
         public Account(int accountID, string currency, string name = "Nytt Konto.")
         {
             AccountID = accountID;
-            Balance = 10000;
+            Balance = 0;
             Currency = currency;
             Name = name;
         }
