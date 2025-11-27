@@ -21,9 +21,9 @@ namespace OpenDefendersATM
         public string Name { get; set; }
 
         // When you make a deposit, it is stored from account "CashDeposit" (00000000):
-        private static int CashDeposit = 00000000;
+        private static int CashDeposit = 0;
         // When you make a withdrawl, it is stored from account "CashWithdrawl" (00000001):
-        public static int CashWithdrawl = 00000001;
+        public static int CashWithdrawl = 1;
         public Account(int accountID, string currency, string name = "Nytt Konto.")
         {
             AccountID = accountID;
@@ -35,70 +35,16 @@ namespace OpenDefendersATM
         // Method that adds transaction to transactionLog:
         public void LogTransaction(Transaction trans) => _transactionLog.Add(trans);
 
-        // Method to add new transaction:
-
-        public void AddTransaction(Account fromAccount, Account toAccount)
+        // Method that adds and logs transaction between users accounts:
+        public void NewUserTransaction(decimal amount, Account fromAccount, Account toAccount)
         {
-            decimal userInput = Backup.ReadDecimal("\nAnge summa du vill föra över:");
-            if (userInput > Balance)
-            {
-                Console.WriteLine("Du har inte tillräckligt på ditt konto.");
-                return;
-            }
-            if (userInput < 1)
-            {
-                Console.WriteLine("Minsta belopp för överföring är 1 kr.");
-                return;
-            }
-            else
-            {
-                fromAccount.Balance -= userInput;
-                toAccount.Balance += userInput;
-                Console.WriteLine("\nÖverföring lyckades:");
-                Console.WriteLine($"{userInput} kr");
-                Console.WriteLine($"Från konto: {fromAccount.AccountID} - Nytt saldo: {fromAccount.Balance}");
-                Console.WriteLine($"Till konto: {toAccount.AccountID} - Nytt saldo: {toAccount.Balance}");
-            }
+            fromAccount.Balance -= amount;
+            toAccount.Balance += amount;
+            // Add the transaction to transactionLog:
+            Transaction trans = new Transaction(amount, fromAccount.AccountID, toAccount.AccountID, Currency);
+            LogTransaction(trans);
         }
-
-        //public void AddTransaction()
-        //{
-        //    //amount, currency, status, Timestamp
-        //    Console.WriteLine("=====|| Ny överföring ||=====");
-        //    // User enters amount:
-        //    decimal amount = Backup.ReadDecimal("Summa: ");
-        //    Console.WriteLine($"Från konto: {AccountID}");
-        //    int toAccount = Backup.ReadInt("Till konto:");
-
-        //    bool success = false;
-        //    while (!success)
-        //    {
-        //        while (!int.TryParse(Console.ReadLine(), out toAccount))
-        //        {
-        //            foreach (var acc in BankSystem.Accounts)
-        //            {
-        //                if (acc.AccountID != toAccount)
-        //                {
-        //                    Console.WriteLine("Det här kontot hittades inte.");
-        //                }
-        //                else
-        //                {
-        //                    // Add the transaction to transactionLog:
-        //                    Transaction trans = new Transaction(amount, AccountID, toAccount, Currency);
-        //                    LogTransaction(trans);
-        //                    // Print transaction info;
-        //                    Console.WriteLine("Transaktion genomfördes:");
-        //                    Console.WriteLine($"Från konto: {AccountID}");
-        //                    Console.WriteLine($"{amount} - {Currency}");
-        //                    Console.WriteLine($"Till konto: {toAccount}");
-        //                    trans.GetTransactionStatus();
-        //                    Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
-        //                    success = true;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+        // Method that displays all transactions:
         public void ViewAllTransactions()
         {
             if (_transactionLog.Count == 0)
@@ -106,26 +52,16 @@ namespace OpenDefendersATM
                 Console.WriteLine($"Konto {AccountID} har ingen historik.");
             }
             Console.WriteLine($"Transaktionsloggen för {AccountID}");
-            Console.WriteLine(new string('*', 30));
+            Console.WriteLine(new string('-', 30));
             foreach (var t in _transactionLog)
             {
                 t.GetTransactionStatus();
                 Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
-                Console.WriteLine(new string('*', 30));
+                Console.WriteLine(new string('-', 30));
             }
+            Console.ReadKey();
         }
-        public int GetAccountID()
-        {
-            return AccountID;
-        }
-        public decimal GetBalance()
-        {
-            return Balance;
-        }
-        public string GetCurrency()
-        {
-            return Currency;
-        }
+        // Method that adds and logs withdrawl:
         public void NewWithdrawl(decimal withdrawl)
         {
             Transaction trans = new Transaction(withdrawl, AccountID, CashWithdrawl, Currency);
@@ -133,7 +69,7 @@ namespace OpenDefendersATM
             if (withdrawl > Balance || withdrawl < 1)
             {
                 // Print fail-info;
-                Console.WriteLine("\nUttag misslyckades:");
+                UI.ErrorMessage();
                 trans.TransactionDeclined();
                 trans.GetTransactionStatus();
             }
@@ -152,6 +88,7 @@ namespace OpenDefendersATM
                 trans.GetTransactionStatus();
             }
         }
+        // Method that adds and logs deposit:
         public void NewDeposit(decimal deposit, bool showMessage = true)
         {
             // Create transaction:
@@ -162,7 +99,7 @@ namespace OpenDefendersATM
             {
                 if (showMessage)
                 {
-                    Console.WriteLine("\nInsättning misslyckades:");
+                    UI.ErrorMessage();
                 }
                 // Print fail-info;
                 trans.TransactionDeclined();
@@ -182,6 +119,18 @@ namespace OpenDefendersATM
                 trans.TransactionComplete();
                 if (showMessage) trans.GetTransactionStatus();
             }
+        }
+        public int GetAccountID()
+        {
+            return AccountID;
+        }
+        public decimal GetBalance()
+        {
+            return Balance;
+        }
+        public string GetCurrency()
+        {
+            return Currency;
         }
 
     }
