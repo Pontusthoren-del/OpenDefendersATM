@@ -139,7 +139,7 @@ namespace OpenDefendersATM
                         customer?.OpenAccount();
                         break;
                     case 3:
-                        customer?.TransferMenu();
+                        TransferInteraction(customer?.CustomerAccounts);
                         break;
                     case 4:
                         customer?.RequestLoan();
@@ -165,10 +165,7 @@ namespace OpenDefendersATM
                 }
             }
         }
-        public static void TransferInteraction(Account account)
-        {
-
-        }
+        
         public static void WithdrawInteraction(Account account)
         {
             Console.WriteLine("=====|| Uttag ||=====\n");
@@ -190,13 +187,91 @@ namespace OpenDefendersATM
         }
         public static decimal PrintTransactionInfo(decimal deposit, int accountID, string currency, decimal balance)
         {
-            Console.WriteLine("\nTransaktion lyckades:");
+            SuccessMessage();
             Console.WriteLine($"Till konto: {accountID}");
             Console.WriteLine($"{deposit} - {currency}");
             Console.WriteLine($"Nytt saldo: {balance} {currency}.");
 
             //Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
             return deposit;
+        }
+        public static void TransferInteraction(List<Account> customerAccounts)
+        {
+            if (customerAccounts.Count < 2)
+            {
+                Console.WriteLine("Du måste ha minst två konton för att föra över mellan dina egna konton.");
+                Console.ReadKey();
+                return;
+            }
+            Console.WriteLine(new string('*', 30));
+            Console.WriteLine("Dina konton:");
+            foreach (var acc in customerAccounts)
+            {
+                Console.WriteLine($"KontoID: {acc.GetAccountID()} | Saldo: {acc.GetBalance()} {acc.GetCurrency()}");
+            }
+
+            // Välj avsändarkonto
+            int fromID = Backup.ReadInt("Ange KontoID du vill överföra FRÅN: ");
+            Account? fromAccount = customerAccounts.FirstOrDefault(a => a.GetAccountID() == fromID);
+
+            if (fromAccount == null)
+            {
+                Console.WriteLine("Avsändarkontot hittades inte.");
+                Console.ReadKey();
+                return;
+            }
+
+            // Välj mottagarkonto
+            int toID = Backup.ReadInt("Ange KontoID du vill överföra TILL: ");
+            Account? toAccount = customerAccounts.FirstOrDefault(a => a.GetAccountID() == toID);
+
+            if (toAccount == null)
+            {
+                Console.WriteLine("Avsändarkontot hittades inte.");
+                Console.ReadKey();
+                return;
+            }
+
+            if (fromAccount == toAccount)
+            {
+                Console.WriteLine("Du kan inte göra en överföring till samma konto.");
+                Console.ReadKey();
+                return;
+            }
+
+            decimal amount = Backup.ReadDecimal("\nAnge summa du vill föra över:");
+            if (amount > fromAccount.Balance)
+            {
+                Console.WriteLine("Du har inte tillräckligt på ditt konto.");
+                Console.ReadKey();
+                return;
+            }
+            if (amount < 1)
+            {
+                Console.WriteLine("Minsta belopp för överföring är 1 kr.");
+                Console.ReadKey();
+                return;
+            }
+            fromAccount.NewUserTransaction(amount, fromAccount, toAccount);
+
+            SuccessMessage();
+            Console.WriteLine($"{amount} kr");
+            Console.WriteLine($"Från konto: {fromAccount.AccountID} - Nytt saldo: {fromAccount.Balance}");
+            Console.WriteLine($"Till konto: {toAccount.AccountID} - Nytt saldo: {toAccount.Balance}");
+            Console.ReadKey();
+        }
+
+        public static void ErrorMessage()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Transaction misslyckades.");
+            Console.ResetColor();
+        }
+        public static void SuccessMessage()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nTransaction lyckades.");
+            Console.ResetColor();
         }
     }
 }

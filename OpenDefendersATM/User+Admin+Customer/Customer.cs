@@ -80,49 +80,12 @@ namespace OpenDefendersATM
             }
         }
         //Method to transfer betweeen our own accounts
-        public void TransferBetweenAccounts()
-        {
-            if (CustomerAccounts.Count < 2)
-            {
-                Console.WriteLine("Du måste ha minst två konton för att föra över mellan dina egna konton.");
-                return;
-            }
-            Console.WriteLine(new string('*', 30));
-            Console.WriteLine("Dina konton:");
-            foreach (var acc in CustomerAccounts)
-            {
-                Console.WriteLine($"KontoID: {acc.GetAccountID()} | Saldo: {acc.GetBalance()} {acc.GetCurrency()}");
-            }
+        //public void TransferBetweenAccounts(decimal amount, Account fromAccount, Account toAccount)
+        //{
+            
+        //    fromAccount.AddTransaction(amount, fromAccount, toAccount);
 
-            // Välj avsändarkonto
-            int fromID = Backup.ReadInt("Ange KontoID du vill överföra FRÅN: ");
-            Account? fromAccount = CustomerAccounts.FirstOrDefault(a => a.GetAccountID() == fromID);
-
-            if (fromAccount == null)
-            {
-                Console.WriteLine("Avsändarkontot hittades inte.");
-                return;
-            }
-
-            // Välj mottagarkonto
-            int toID = Backup.ReadInt("Ange KontoID du vill överföra TILL: ");
-            Account? toAccount = CustomerAccounts.FirstOrDefault(a => a.GetAccountID() == toID);
-
-            if (toAccount == null)
-            {
-                Console.WriteLine("Avsändarkontot hittades inte.");
-                return;
-            }
-
-            if (fromAccount == toAccount)
-            {
-                Console.WriteLine("Du kan inte göra en överföring till samma konto.");
-                return;
-            }
-
-            // Anropa AddTransaction() på det valda kontot
-            fromAccount.AddTransaction(fromAccount, toAccount);
-        }
+        //}
 
         //Method to open a new account with a unique account ID and the print it.
         public void OpenRegularAccount()
@@ -271,7 +234,7 @@ namespace OpenDefendersATM
                 switch (input)
                 {
                     case 1:
-                        TransferBetweenAccounts();
+                        UI.TransferInteraction(CustomerAccounts);
                         break;
                     case 2:
                         TransferToOtherCustomers();
