@@ -55,7 +55,7 @@ namespace OpenDefendersATM
                 }
                 else
                 {
-                    CustomerMenu(loggedinUser);
+                    UICustomer.CustomerMenu(loggedinUser);
                     break;
                 }
             }
@@ -93,63 +93,63 @@ namespace OpenDefendersATM
         }
 
         //meny för customer 
-        public static void CustomerMenu(User user)
-        {
-            bool running = true;
-            while (running)
-            {
-                Console.Clear();
-                Console.WriteLine($"\t[KUND] Inloggad som " + user.Name);
-                Console.WriteLine();
-                Console.WriteLine("Välj ett alternativ.");
-                Console.WriteLine(new string('*', 30));
-                Console.WriteLine("1. Visa konton.");
-                Console.WriteLine("2. Öppna nytt konto.");
-                Console.WriteLine("3. Överföring.");
-                Console.WriteLine("4. Lån.");
-                Console.WriteLine("5. Transaktionslog.");
-                Console.WriteLine("6. Logga ut.");
-                Console.WriteLine(new string('*', 30));
+        //public static void CustomerMenu(User user)
+        //{
+        //    bool running = true;
+        //    while (running)
+        //    {
+        //        Console.Clear();
+        //        Console.WriteLine($"\t[KUND] Inloggad som " + user.Name);
+        //        Console.WriteLine();
+        //        Console.WriteLine("Välj ett alternativ.");
+        //        Console.WriteLine(new string('*', 30));
+        //        Console.WriteLine("1. Visa konton.");
+        //        Console.WriteLine("2. Öppna nytt konto.");
+        //        Console.WriteLine("3. Överföring.");
+        //        Console.WriteLine("4. Lån.");
+        //        Console.WriteLine("5. Transaktionslog.");
+        //        Console.WriteLine("6. Logga ut.");
+        //        Console.WriteLine(new string('*', 30));
 
-                int input = Backup.ReadInt("Ditt val: ");
-                Customer? customer = user as Customer;
-                switch (input)
-                {
-                    case 1:
-                        customer?.ViewAccounts();
-                        Console.WriteLine("Tryck Enter för att fortsätta...");
-                        Console.ReadLine();
-                        break;
-                    case 2:
-                        customer?.OpenAccount();
-                        break;
-                    case 3:
-                        TransferInteraction(customer?.CustomerAccounts);
-                        break;
-                    case 4:
-                        customer?.RequestLoan();
-                        break;
-                    case 5:
-                        if (customer?.CustomerAccounts.Count > 0)
-                        {
+        //        int input = Backup.ReadInt("Ditt val: ");
+        //        Customer? customer = user as Customer;
+        //        switch (input)
+        //        {
+        //            case 1:
+        //                customer?.ViewAccounts();
+        //                Console.WriteLine("Tryck Enter för att fortsätta...");
+        //                Console.ReadLine();
+        //                break;
+        //            case 2:
+        //                customer?.OpenAccount();
+        //                break;
+        //            case 3:
+        //                TransferInteraction(customer?.CustomerAccounts);
+        //                break;
+        //            case 4:
+        //                customer?.RequestLoan();
+        //                break;
+        //            case 5:
+        //                if (customer?.CustomerAccounts.Count > 0)
+        //                {
 
-                            customer?.CustomerAccounts[0].ViewAllTransactions();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Du har inga transaktioner.");
-                        }
-                        break;
-                    case 6:
-                        running = false;
-                        break;
+        //                    customer?.CustomerAccounts[0].ViewAllTransactions();
+        //                }
+        //                else
+        //                {
+        //                    Console.WriteLine("Du har inga transaktioner.");
+        //                }
+        //                break;
+        //            case 6:
+        //                running = false;
+        //                break;
 
-                    default:
-                        Console.WriteLine("Felaktigt val.");
-                        break;
-                }
-            }
-        }
+        //            default:
+        //                Console.WriteLine("Felaktigt val.");
+        //                break;
+        //        }
+        //    }
+        //}
 
         public static void WithdrawInteraction(Account account)
         {
