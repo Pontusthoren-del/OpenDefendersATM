@@ -15,6 +15,7 @@ namespace OpenDefendersATM
                 Console.WriteLine("Du har inga öppna konton.");
                 return;
             }
+
             PrintAccounts(c.CustomerAccounts);
             int selectedID = Backup.ReadInt("Ange KontoID du vill hantera: ");
             Account? selectedAccount = null;
