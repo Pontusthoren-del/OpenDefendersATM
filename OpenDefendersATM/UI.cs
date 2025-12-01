@@ -61,7 +61,7 @@ namespace OpenDefendersATM
             }
         }
 
-        public void TransferMenu(Customer customer)
+        public static void TransferMenu(Customer customer)
         {
             while (true)
             {
@@ -124,7 +124,7 @@ namespace OpenDefendersATM
                         customer?.OpenAccount();
                         break;
                     case 3:
-                        TransferInteraction(customer?.CustomerAccounts);
+                        TransferMenu(customer);
                         break;
                     case 4:
                         customer?.RequestLoan();
