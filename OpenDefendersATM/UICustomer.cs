@@ -154,7 +154,7 @@ namespace OpenDefendersATM
                         OpenAccount(customer);
                         break;
                     case 3:
-                        UI.TransferInteraction(customer?.CustomerAccounts);
+                        UI.TransferMenu(customer);
                         break;
                     case 4:
                         customer?.RequestLoan();
