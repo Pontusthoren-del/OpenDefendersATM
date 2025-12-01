@@ -180,14 +180,14 @@ namespace OpenDefendersATM
             if (choice <= 0 || choice >= counter) return;
             //Find the right customer through this loop again.
             int current = 1;
-            Customer reciver = null;
+            Customer reciever = null;
             foreach (User user in BankSystem.Users)
             {
                 if (user is Customer c)
                 {
                     if (current == choice)
                     {
-                        reciver = c;
+                        reciever = c;
                         break;
                     }
                     current++;
@@ -207,8 +207,8 @@ namespace OpenDefendersATM
             Account senderAccount = CustomerAccounts[fromChoice];
 
             // Reciver account will always be there top account(for now)
-            if (reciver.CustomerAccounts.Count == 0) return;
-            Account receiverAccount = reciver.CustomerAccounts[0];
+            if (reciever.CustomerAccounts.Count == 0) return;
+            Account receiverAccount = reciever.CustomerAccounts[0];
 
             // Amount
             decimal amount = Backup.ReadDecimal("Ange summa att föra över: ");
