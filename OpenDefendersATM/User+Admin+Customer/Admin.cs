@@ -13,7 +13,7 @@ namespace OpenDefendersATM
 
         }
 
-        public void CreateNewUser()
+        public void CreateNewCustomer()
         {
             Console.WriteLine("Are you a new user? Register here.");
             

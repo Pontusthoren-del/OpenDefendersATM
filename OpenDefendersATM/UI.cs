@@ -50,7 +50,7 @@ namespace OpenDefendersATM
             {
                 if (loggedinUser.Role == "Admin")
                 {
-                    AdminMenu(loggedinUser);
+                    UIAdmin.AdminMenu(loggedinUser);
                     break;
                 }
                 else
@@ -61,49 +61,34 @@ namespace OpenDefendersATM
             }
         }
 
-        //meny för admin
-        public static void AdminMenu(User user)
+        public void TransferMenu(Customer customer)
         {
-            bool loggedin = true;
-            while (loggedin)
+            while (true)
             {
-                Console.WriteLine($"\t[ADMIN] Inloggad som " + user.Name);
+
                 Console.WriteLine("Välj ett alternativ.");
                 Console.WriteLine(new string('*', 30));
-                Console.WriteLine("1. Skapa ny användare");
-                Console.WriteLine("2. Skapa ny admin");
-                Console.WriteLine("3. Aktuell växlingskurs");
-                Console.WriteLine("4. Logga ut.");
-                Console.WriteLine(new string('*', 30));
-
-                string inputStr = Console.ReadLine() ?? "";
-                int input;
-                if (int.TryParse(inputStr, out input))
+                Console.WriteLine("1. Överföring mellan egna konton.");
+                Console.WriteLine("2. Överföring till annan kund. ");
+                Console.WriteLine("3. Återgå.");
+                int input = Backup.ReadInt("Ditt val: ");
+                switch (input)
                 {
-                    Admin? admin = user as Admin;
-                    switch (input)
-                    {
-                        case 1:
-                            admin?.CreateNewUser();
-                            break;
-                        case 2:
-                            admin?.CreateNewAdmin();
-                            break;
-                        case 3:
-                            admin?.ExChangeRate();
-                            break;
-                        case 4:
-                            loggedin = false;
-                            break;
-
-                        default:
-                            Console.WriteLine("Felaktigt val.");
-                            break;
-                    }
-
+                    case 1:
+                        TransferInteraction(customer.CustomerAccounts);
+                        break;
+                    case 2:
+                        customer.TransferToOtherCustomers();
+                        break;
+                    case 3:
+                        return;
+                    default:
+                        Console.WriteLine("Felaktigt val.");
+                        break;
                 }
                 Console.WriteLine("Tryck Enter för att fortsätta...");
                 Console.ReadLine();
+                Console.Clear();
             }
         }
 
@@ -165,7 +150,7 @@ namespace OpenDefendersATM
                 }
             }
         }
-        
+
         public static void WithdrawInteraction(Account account)
         {
             Console.WriteLine("=====|| Uttag ||=====\n");
@@ -179,7 +164,7 @@ namespace OpenDefendersATM
         public static void DepositInteraction(Account account)
         {
             Console.WriteLine("=====|| Insättning ||=====\n");
-            
+
             decimal deposit = Backup.ReadDecimal("Ange summa du vill sätta in (max 50 000):");
 
             // Create deposit-transaction:
