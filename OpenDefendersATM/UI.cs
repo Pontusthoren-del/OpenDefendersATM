@@ -182,7 +182,7 @@ namespace OpenDefendersATM
         public static void DepositInteraction(Account account)
         {
             Console.WriteLine("=====|| Insättning ||=====\n");
-            
+
             decimal deposit = Backup.ReadDecimal("Ange summa du vill sätta in (max 50 000):");
 
             // Create deposit-transaction:
