@@ -8,7 +8,7 @@ namespace OpenDefendersATM
 {
     internal class UICustomer
     {
-        public void ViewAccounts(Customer c)
+        public static void ViewAccounts(Customer c)
         {
             if (c.CustomerAccounts.Count == 0)
             {
@@ -58,10 +58,11 @@ namespace OpenDefendersATM
                     default:
                         Console.WriteLine("Felaktigt val.");
                         break;
+
                 }
             }
         }
-        private void PrintAccounts(List<Account> accounts)
+        private static void PrintAccounts(List<Account> accounts)
         {
             if (accounts.Count == 0)
             {
@@ -82,7 +83,7 @@ namespace OpenDefendersATM
 
             Console.WriteLine("-------------------------------------------------\n");
         }
-        public void RenameAccount(Account acc)
+        public static void RenameAccount(Account acc)
         {
             Console.WriteLine($"Nuvarande namn: {acc.Name}");
             Console.Write("Ange nytt namn: ");
@@ -91,7 +92,7 @@ namespace OpenDefendersATM
             Console.WriteLine($"Kontot har bytt namn till {newName}.");
         }
 
-        public void OpenAccount(Customer c)
+        public static void OpenAccount(Customer c)
         {
             while (true)
             {
@@ -120,6 +121,63 @@ namespace OpenDefendersATM
                 Console.WriteLine("Tryck Enter för att fortsätta...");
                 Console.ReadLine();
                 Console.Clear();
+            }
+        }
+        public static void CustomerMenu(User user)
+        {
+            bool running = true;
+            while (running)
+            {
+                Console.Clear();
+                Console.WriteLine($"\t[KUND] Inloggad som " + user.Name);
+                Console.WriteLine();
+                Console.WriteLine("Välj ett alternativ.");
+                Console.WriteLine(new string('*', 30));
+                Console.WriteLine("1. Visa konton.");
+                Console.WriteLine("2. Öppna nytt konto.");
+                Console.WriteLine("3. Överföring.");
+                Console.WriteLine("4. Lån.");
+                Console.WriteLine("5. Transaktionslog.");
+                Console.WriteLine("6. Logga ut.");
+                Console.WriteLine(new string('*', 30));
+
+                int input = Backup.ReadInt("Ditt val: ");
+                Customer? customer = user as Customer;
+                switch (input)
+                {
+                    case 1:
+                        ViewAccounts(customer);
+                        Console.WriteLine("Tryck Enter för att fortsätta...");
+                        Console.ReadLine();
+                        break;
+                    case 2:
+                        OpenAccount(customer);
+                        break;
+                    case 3:
+                        UI.TransferInteraction(customer?.CustomerAccounts);
+                        break;
+                    case 4:
+                        customer?.RequestLoan();
+                        break;
+                    case 5:
+                        if (customer?.CustomerAccounts.Count > 0)
+                        {
+
+                            customer?.CustomerAccounts[0].ViewAllTransactions();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Du har inga transaktioner.");
+                        }
+                        break;
+                    case 6:
+                        running = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Felaktigt val.");
+                        break;
+                }
             }
         }
     }
