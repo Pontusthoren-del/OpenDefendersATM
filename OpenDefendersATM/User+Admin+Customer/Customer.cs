@@ -217,39 +217,8 @@ namespace OpenDefendersATM
             //Logging the transaction
             senderAccount.NewWithdrawl(amount);
             receiverAccount.NewDeposit(amount);
-
-
         }
-        public void TransferMenu()
-        {
-            while (true)
-            {
-
-                Console.WriteLine("Välj ett alternativ.");
-                Console.WriteLine(new string('*', 30));
-                Console.WriteLine("1. Överföring mellan egna konton.");
-                Console.WriteLine("2. Överföring till annan kund. ");
-                Console.WriteLine("3. Återgå.");
-                int input = Backup.ReadInt("Ditt val: ");
-                switch (input)
-                {
-                    case 1:
-                        UI.TransferInteraction(CustomerAccounts);
-                        break;
-                    case 2:
-                        TransferToOtherCustomers();
-                        break;
-                    case 3:
-                        return;
-                    default:
-                        Console.WriteLine("Felaktigt val.");
-                        break;
-                }
-                Console.WriteLine("Tryck Enter för att fortsätta...");
-                Console.ReadLine();
-                Console.Clear();
-            }
-        }
+      
         private void PrintAccounts(List<Account> accounts)
         {
             if (accounts.Count == 0)
