@@ -61,7 +61,7 @@ namespace OpenDefendersATM
             }
         }
 
-        public void TransferMenu(Customer customer)
+        public static void TransferMenu(Customer customer)
         {
             while (true)
             {
