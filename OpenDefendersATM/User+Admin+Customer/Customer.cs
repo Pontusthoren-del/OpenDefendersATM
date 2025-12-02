@@ -80,63 +80,50 @@ namespace OpenDefendersATM
         {
             //Visar en transaktionslista
         }
-        public void TransferToOtherCustomers()// 2025-12-02 (bella hemifrån): gänget, kan vi fundera kring om inte denna metod ska istället finnas under transactions.cs.
+        public void TransferToOtherCustomers()
         {
-            //Show all customers with a number 
-            int counter = 1;
-            foreach (User user in BankSystem.Users)
+            Account receiverAccount = null;
+            while (receiverAccount == null)
             {
-                if (user is Customer c && c != this)
+                int targetAccountID = Backup.ReadInt("Ange KontoID att föra över till: ");
+                foreach (User user in BankSystem.Users)
                 {
-                    Console.WriteLine($"{counter}. {c.Name}.");
-                    counter++;
-                }
-            }
-            if (counter == 1) return; //no customers
-
-            int choice = Backup.ReadInt("Välj kund att föra över till: ");
-            if (choice <= 0 || choice >= counter) return;
-            //Find the right customer through this loop again.
-            int current = 1;
-            Customer reciever = null;
-            foreach (User user in BankSystem.Users)
-            {
-                if (user is Customer c)
-                {
-                    if (current == choice)
+                    if (user is Customer c)
                     {
-                        reciever = c;
-                        break;
+                        receiverAccount = c.CustomerAccounts.FirstOrDefault(a => a.GetAccountID() == targetAccountID);
+                        if (receiverAccount != null) break;
                     }
-                    current++;
+                }
+                if (receiverAccount == null)
+                {
+                    Console.WriteLine("Kontot hittades inte. Försök igen.");
                 }
             }
-
-            // Select which account you wanna transfer money from.
             Console.WriteLine("Dina konton:");
             for (int i = 0; i < CustomerAccounts.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {CustomerAccounts[i].Name} | Saldo: {CustomerAccounts[i].GetBalance()} {CustomerAccounts[i].GetCurrency()}");
+                var acc = CustomerAccounts[i];
+                Console.WriteLine($"{i + 1}. {acc.Name} | Saldo: {acc.GetBalance()} {acc.GetCurrency()} | KontoID: {acc.GetAccountID()}");
             }
-
-            int fromChoice = Backup.ReadInt("Välj konto att föra över från: ") - 1;
-            if (fromChoice < 0 || fromChoice >= CustomerAccounts.Count) return;
-
+            int fromChoice = Backup.ReadInt("Välj konto att föra över från (nummer): ") - 1;
+            if (fromChoice < 0 || fromChoice >= CustomerAccounts.Count)
+            {
+                Console.WriteLine("Felaktigt val.");
+                return;
+            }
             Account senderAccount = CustomerAccounts[fromChoice];
-
-            // Reciver account will always be there top account(for now)
-            if (reciever.CustomerAccounts.Count == 0) return;
-            Account receiverAccount = reciever.CustomerAccounts[0];
-
-            // Amount
             decimal amount = Backup.ReadDecimal("Ange summa att föra över: ");
-            if (amount <= 0 || senderAccount.GetBalance() < amount) return;
-
-            //Logging the transaction
+            if (amount <= 0 || senderAccount.GetBalance() < amount)
+            {
+                Console.WriteLine("Felaktigt belopp.");
+                return;
+            }
             senderAccount.NewWithdrawl(amount);
             receiverAccount.NewDeposit(amount);
+            Console.WriteLine($"Överföring av {amount} {senderAccount.GetCurrency()} till konto {receiverAccount.GetAccountID()} genomförd.");
             Console.ReadKey();
         }
+
     }
 }
 

@@ -16,7 +16,7 @@ namespace OpenDefendersATM
                 return;
             }
             Console.WriteLine("----------------------------------------------------------------------------------");
-            Console.WriteLine("| Nr | Typ            | KontoID   | Namn                | Saldo      | Valuta |");
+            Console.WriteLine("| Nr | Typ            | KontoID   | Namn                 | Saldo      | Valuta |");
             Console.WriteLine("----------------------------------------------------------------------------------");
 
             for (int i = 0; i < c.CustomerAccounts.Count; i++)
@@ -33,7 +33,6 @@ namespace OpenDefendersATM
                 return;
             }
             Account selectedAccount = c.CustomerAccounts[selectedIndex];
-
             while (true)
             {
                 Console.WriteLine();
@@ -117,6 +116,7 @@ namespace OpenDefendersATM
                 Console.WriteLine("4. Lån.");
                 Console.WriteLine("5. Transaktionslog.");
                 Console.WriteLine("6. Logga ut.");
+                Console.WriteLine("7. Avsluta applikationen.");
                 Console.WriteLine(new string('*', 30));
 
                 int input = Backup.ReadInt("Ditt val: ");
@@ -150,6 +150,9 @@ namespace OpenDefendersATM
                         break;
                     case 6:
                         UI.RunBankApp();
+                        break;
+                    case 7:
+                        running = false;
                         break;
 
                     default:
