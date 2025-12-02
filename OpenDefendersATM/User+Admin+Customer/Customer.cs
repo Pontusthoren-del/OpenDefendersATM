@@ -80,7 +80,7 @@ namespace OpenDefendersATM
         {
             //Visar en transaktionslista
         }
-        public void TransferToOtherCustomers()
+        public void TransferToOtherCustomers()// 2025-12-02 (bella hemifrån): gänget, kan vi fundera kring om inte denna metod ska istället finnas under transactions.cs.
         {
             //Show all customers with a number 
             int counter = 1;
