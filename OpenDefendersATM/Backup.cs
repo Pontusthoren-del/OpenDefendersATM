@@ -50,5 +50,19 @@ namespace OpenDefendersATM
                 Console.WriteLine("Ogiltig inmatning. Ange ett tal.");
             }
         }
+
+        public static string ReadString(string message)
+        {
+            decimal number;
+            while (true)
+            {
+                Console.Write(message);
+                string input = Console.ReadLine();
+
+                if (!string.IsNullOrWhiteSpace(input))
+                    return input;
+                Console.WriteLine("Ogiltig inmatning. Försök igen.");
+            }
+        }
     }
 }

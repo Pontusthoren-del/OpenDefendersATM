@@ -8,8 +8,8 @@ namespace OpenDefendersATM
 {
     internal class UIAdmin
     {
-        //meny för admin
-        public static void AdminMenu(User user)
+        
+        public static void AdminMenu(User user) //meny för admin
         {
             bool loggedin = true;
             while (loggedin)
@@ -28,11 +28,12 @@ namespace OpenDefendersATM
                 switch (input)
                 {
                     case 1:
-                        admin?.CreateNewCustomer();
+                        CreateCustomerUI();
                         break;
                     case 2:
-                        admin?.CreateNewAdmin();
+                        CreateAdminUI(); 
                         break;
+
                     case 3:
                         admin?.ExChangeRate();
                         break;
@@ -47,7 +48,24 @@ namespace OpenDefendersATM
                 Console.WriteLine("Tryck Enter för att fortsätta...");
                 Console.ReadLine();
             }
+
+           
         }
 
+        private static void CreateCustomerUI()
+        {
+            Console.WriteLine("Skapa ny kund");
+            Console.WriteLine(new string('*', 30));
+
+        } 
+
+        private static void CreateAdminUI()
+        {
+            Console.WriteLine("Skapa ny admin");
+            Console.WriteLine(new string('*', 30));
+
+        } 
+
+        
     }
 }

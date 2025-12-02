@@ -15,12 +15,12 @@ namespace OpenDefendersATM
 
         public void CreateNewCustomer()
         {
-            Console.WriteLine("Are you a new user? Register here.");
+            
             
         }
-        public void CreateNewAdmin()
+        public Admin CreateNewAdmin(string name, string role, int pin)
         {
-            //Skapar en ny Admin
+            return new Admin(name, role, pin);
         }
         public void ExChangeRate()
         {
