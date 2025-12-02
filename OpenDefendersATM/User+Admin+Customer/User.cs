@@ -48,6 +48,7 @@ namespace OpenDefendersATM
         }
         public static User? Login(List<User> users)
         {
+            Console.Clear();
             Console.WriteLine("\t" + new string('*', 30));
             Console.WriteLine("*****VÄLKOMNA TILL OPEN DEFENDERS ATM*****");
             Console.Write("Användarnamn: ");
@@ -84,7 +85,7 @@ namespace OpenDefendersATM
 
             FailedAttempts = 0;
 
-            //ShowMainMenu();
+            UI.ShowMainMenu(this);
         }
     }
 }

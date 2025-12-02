@@ -15,31 +15,32 @@ namespace OpenDefendersATM
                 Console.WriteLine("Du har inga öppna konton.");
                 return;
             }
+            Console.WriteLine("----------------------------------------------------------------------------------");
+            Console.WriteLine("| Nr | Typ            | KontoID   | Namn                | Saldo      | Valuta |");
+            Console.WriteLine("----------------------------------------------------------------------------------");
 
-            PrintAccounts(c.CustomerAccounts);
-            int selectedID = Backup.ReadInt("Ange KontoID du vill hantera: ");
-            Account? selectedAccount = null;
-            foreach (var acc in c.CustomerAccounts)
+            for (int i = 0; i < c.CustomerAccounts.Count; i++)
             {
-                if (acc.GetAccountID() == selectedID)
-                {
-                    selectedAccount = acc;
-                    break;
-                }
+                var acc = c.CustomerAccounts[i];
+                string type = acc is SavingsAccount ? "Sparkonto" : "Vanligt konto";
+                Console.WriteLine($"| {i + 1,-2} | {type,-14} | {acc.GetAccountID(),-9} | {acc.Name,-20} | {acc.GetBalance(),-10} | {acc.GetCurrency(),-6} |");
             }
-            if (selectedAccount == null)
+            Console.WriteLine("----------------------------------------------------------------------------------\n");
+            int selectedIndex = Backup.ReadInt("Välj konto att hantera (nummer): ") - 1;
+            if (selectedIndex < 0 || selectedIndex >= c.CustomerAccounts.Count)
             {
-                Console.WriteLine("Kontot hittades inte.");
+                Console.WriteLine("Felaktigt val.");
                 return;
             }
+            Account selectedAccount = c.CustomerAccounts[selectedIndex];
+
             while (true)
             {
-
                 Console.WriteLine();
-                Console.WriteLine("Välj ett alternativ");
+                Console.WriteLine("Välj ett alternativ:");
                 Console.WriteLine("1. Sätt in pengar.");
                 Console.WriteLine("2. Ta ut pengar.");
-                Console.WriteLine("3. Döp om ett konto.");
+                Console.WriteLine("3. Döp om kontot.");
                 Console.WriteLine("4. Tillbaka.");
                 int input = Backup.ReadInt("Ditt val: ");
                 switch (input)
@@ -58,30 +59,8 @@ namespace OpenDefendersATM
                     default:
                         Console.WriteLine("Felaktigt val.");
                         break;
-
                 }
             }
-        }
-        private static void PrintAccounts(List<Account> accounts)
-        {
-            if (accounts.Count == 0)
-            {
-                Console.WriteLine("\nDu har inga öppna konton.\n");
-                return;
-            }
-            Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("| Typ           | KontoID   | Namn                | Saldo      | Valuta |");
-            Console.WriteLine("---------------------------------------------------------------");
-
-            foreach (var acc in accounts)
-            {
-                string type = acc is SavingsAccount ? "Sparkonto" : "Vanligt konto";
-                Console.WriteLine($"| {type,-14} | {acc.GetAccountID(),-9} | {acc.Name,-20} | {acc.GetBalance(),-10} | {acc.GetCurrency(),-6} |");
-            }
-
-            Console.WriteLine("---------------------------------------------------------------\n");
-
-            Console.WriteLine("-------------------------------------------------\n");
         }
         public static void RenameAccount(Account acc)
         {
@@ -91,7 +70,6 @@ namespace OpenDefendersATM
             acc.Name = newName;
             Console.WriteLine($"Kontot har bytt namn till {newName}.");
         }
-
         public static void OpenAccount(Customer c)
         {
             while (true)
@@ -171,7 +149,7 @@ namespace OpenDefendersATM
                         }
                         break;
                     case 6:
-                        running = false;
+                        UI.RunBankApp();
                         break;
 
                     default:

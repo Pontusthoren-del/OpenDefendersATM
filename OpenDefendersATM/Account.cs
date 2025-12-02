@@ -24,10 +24,10 @@ namespace OpenDefendersATM
         private static int CashDeposit = 0;
         // When you make a withdrawl, it is stored from account "CashWithdrawl" (00000001):
         public static int CashWithdrawl = 1;
-        public Account(int accountID, string currency, string name = "Nytt Konto.")
+        public Account(int accountID,decimal balance, string currency, string name = "Nytt Konto.")
         {
             AccountID = accountID;
-            Balance = 0;
+            Balance = balance;
             Currency = currency;
             Name = name;
         }

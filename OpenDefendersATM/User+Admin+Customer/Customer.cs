@@ -49,7 +49,7 @@ namespace OpenDefendersATM
                 newID = random.Next(100000, 999999);
             }
             while (BankSystem.AllAccounts().Any(a => a.GetAccountID() == newID)); //Keep generating a new ID **as long as** it already exists in the bank
-            Account newAccount = new Account(newID, "SEK", accountName);
+            Account newAccount = new Account(newID,0, "SEK", accountName);
             CustomerAccounts.Add(newAccount);
             Console.WriteLine($"Nytt konto har skapats med KontoID: {newID} och i valören SEK.");
             Console.ReadKey();
@@ -65,7 +65,7 @@ namespace OpenDefendersATM
                 newID = random.Next(100000, 999999);
             }
             while (BankSystem.AllAccounts().Any(a => a.GetAccountID() == newID)); //Keep generating a new ID **as long as** it already exists in the bank
-            SavingsAccount newAccount = new SavingsAccount(newID, "SEK", 0.02f, accountName);
+            SavingsAccount newAccount = new SavingsAccount(newID, 0, "SEK",0.02f,"Nytt sparkonto");
             CustomerAccounts.Add(newAccount);
             Console.WriteLine($"Nytt sparkonto har skapats med KontoID: {newID} och i valören SEK.");
             Console.WriteLine($"Räntan: {newAccount.GetInterestRate() * 100}% per år.");
@@ -135,10 +135,7 @@ namespace OpenDefendersATM
             //Logging the transaction
             senderAccount.NewWithdrawl(amount);
             receiverAccount.NewDeposit(amount);
-        }
-        public static void LockedOut()
-        {
-            //Utelåst från kontot, vänta på att admin ska låsa upp det.
+            Console.ReadKey();
         }
     }
 }

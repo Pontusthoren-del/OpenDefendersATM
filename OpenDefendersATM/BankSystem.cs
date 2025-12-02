@@ -9,46 +9,74 @@ namespace OpenDefendersATM
     internal class BankSystem
     {
         private static Dictionary<string, decimal> _exchangeRates;  // Private dictionary
+
         public static List<User> Users { get; set; } = new()
         {
-         new Admin("Petter", "Admin", 1234),
-         new Customer("Pontus", "Customer", 1111,1000),
-         new Customer("Bella", "Customer", 2222,1000),
-         new Customer("Robin", "Customer", 3333,1000),
-         new Customer("Julia", "Customer", 4444,1000),
-         new Customer("Kalle", "Customer", 5555,1000)
-        };
-        public static List<Account> Accounts { get; set; } = new List<Account>();
-        //private List<Transaction> _transactions { get; set; }  // Do we need this one?
-        public static Dictionary<string, decimal> ExchangeRates { get; } // Visual dictionary
+            new Admin("Petter", "Admin", 1234),
 
-        public static void InitializeStartAccounts()
-        {
-            foreach (User user in Users)
+            new Customer("Pontus", "Customer", 1111, 1000)
             {
-                if (user is Customer c && c.CustomerAccounts.Count == 0)
+                CustomerAccounts = new List<Account>
                 {
-                    Random random = new Random();
-                    int newID;
-                    do
-                    {
-                        newID = random.Next(100000, 999999);
-                    } while (AllAccounts().Any(a => a.GetAccountID() == newID));
+                    new Account(11111, 1000, "SEK", "Privat Konto"),
+                    new SavingsAccount(11112, 500, "USD", 0.02f, "Savings"),
+                    new Account(11113, 250, "EUR", "Resekonto")
+                }
+            },
 
-                    Account startAccount = new Account(newID, "SEK", "Privatkonto");
-                    startAccount.NewDeposit(c.StartBalance,false);
-                    c.CustomerAccounts.Add(startAccount);
+            new Customer("Bella", "Customer", 2222, 1000)
+            {
+                CustomerAccounts = new List<Account>
+                {
+                    new Account(22221, 800, "SEK", "Privat Konto"),
+                    new SavingsAccount(22222, 1200, "SEK", 0.02f, "Sparkonto")
+                }
+            },
+
+            new Customer("Robin", "Customer", 3333, 1000)
+            {
+                CustomerAccounts = new List<Account>
+                {
+                    new Account(33331, 1500, "EUR", "Privat Konto"),
+                    new Account(33332, 300, "USD", "Tradingkonto"),
+                    new Account(33333, 2000, "SEK", "Buffertkonto")
+                }
+            },
+
+            new Customer("Julia", "Customer", 4444, 1000)
+            {
+                CustomerAccounts = new List<Account>
+                {
+                    new Account(44441, 900, "SEK", "Privat Konto"),
+                    new SavingsAccount(44442, 700, "EUR", 0.02f, "Sparkonto")
+                }
+            },
+
+            new Customer("Kalle", "Customer", 5555, 1000)
+            {
+                CustomerAccounts = new List<Account>
+                {
+                    new Account(55551, 400, "USD", "Privat Konto"),
+                    new Account(55552, 2500, "SEK", "Semesterkonto"),
+                    new SavingsAccount(55553, 1100, "EUR", 0.02f, "Utlandskonto"),
+                    new Account(55554, 50, "SEK", "Spelkonto")
                 }
             }
-        }
+        };
+
+        public static List<Account> Accounts { get; set; } = new List<Account>();
+
+        //private List<Transaction> _transactions { get; set; }  // Do we need this one?
+
+        public static Dictionary<string, decimal> ExchangeRates { get; } // Visual dictionary
 
         //A list with AllAccounts, but we just sorting out the customers.
         public static List<Account> AllAccounts()
         {
             return Users
-            .OfType<Customer>() //Only Customers
-            .SelectMany(c => c.CustomerAccounts) //Adding all accounts to a list.
-            .ToList();
+                .OfType<Customer>() //Only Customers
+                .SelectMany(c => c.CustomerAccounts) //Adding all accounts to a list.
+                .ToList();
         }
 
         // Method for adding exchange rates to private dictionary _exchangeRates
