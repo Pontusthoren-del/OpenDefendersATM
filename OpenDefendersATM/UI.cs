@@ -34,7 +34,6 @@ namespace OpenDefendersATM
                         Console.WriteLine("För många försök. Ditt konto har låsts.");
                         //Customer.LockedOut();
                         loggedIn = false;
-
                     }
 
                 }

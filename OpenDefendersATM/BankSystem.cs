@@ -41,20 +41,6 @@ namespace OpenDefendersATM
                 }
             }
         }
-        public void ProcessScheduleTransaction()// Bankens system behöver en metod som kollar transaktionerna (en kontrollmetod som loopar igenom alla transaktioner i pending-listan)
-        {
-            if (DateTime.Now >= transaction.EarliestExecution)
-            {
-                run.transaction
-
-            }
-            else
-            {
-
-            }
-
-
-        }
 
         //A list with AllAccounts, but we just sorting out the customers.
         public static List<Account> AllAccounts()

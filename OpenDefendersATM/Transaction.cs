@@ -17,8 +17,8 @@ namespace OpenDefendersATM
         public DateTime Timestamp { get; private set; } // changed to 'private set'
         public string Status { get; set; } = TransactionStatus.Pending;
 
-        public Transaction(decimal amount, int fromAccount, int toAccount, string currency, DateTime?timestamp)//optional DateTime?timestamp
-                                                                                                               //(if none is provided, constructor uses GetTimestamp() so every transaction gets an exact time
+        public Transaction(decimal amount, int fromAccount, int toAccount, string currency)
+                                                                                                               
         {
             TransactionID = TransactionIDCounter;
             TransactionIDCounter++;
@@ -27,7 +27,8 @@ namespace OpenDefendersATM
             /*Status = "pending"; */// pending, complete, declined
             FromAccount = fromAccount;
             ToAccount = toAccount;
-            
+            Timestamp = DateTime.Now;
+           
         }
         
         public void TransactionComplete()
