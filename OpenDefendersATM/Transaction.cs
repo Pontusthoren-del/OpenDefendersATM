@@ -11,13 +11,14 @@ namespace OpenDefendersATM
         private static int TransactionIDCounter = 1;
         public int FromAccount { get; set; }
         public int ToAccount { get; set; }
-        public int TransactionID { get; set; }
+        public int TransactionID { get; private set; } //changed to 'private set' 
         public decimal Amount { get; set; }
         public string Currency { get; set; }
-        public DateTime Timestamp { get; set; }
+        public DateTime Timestamp { get; private set; } // changed to 'private set'
         public string Status { get; set; } = TransactionStatus.Pending;
 
-        public Transaction(decimal amount, int fromAccount, int toAccount, string currency)
+        public Transaction(decimal amount, int fromAccount, int toAccount, string currency, DateTime?timestamp)//optional DateTime?timestamp
+                                                                                                               //(if none is provided, constructor uses GetTimestamp() so every transaction gets an exact time
         {
             TransactionID = TransactionIDCounter;
             TransactionIDCounter++;
@@ -26,7 +27,7 @@ namespace OpenDefendersATM
             /*Status = "pending"; */// pending, complete, declined
             FromAccount = fromAccount;
             ToAccount = toAccount;
-            Timestamp = DateTime.Now;
+            
         }
         
         public void TransactionComplete()
@@ -52,6 +53,11 @@ namespace OpenDefendersATM
 
         }
 
+        public static DateTime GetTimeStamp() // 
+        {
+            return DateTime.Now;
+        }
+        
 
     }
 }
