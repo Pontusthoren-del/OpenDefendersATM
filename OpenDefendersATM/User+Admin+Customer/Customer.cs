@@ -76,10 +76,6 @@ namespace OpenDefendersATM
         {
             //Begär ett lån
         }
-        public void ViewTransaction()
-        {
-            //Visar en transaktionslista
-        }
         public void TransferToOtherCustomers()
         {
             Account receiverAccount = null;
@@ -123,7 +119,6 @@ namespace OpenDefendersATM
             Console.WriteLine($"Överföring av {amount} {senderAccount.GetCurrency()} till konto {receiverAccount.GetAccountID()} genomförd.");
             Console.ReadKey();
         }
-
     }
 }
 
