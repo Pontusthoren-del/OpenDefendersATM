@@ -13,34 +13,28 @@ namespace OpenDefendersATM
             if (c.CustomerAccounts.Count == 0)
             {
                 Console.WriteLine("Du har inga öppna konton.");
+                Console.ReadLine();
                 return;
             }
-            Console.WriteLine("----------------------------------------------------------------------------------");
-            Console.WriteLine("| Nr | Typ            | KontoID   | Namn                 | Saldo      | Valuta |");
-            Console.WriteLine("----------------------------------------------------------------------------------");
-
-            for (int i = 0; i < c.CustomerAccounts.Count; i++)
-            {
-                var acc = c.CustomerAccounts[i];
-                string type = acc is SavingsAccount ? "Sparkonto" : "Vanligt konto";
-                Console.WriteLine($"| {i + 1,-2} | {type,-14} | {acc.GetAccountID(),-9} | {acc.Name,-20} | {acc.GetBalance(),-10} | {acc.GetCurrency(),-6} |");
-            }
-            Console.WriteLine("----------------------------------------------------------------------------------\n");
             int selectedIndex = Backup.ReadInt("Välj konto att hantera (nummer): ") - 1;
             if (selectedIndex < 0 || selectedIndex >= c.CustomerAccounts.Count)
             {
                 Console.WriteLine("Felaktigt val.");
+                Console.ReadLine();
                 return;
             }
             Account selectedAccount = c.CustomerAccounts[selectedIndex];
             while (true)
             {
+                Console.Clear();
+                Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
                 Console.WriteLine();
-                Console.WriteLine("Välj ett alternativ:");
-                Console.WriteLine("1. Sätt in pengar.");
-                Console.WriteLine("2. Ta ut pengar.");
-                Console.WriteLine("3. Döp om kontot.");
-                Console.WriteLine("4. Tillbaka.");
+                PrintAccounts(c);
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("1. Sätt in pengar");
+                Console.WriteLine("2. Ta ut pengar");
+                Console.WriteLine("3. Tillbaka");
                 int input = Backup.ReadInt("Ditt val: ");
                 switch (input)
                 {
@@ -51,14 +45,30 @@ namespace OpenDefendersATM
                         UI.WithdrawInteraction(selectedAccount);
                         break;
                     case 3:
-                        RenameAccount(selectedAccount);
-                        break;
-                    case 4:
+                        Console.Clear();
                         return;
                     default:
                         Console.WriteLine("Felaktigt val.");
                         break;
                 }
+            }  
+        }
+        public static void PrintAccounts(Customer c)    
+        {
+            if (c.CustomerAccounts.Count == 0)
+            {
+                Console.WriteLine("Du har inga öppna konton.");
+                return;
+            }
+            Console.WriteLine("----------------------------------------------------------------------------------");
+            Console.WriteLine("| Nr | Typ            | KontoID   | Namn                 | Saldo      | Valuta |");
+            Console.WriteLine("----------------------------------------------------------------------------------");
+            for (int i = 0; i < c.CustomerAccounts.Count; i++)
+            {
+                var acc = c.CustomerAccounts[i];
+                string type = acc is SavingsAccount ? "Sparkonto" : "Vanligt konto";
+                Console.WriteLine($"| {i + 1,-2} | {type,-14} | {acc.GetAccountID(),-9} | {acc.Name,-20} | {acc.GetBalance(),-10} | {acc.GetCurrency(),-6} |");
+                Console.WriteLine("----------------------------------------------------------------------------------");
             }
         }
         public static void RenameAccount(Account acc)
@@ -73,7 +83,10 @@ namespace OpenDefendersATM
         {
             while (true)
             {
-
+                Console.Clear();
+                Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+                Console.WriteLine();
+                PrintAccounts(c);
                 Console.WriteLine("Välj ett alternativ.");
                 Console.WriteLine(new string('*', 30));
                 Console.WriteLine("1. Öppna ett vanligt konto.");
@@ -100,18 +113,58 @@ namespace OpenDefendersATM
                 Console.Clear();
             }
         }
+        public static void HandleAccounts(Customer c)
+        {
+            Console.Clear();
+            Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+            Console.WriteLine();
+            PrintAccounts(c);
+            Console.WriteLine("Välj ett alternativ.");
+            Console.WriteLine(new string('*', 30));
+            Console.WriteLine("1. Döp om befintligt konto");
+            Console.WriteLine("2. Öppna nytt konto.");
+            Console.WriteLine("3. Återgå.");
+
+            int input = Backup.ReadInt("Ditt val: ");
+            switch (input)
+            {
+                case 1:
+                    Console.WriteLine("Välj konto att döpa om:");
+                    for (int i = 0; i < c.CustomerAccounts.Count; i++)
+                        Console.WriteLine($"{i + 1}. {c.CustomerAccounts[i].Name}");
+                    int val = Backup.ReadInt("Ditt val: ") - 1;
+                    if (val < 0 || val >= c.CustomerAccounts.Count)
+                    {
+                        Console.WriteLine("Felaktigt val.");
+                        break;
+                    }
+                    RenameAccount(c.CustomerAccounts[val]);
+                    break;
+                case 2:
+                    OpenAccount(c);
+                    break;
+                case 3:
+                    return;
+                default:
+                    break;
+            }
+            Console.Clear();
+        }
         public static void CustomerMenu(User user)
         {
             bool running = true;
+            Customer? customer = user as Customer;
             while (running)
             {
                 Console.Clear();
                 Console.WriteLine($"\t[KUND] Inloggad som " + user.Name);
                 Console.WriteLine();
+                PrintAccounts(customer);
+                Console.WriteLine();
                 Console.WriteLine("Välj ett alternativ.");
                 Console.WriteLine(new string('*', 30));
-                Console.WriteLine("1. Visa konton.");
-                Console.WriteLine("2. Öppna nytt konto.");
+                Console.WriteLine("1. Sätt in / Ta ut.");
+                Console.WriteLine("2. Hantera konto / Öppna nytt.");
                 Console.WriteLine("3. Överföring.");
                 Console.WriteLine("4. Lån.");
                 Console.WriteLine("5. Transaktionslog.");
@@ -120,16 +173,13 @@ namespace OpenDefendersATM
                 Console.WriteLine(new string('*', 30));
 
                 int input = Backup.ReadInt("Ditt val: ");
-                Customer? customer = user as Customer;
                 switch (input)
                 {
                     case 1:
                         ViewAccounts(customer);
-                        Console.WriteLine("Tryck Enter för att fortsätta...");
-                        Console.ReadLine();
                         break;
                     case 2:
-                        OpenAccount(customer);
+                        HandleAccounts(customer);
                         break;
                     case 3:
                         UI.TransferMenu(customer);
