@@ -60,6 +60,7 @@ namespace OpenDefendersATM
 
         public static void TransferMenu(Customer customer)
         {
+            Console.Clear();
             while (true)
             {
 
@@ -75,7 +76,7 @@ namespace OpenDefendersATM
                         TransferInteraction(customer.CustomerAccounts);
                         break;
                     case 2:
-                        customer.TransferToOtherCustomers();
+                        UICustomer.TransferToOtherCustomers(customer);
                         break;
                     case 3:
                         return;
