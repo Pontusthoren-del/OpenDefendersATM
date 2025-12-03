@@ -8,10 +8,10 @@ namespace OpenDefendersATM
 {
     internal class Customer : User
     {
-        public int StartBalance = 0;
+        public decimal StartBalance = 0;
         public List<Account> CustomerAccounts { get; set; } = new();
 
-        public Customer(string name, string role, int pin, int startbalance) : base(name, role, pin)
+        public Customer(string name, string role, int pin, decimal startbalance) : base(name, role, pin)
         {
             this.StartBalance = startbalance;
         }

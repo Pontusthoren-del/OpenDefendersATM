@@ -13,15 +13,6 @@ namespace OpenDefendersATM
 
         }
 
-        public void CreateNewCustomer()
-        {
-            
-            
-        }
-        public Admin CreateNewAdmin(string name, string role, int pin)
-        {
-            return new Admin(name, role, pin);
-        }
         public void ExChangeRate()
         {
             //Växlningskursen
