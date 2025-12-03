@@ -76,49 +76,12 @@ namespace OpenDefendersATM
         {
             //Begär ett lån
         }
-        public void TransferToOtherCustomers()
+        public void ViewTransaction()
         {
-            Account receiverAccount = null;
-            while (receiverAccount == null)
-            {
-                int targetAccountID = Backup.ReadInt("Ange KontoID att föra över till: ");
-                foreach (User user in BankSystem.Users)
-                {
-                    if (user is Customer c)
-                    {
-                        receiverAccount = c.CustomerAccounts.FirstOrDefault(a => a.GetAccountID() == targetAccountID);
-                        if (receiverAccount != null) break;
-                    }
-                }
-                if (receiverAccount == null)
-                {
-                    Console.WriteLine("Kontot hittades inte. Försök igen.");
-                }
-            }
-            Console.WriteLine("Dina konton:");
-            for (int i = 0; i < CustomerAccounts.Count; i++)
-            {
-                var acc = CustomerAccounts[i];
-                Console.WriteLine($"{i + 1}. {acc.Name} | Saldo: {acc.GetBalance()} {acc.GetCurrency()} | KontoID: {acc.GetAccountID()}");
-            }
-            int fromChoice = Backup.ReadInt("Välj konto att föra över från (nummer): ") - 1;
-            if (fromChoice < 0 || fromChoice >= CustomerAccounts.Count)
-            {
-                Console.WriteLine("Felaktigt val.");
-                return;
-            }
-            Account senderAccount = CustomerAccounts[fromChoice];
-            decimal amount = Backup.ReadDecimal("Ange summa att föra över: ");
-            if (amount <= 0 || senderAccount.GetBalance() < amount)
-            {
-                Console.WriteLine("Felaktigt belopp.");
-                return;
-            }
-            senderAccount.NewWithdrawl(amount);
-            receiverAccount.NewDeposit(amount);
-            Console.WriteLine($"Överföring av {amount} {senderAccount.GetCurrency()} till konto {receiverAccount.GetAccountID()} genomförd.");
-            Console.ReadKey();
+            //Visar en transaktionslista
         }
+        
+
     }
 }
 

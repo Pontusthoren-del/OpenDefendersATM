@@ -211,5 +211,59 @@ namespace OpenDefendersATM
                 }
             }
         }
+
+        public static void TransferToOtherCustomers(Customer c)
+        {
+            Account receiverAccount = null;
+            while (receiverAccount == null)
+            {
+                int targetAccountID = Backup.ReadInt("\nAnge KontoID att föra över till: ");
+                foreach (User user in BankSystem.Users)
+                {
+                    if (user is Customer cus)
+                    {
+                        receiverAccount = cus.CustomerAccounts.FirstOrDefault(a => a.GetAccountID() == targetAccountID);
+                        if (receiverAccount != null) break;
+                    }
+                }
+                if (receiverAccount == null)
+                {
+                    Console.WriteLine("Kontot hittades inte. Försök igen.");
+                    Console.ReadKey();
+                }
+            }
+            Console.WriteLine("\nDina konton:");
+            for (int i = 0; i < c.CustomerAccounts.Count; i++)
+            {
+                var acc = c.CustomerAccounts[i];
+                Console.WriteLine($"{i + 1}. {acc.Name} | Saldo: {acc.GetBalance()} {acc.GetCurrency()} | KontoID: {acc.GetAccountID()}");
+            }
+            int fromChoice = Backup.ReadInt("\nVälj konto att föra över från (nummer): ") - 1;
+            if (fromChoice < 0 || fromChoice >= c.CustomerAccounts.Count)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nFelaktigt val.");
+                Console.ResetColor();
+                Console.ReadKey();
+                return;
+            }
+            Account senderAccount = c.CustomerAccounts[fromChoice];
+            decimal amount = Backup.ReadDecimal("Ange summa att föra över: ");
+            if (amount <= 0 || senderAccount.GetBalance() < amount)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nFelaktigt belopp.");
+                Console.ResetColor();
+                Console.ReadKey();
+                return;
+            }
+            //senderAccount.NewWithdrawl(amount);
+            //receiverAccount.NewDeposit(amount);
+            senderAccount.NewUserTransaction(amount, senderAccount, receiverAccount);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\nÖverföring av {amount} {senderAccount.GetCurrency()} till konto {receiverAccount.GetAccountID()} genomförd.");
+            Console.ResetColor();
+            Console.ReadKey();
+        }
     }
 }
