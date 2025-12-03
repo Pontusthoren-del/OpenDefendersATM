@@ -8,7 +8,7 @@ namespace OpenDefendersATM
 {
     internal class BankSystem
     {
-        private static Dictionary<string, decimal> _exchangeRates;  // Private dictionary
+        private static Dictionary<string, decimal> _exchangeRates; // Private dictionary
 
         public static List<User> Users { get; set; } = new()
         {
