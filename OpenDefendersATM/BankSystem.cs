@@ -12,11 +12,11 @@ namespace OpenDefendersATM
         private static Dictionary<string, decimal> _exchangeRates = new Dictionary<string, decimal> //här skapar vi en ny dictionary och den heter ExchangeRates
         {
             { "SEK", 1m }, // base currency
-            { "USD", 0.09m },
-            { "EUR", 0.087m }
+            { "USD", 11m },
+            { "EUR", 11.50m }
         };
 
-        public decimal ExchangeConverter(string fromCurrency, decimal Amount, string toCurrency)
+        public static decimal ExchangeConverter(string fromCurrency, decimal Amount, string toCurrency)
         {
             decimal amountInSEK = Amount * _exchangeRates[fromCurrency];
             return amountInSEK / _exchangeRates[toCurrency];
