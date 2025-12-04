@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -67,7 +68,7 @@ namespace OpenDefendersATM
             {
                 var acc = c.CustomerAccounts[i];
                 string type = acc is SavingsAccount ? "Sparkonto" : "Vanligt konto";
-                Console.WriteLine($"| {i + 1,-2} | {type,-14} | {acc.GetAccountID(),-9} | {acc.Name,-20} | {acc.GetBalance(),-10} | {acc.GetCurrency(),-6} |");
+                Console.WriteLine($"| {i + 1,-2} | {type,-14} | {acc.GetAccountID(),-9} | {acc.Name,-20} | {acc.GetBalance(),-10:F2} | {acc.GetCurrency(),-6} |");
                 Console.WriteLine("----------------------------------------------------------------------------------");
             }
         }
@@ -202,6 +203,7 @@ namespace OpenDefendersATM
                         UI.RunBankApp();
                         break;
                     case 7:
+                        Console.WriteLine("\nProgrammet avslutas...\n");
                         running = false;
                         break;
 
@@ -218,7 +220,6 @@ namespace OpenDefendersATM
             Console.WriteLine();
             PrintAccounts(c);
             Console.WriteLine();
-            Console.WriteLine("Ange konto-ID du vill se kontohistorik för:");
             
             if (c.CustomerAccounts.Count == 0)
             {
@@ -226,7 +227,7 @@ namespace OpenDefendersATM
                 Console.ReadLine();
                 return;
             }
-            int selectedIndex = Backup.ReadInt("Välj konto att hantera (nummer): ") - 1;
+            int selectedIndex = Backup.ReadInt("Välj konto du vill se kontohistorik för: (nummer): ") - 1;
             if (selectedIndex < 0 || selectedIndex >= c.CustomerAccounts.Count)
             {
                 Console.WriteLine("Felaktigt val.");
@@ -263,12 +264,7 @@ namespace OpenDefendersATM
                     Console.ReadKey();
                 }
             }
-            Console.WriteLine("\nDina konton:");
-            for (int i = 0; i < c.CustomerAccounts.Count; i++)
-            {
-                var acc = c.CustomerAccounts[i];
-                Console.WriteLine($"{i + 1}. {acc.Name} | Saldo: {acc.GetBalance()} {acc.GetCurrency()} | KontoID: {acc.GetAccountID()}");
-            }
+            
             int fromChoice = Backup.ReadInt("\nVälj konto att föra över från (nummer): ") - 1;
             if (fromChoice < 0 || fromChoice >= c.CustomerAccounts.Count)
             {
@@ -288,10 +284,20 @@ namespace OpenDefendersATM
                 Console.ReadKey();
                 return;
             }
+            // VÄXELKURS
+            string fromCurrency = senderAccount.Currency;
+            string toCurrency = receiverAccount.Currency;
+            decimal finalAmount = amount;
+            // Konvertera endast om valutorna skiljer sig
+            if (fromCurrency != toCurrency)
+            {
+                finalAmount = BankSystem.ExchangeConverter(fromCurrency, amount, toCurrency);
+            }
             senderAccount.NewUserTransaction(amount, senderAccount, receiverAccount);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\nÖverföring av {amount} {senderAccount.GetCurrency()} till konto {receiverAccount.GetAccountID()} genomförd.");
             Console.ResetColor();
+            Console.WriteLine("\nTryck enter för att återgå till huvudmenyn.");
             Console.ReadKey();
         }
     }
