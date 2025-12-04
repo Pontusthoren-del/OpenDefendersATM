@@ -14,32 +14,33 @@ namespace OpenDefendersATM
             bool loggedin = true;
             while (loggedin)
             {
+                Console.Clear();
                 Console.WriteLine($"\t[ADMIN] Inloggad som " + user.Name);
+                Console.WriteLine();
                 Console.WriteLine("Välj ett alternativ.");
                 Console.WriteLine(new string('*', 30));
                 Console.WriteLine("1. Skapa ny användare");
-                Console.WriteLine("2. Skapa ny admin");
-                Console.WriteLine("3. Aktuell växlingskurs");
-                Console.WriteLine("4. Logga ut.");
+                Console.WriteLine("2. Aktuell växlingskurs");
+                Console.WriteLine("3. Logga ut.");
                 Console.WriteLine(new string('*', 30));
+                
 
                 int input = Backup.ReadInt("Ditt val: ");
                 Admin? admin = user as Admin;
                 switch (input)
                 {
                     case 1:
-                        CreateCustomerUI();
-                        break;
-                    case 2:
-                        CreateAdminUI(); 
+                        CreateCustomerUI(user);
                         break;
 
-                    case 3:
+                    case 2:
                         admin?.ExChangeRate();
                         break;
-                    case 4:
-                        loggedin = false;
+                    case 3:
+                        UI.RunBankApp(); //ändrat så inte applikationen stängs ner
                         break;
+                    //loggedin = false;
+                    //break;
 
                     default:
                         Console.WriteLine("Felaktigt val.");
@@ -52,18 +53,22 @@ namespace OpenDefendersATM
            
         }
 
-        private static void CreateCustomerUI() //skapa ny användare som admin
+        private static void CreateCustomerUI(User user) //skapa ny användare som admin
         {
+            Console.WriteLine($"\t[ADMIN] Inloggad som " + user.Name);
+            Console.Clear();
             Console.WriteLine("Skapa ny användare");
             Console.WriteLine(new string('*', 30));
 
+
             //skapa nytt användarnamn
             string name = Backup.ReadString("Lägg till användarnamn: ");
+            
 
             //kontrollera om användarnamn redan finns
-            foreach (var user in BankSystem.Users)
+            foreach (var u in BankSystem.Users)
             {
-                if (user.Name == name)
+                if (u.Name == name)
                 {
                     Console.WriteLine("En användare med det användarnamnet finns redan!");
                     return;
@@ -74,13 +79,13 @@ namespace OpenDefendersATM
             int pin = Backup.ReadInt("Lägg in PIN-kod. 4 siffror: ");
 
             //startbalans
-            decimal startbalance = Backup.ReadDecimal("Hur mycket vill du sätta in som startbelopp? ");
+            decimal startbalance = Backup.ReadDecimal("Startbelopp SEK: ");
 
             // skapa unikt kontoID (tar högsta befintliga +1)
             int newAccountID = 10000;
-            foreach(var user in BankSystem.Users)
+            foreach(var u in BankSystem.Users)
             {
-                if(user is Customer c)
+                if(u is Customer c)
                 {
                     foreach (var acc in c.CustomerAccounts)
                     {
