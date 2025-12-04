@@ -8,7 +8,13 @@ namespace OpenDefendersATM
 {
     internal class BankSystem
     {
-        private static Dictionary<string, decimal> _exchangeRates; // Private dictionary
+        // Private dictionary
+        private static Dictionary<string, decimal> _exchangeRates = new Dictionary<string, decimal> //här skapar vi en ny dictionary och den heter ExchangeRates
+        {
+            { "SEK", 1m }, // base currency
+            { "USD", 0.09m },
+            { "EUR", 0.087m }
+        };
 
         public static List<User> Users { get; set; } = new()
         {
@@ -93,4 +99,46 @@ namespace OpenDefendersATM
             _exchangeRates.Add(currencyCode, value);
         }
     }
+
+    //private static readonly object _exchangeRatesLock = new();
+    //ABOVE: private dictionary(back store) and lock for thread-safety
+
+    //BELOW: public read-ony view of the exchange rates
+    //public static IReadOnlyDictionary<string, decimal> ExchangeRates
+    //{
+    //    get
+    //    {
+    //        lock (_exchangeRatesLock)
+    //        {
+    //            //return a snapshot to avoid exposing internal mutable dictionary
+    //            return new ReadOnlyDictionary<string, decimal>(new Dictionary<string, decimal>(_exchangeRates, StringComparer.OrdinalIgnoreCase));
+    //        }
+    //    }
+    //}
+
+
+    //public class MyExchangeRateProvider : IExchangeRateProvider // ha i baktänka att vi kanskse kan lägga in sen som en 'real-time' xchange rate thing typ.
+    //{
+    //    decimal toCurrency { get; set; }
+    //    decimal fromCurrency { get; set; }
+
+    //    GetExchangeRates( decimal fromCurrency, decimal toCurrency)
+    //    {
+    //        Console.WriteLine();
+    //    }
+    //    return something
+    //}
+
+
+    //Seeding default rates(relative to base currency, e.g.SEK = 1)// hämtad från google/gpt
+    //static BankSystem()
+    //{
+    //    _exchangeRates = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase)
+    //    {
+    //        {"SEK", 1m }, // base currency
+    //        {"USD", 0.09m },
+    //        {"EUR", 0,087m }
+    //    };
+    //}
+
 }
