@@ -75,6 +75,7 @@ namespace OpenDefendersATM
                 }
             }
         };
+        public static List<User> LockedOutUsers { get; set; } = new();
 
         public static List<Account> Accounts { get; set; } = new List<Account>();
 

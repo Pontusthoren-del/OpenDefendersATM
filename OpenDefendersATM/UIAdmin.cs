@@ -49,8 +49,31 @@ namespace OpenDefendersATM
                 Console.WriteLine("Tryck Enter för att fortsätta...");
                 Console.ReadLine();
             }
+        }
+        public static void UnlockUsers()
+        {
+            Console.WriteLine("Låsta anvädare: ");
 
-           
+            for (int i = 0; i < BankSystem.LockedOutUsers.Count; i++)
+            {
+                Console.WriteLine($"{i+1}. {BankSystem.LockedOutUsers[0].Name}.");
+            }
+            if (BankSystem.LockedOutUsers.Count == 0)
+            {
+                Console.WriteLine("Inga låsta konton.");
+                return;
+            }
+            int index = Backup.ReadInt("Välj användare att låsa upp: ");
+            if (index < 0 || index >= BankSystem.LockedOutUsers.Count)
+            {
+                Console.WriteLine("Felaktigt val.");
+                return; 
+            }
+            var user = BankSystem.LockedOutUsers[index];
+            user.IsLocked = false;
+            user.FailedAttempts = 0;
+            BankSystem.LockedOutUsers.Remove(user);
+            Console.WriteLine($"{user.Name} är nu upplåst.");
         }
 
         private static void CreateCustomerUI(User user) //skapa ny användare som admin
