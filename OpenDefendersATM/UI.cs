@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Channels;
@@ -103,8 +104,8 @@ namespace OpenDefendersATM
         {
             SuccessMessage();
             Console.WriteLine($"Till konto: {accountID}");
-            Console.WriteLine($"{deposit} - {currency}");
-            Console.WriteLine($"Nytt saldo: {balance} {currency}.");
+            Console.WriteLine($"{deposit:F2} - {currency}");
+            Console.WriteLine($"Nytt saldo: {balance:F2} {currency}.");
             Console.ReadKey();
             //Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
             return deposit;
@@ -169,16 +170,22 @@ namespace OpenDefendersATM
             toAccount.Balance += finalAmount;    // Insättning i TILL-kontots valuta
             // UTSKRIFT
             SuccessMessage();
-            Console.WriteLine($"{amount} {fromCurrency} överfört från konto {fromAccount.AccountID}.");
-            Console.WriteLine($"Mottagaren fick {finalAmount} {toCurrency}.");
-            Console.WriteLine($"Nytt saldo på {fromAccount.AccountID}: {fromAccount.Balance} {fromCurrency}.");
-            Console.WriteLine($"Nytt saldo på {toAccount.AccountID}: {toAccount.Balance} {toCurrency}.");
+            Console.WriteLine($"{amount:F2} {fromCurrency} överfört från konto {fromAccount.AccountID}.");
+            Console.WriteLine($"Mottagaren fick {finalAmount:F2} {toCurrency}.");
+            Console.WriteLine($"Nytt saldo på {fromAccount.AccountID}: {fromAccount.Balance:F2} {fromCurrency}.");
+            Console.WriteLine($"Nytt saldo på {toAccount.AccountID}: {toAccount.Balance:F2} {toCurrency}.");
+            //fromAccount.NewUserTransaction(amount, fromAccount, toAccount);
+            Transaction trans = new Transaction(amount, fromAccount.AccountID, toAccount.AccountID, fromAccount.Currency);
+            trans.TransactionComplete();
+            fromAccount.LogTransaction(trans);
+            toAccount.LogTransaction(trans);
+            Console.WriteLine("\nTryck enter för att återgå till huvudmenyn.");
             Console.ReadKey();
         }
         public static void ErrorMessage()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Transaction misslyckades.");
+            Console.WriteLine("\nTransaction misslyckades.");
             Console.ResetColor();
         }
         public static void SuccessMessage()
