@@ -198,6 +198,7 @@ namespace OpenDefendersATM
                         }
                         break;
                     case 6:
+                        user.LogOut(user);
                         UI.RunBankApp();
                         break;
                     case 7:
@@ -239,6 +240,11 @@ namespace OpenDefendersATM
 
         public static void TransferToOtherCustomers(Customer c)
         {
+            Console.Clear();
+            Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+            Console.WriteLine();
+            PrintAccounts(c);
+            Console.WriteLine();
             Account receiverAccount = null;
             while (receiverAccount == null)
             {

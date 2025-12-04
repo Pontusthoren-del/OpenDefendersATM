@@ -33,10 +33,8 @@ namespace OpenDefendersATM
                         Console.WriteLine("För många försök. Ditt konto har låsts.");
                         loggedIn = false;
                     }
-
                 }
             }
-
         }
         //Console.WriteLine("···················································································\r\n: _______  _______  _______  _                                                    :\r\n:(  ___  )(  ____ )(  ____ \\( (    /|                                             :\r\n:| (   ) || (    )|| (    \\/|  \\  ( |                                             :\r\n:| |   | || (____)|| (__    |   \\ | |                                             :\r\n:| |   | ||  _____)|  __)   | (\\ \\) |                                             :\r\n:| |   | || (      | (      | | \\   |                                             :\r\n:| (___) || )      | (____/\\| )  \\  |                                             :\r\n:(_______)|/       (_______/|/    )_)                                             :\r\n:                                                                                 :\r\n: ______   _______  _______  _______  _        ______   _______  _______  _______ :\r\n:(  __  \\ (  ____ \\(  ____ \\(  ____ \\( (    /|(  __  \\ (  ____ \\(  ____ )(  ____ \\:\r\n:| (  \\  )| (    \\/| (    \\/| (    \\/|  \\  ( || (  \\  )| (    \\/| (    )|| (    \\/:\r\n:| |   ) || (__    | (__    | (__    |   \\ | || |   ) || (__    | (____)|| (_____ :\r\n:| |   | ||  __)   |  __)   |  __)   | (\\ \\) || |   | ||  __)   |     __)(_____  ):\r\n:| |   ) || (      | (      | (      | | \\   || |   ) || (      | (\\ (         ) |:\r\n:| (__/  )| (____/\\| )      | (____/\\| )  \\  || (__/  )| (____/\\| ) \\ \\__/\\____) |:\r\n:(______/ (_______/|/       (_______/|/    )_)(______/ (_______/|/   \\__/\\_______):\r\n:                                                                                 :\r\n: _______ _________ _______                                                       :\r\n:(  ___  )\\__   __/(       )                                                      :\r\n:| (   ) |   ) (   | () () |                                                      :\r\n:| (___) |   | |   | || || |                                                      :\r\n:|  ___  |   | |   | |(_)| |                                                      :\r\n:| (   ) |   | |   | |   | |                                                      :\r\n:| )   ( |   | |   | )   ( |                                                      :\r\n:|/     \\|   )_(   |/     \\|                                                      :\r\n···················································································\n");
         public static void ShowMainMenu(User loggedinUser)
@@ -57,13 +55,16 @@ namespace OpenDefendersATM
                 }
             }
         }
-
         public static void TransferMenu(Customer customer)
         {
-            Console.Clear();
+
             while (true)
             {
-
+                Console.Clear();
+                Console.WriteLine($"\t[KUND] Inloggad som " + customer.Name);
+                Console.WriteLine();
+                UICustomer.PrintAccounts(customer);
+                Console.WriteLine();
                 Console.WriteLine("Välj ett alternativ.");
                 Console.WriteLine(new string('*', 30));
                 Console.WriteLine("1. Överföring mellan egna konton.");
@@ -73,7 +74,7 @@ namespace OpenDefendersATM
                 switch (input)
                 {
                     case 1:
-                        TransferInteraction(customer.CustomerAccounts);
+                        TransferInteraction(customer);
                         break;
                     case 2:
                         UICustomer.TransferToOtherCustomers(customer);
@@ -88,7 +89,6 @@ namespace OpenDefendersATM
                 Console.Clear();
             }
         }
-
         public static void WithdrawInteraction(Account account)
         {
             Console.WriteLine("=====|| Uttag ||=====\n");
@@ -114,76 +114,71 @@ namespace OpenDefendersATM
             Console.WriteLine($"Till konto: {accountID}");
             Console.WriteLine($"{deposit} - {currency}");
             Console.WriteLine($"Nytt saldo: {balance} {currency}.");
-
+            Console.ReadKey();
             //Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
             return deposit;
         }
-        public static void TransferInteraction(List<Account> customerAccounts)
+        public static void TransferInteraction(Customer c)
         {
-            if (customerAccounts.Count < 2)
+            if (c.CustomerAccounts.Count < 2)
             {
-                Console.WriteLine("Du måste ha minst två konton för att föra över mellan dina egna konton.");
+                Console.WriteLine("Du måste ha minst två konton för att göra en överföring.");
                 Console.ReadKey();
                 return;
             }
-            Console.WriteLine(new string('*', 30));
-            Console.WriteLine("Dina konton:");
-            foreach (var acc in customerAccounts)
+            int fromIndex = Backup.ReadInt("Välj konto att föra över FRÅN (nummer): ") - 1;
+            if (fromIndex < 0 || fromIndex >= c.CustomerAccounts.Count)
             {
-                Console.WriteLine($"KontoID: {acc.GetAccountID()} | Saldo: {acc.GetBalance()} {acc.GetCurrency()}");
-            }
-
-            // Välj avsändarkonto
-            int fromID = Backup.ReadInt("Ange KontoID du vill överföra FRÅN: ");
-            Account? fromAccount = customerAccounts.FirstOrDefault(a => a.GetAccountID() == fromID);
-
-            if (fromAccount == null)
-            {
-                Console.WriteLine("Avsändarkontot hittades inte.");
+                Console.WriteLine("Felaktigt val.");
                 Console.ReadKey();
                 return;
             }
-
-            // Välj mottagarkonto
-            int toID = Backup.ReadInt("Ange KontoID du vill överföra TILL: ");
-            Account? toAccount = customerAccounts.FirstOrDefault(a => a.GetAccountID() == toID);
-
-            if (toAccount == null)
+            int toIndex = Backup.ReadInt("Välj konto att föra över TILL (nummer): ") - 1;
+            if (toIndex < 0 || toIndex >= c.CustomerAccounts.Count)
             {
-                Console.WriteLine("Avsändarkontot hittades inte.");
+                Console.WriteLine("Felaktigt val.");
                 Console.ReadKey();
                 return;
             }
-
+            var fromAccount = c.CustomerAccounts[fromIndex];
+            var toAccount = c.CustomerAccounts[toIndex];
             if (fromAccount == toAccount)
             {
-                Console.WriteLine("Du kan inte göra en överföring till samma konto.");
+                Console.WriteLine("Du kan inte överföra till samma konto.");
                 Console.ReadKey();
                 return;
             }
-
-            decimal amount = Backup.ReadDecimal("\nAnge summa du vill föra över:");
-            if (amount > fromAccount.Balance)
-            {
-                Console.WriteLine("Du har inte tillräckligt på ditt konto.");
-                Console.ReadKey();
-                return;
-            }
+            decimal amount = Backup.ReadDecimal("Ange summa du vill föra över: ");
             if (amount < 1)
             {
-                Console.WriteLine("Minsta belopp för överföring är 1 kr.");
+                Console.WriteLine($"Minsta belopp är 1.");
                 Console.ReadKey();
                 return;
             }
-            fromAccount.NewUserTransaction(amount, fromAccount, toAccount);
-
-            SuccessMessage();
-            Console.WriteLine($"{amount} kr");
-            Console.WriteLine($"Från konto: {fromAccount.AccountID} - Nytt saldo: {fromAccount.Balance}");
-            Console.WriteLine($"Till konto: {toAccount.AccountID} - Nytt saldo: {toAccount.Balance}");
-            Console.ReadKey();
+            if (amount > fromAccount.Balance)
+            {
+                Console.WriteLine("Du har inte tillräckligt på kontot.");
+                Console.ReadKey();
+                return;
+            }
+            if (fromAccount.AccountID == 0)
+            {
+                fromAccount.NewUserTransaction(amount, fromAccount, toAccount);
+                SuccessMessage();
+                Console.WriteLine($"{amount} {fromAccount.Currency} insatt på {fromAccount.AccountID}.");
+                Console.WriteLine($"Totala saldot: {fromAccount.Balance} {fromAccount.Currency}.");
+                Console.ReadKey();
+            }
+            else
+            {
+                fromAccount.NewUserTransaction(amount, fromAccount, toAccount);
+                SuccessMessage();
+                Console.WriteLine($"{amount} {fromAccount.Currency} överfört.");
+                Console.WriteLine($"Till {toAccount.AccountID}: {toAccount.Balance} {fromAccount.Currency}.");
+                Console.ReadKey();
+                Console.WriteLine($"Från {fromAccount.AccountID}: {fromAccount.Balance} {fromAccount.Currency}.");
+            }
         }
-
         public static void ErrorMessage()
         {
             Console.ForegroundColor = ConsoleColor.Red;
