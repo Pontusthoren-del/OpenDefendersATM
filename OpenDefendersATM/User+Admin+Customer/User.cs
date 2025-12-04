@@ -24,7 +24,7 @@ namespace OpenDefendersATM
             Role = role;
             _pin = pin;
         }
-       
+
         public void SetPin(int pin)
         {
             _pin = pin;
@@ -54,8 +54,24 @@ namespace OpenDefendersATM
             Console.Write("Användarnamn: ");
             string? name = Console.ReadLine();
             Console.Write("PIN: ");
-            string? pinInput = Console.ReadLine();
+            //A do/while for out pincode. Will show * instead of the numbers you put in.. 
+            string? pinInput = string.Empty;
+            ConsoleKeyInfo key;
+            do
+            {
+                key = Console.ReadKey(true);
 
+                if (key.Key == ConsoleKey.Backspace && pinInput.Length > 0)
+                {
+                    pinInput = pinInput.Substring(0, pinInput.Length - 1);
+                    Console.WriteLine("\b \b");
+                }
+                else if (!char.IsControl(key.KeyChar))
+                {
+                    pinInput += key.KeyChar;
+                    Console.Write("*");
+                }
+            } while (key.Key != ConsoleKey.Enter);
             if (!int.TryParse(pinInput, out int pin))
             {
                 Console.WriteLine("Felaktigt format på PIN!");
@@ -78,14 +94,10 @@ namespace OpenDefendersATM
                 return null;
             }
         }
-
-        public void LogOut()
+        public void LogOut(User user)
         {
-            Console.WriteLine($"{Name} har loggats ut.");
-
-            FailedAttempts = 0;
-
-            UI.ShowMainMenu(this);
+            Console.WriteLine($"\n{Name} har loggats ut.");
+            Console.ReadKey();
         }
     }
 }
