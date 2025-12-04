@@ -13,28 +13,17 @@ namespace OpenDefendersATM
         public static void RunBankApp()
         {
             bool loggedIn = true;
-            int loggedInTries = 0;
-            while (loggedIn && loggedInTries < 3)
+            while (loggedIn)
             {
                 User? user = User.Login(BankSystem.Users);
                 if (user != null)
                 {
                     ShowMainMenu(user);
-                    return;
+                    loggedIn = false;
                 }
                 else
                 {
-                    loggedInTries++;
-                    Console.WriteLine($"Felaktigt försök: {loggedInTries} av 3.");
-                    Console.ReadLine();
-                    if (loggedInTries >= 3)
-                    {
-                        Console.WriteLine(new string('-', 30));
-                        Console.WriteLine("För många försök. Ditt konto har låsts.");
-                        loggedIn = false;
-                        Console.ReadKey();
-                        RunBankApp();
-                    }
+                    Console.ReadKey();
                 }
             }
         }

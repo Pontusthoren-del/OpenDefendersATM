@@ -42,9 +42,14 @@ namespace OpenDefendersATM
                 return true;
             }
             FailedAttempts++;
-            IsLocked = FailedAttempts >= 3;
-            return false;
+            Console.WriteLine($"Fel PIN! Försök {FailedAttempts} av 3.");
 
+            IsLocked = FailedAttempts >= 3;
+            if (IsLocked)
+            {
+                BankSystem.LockedOutUsers.Add(this);
+            }
+            return false;
         }
         public static User? Login(List<User> users)
         {
