@@ -55,8 +55,9 @@ namespace OpenDefendersATM
 
         private static void CreateCustomerUI(User user) //skapa ny användare som admin
         {
-            Console.WriteLine($"\t[ADMIN] Inloggad som " + user.Name);
             Console.Clear();
+            Console.WriteLine($"\t[ADMIN] Inloggad som " + user.Name);
+            Console.WriteLine();
             Console.WriteLine("Skapa ny användare");
             Console.WriteLine(new string('*', 30));
 
