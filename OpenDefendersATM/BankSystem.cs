@@ -16,6 +16,12 @@ namespace OpenDefendersATM
             { "EUR", 0.087m }
         };
 
+        public decimal ExchangeConverter(string fromCurrency, decimal Amount, string toCurrency)
+        {
+            decimal amountInSEK = Amount * _exchangeRates[fromCurrency];
+            return amountInSEK / _exchangeRates[toCurrency];
+        }
+
         public static List<User> Users { get; set; } = new()
         {
             new Admin("Petter", "Admin", 1234),
