@@ -133,42 +133,47 @@ namespace OpenDefendersATM
             }
             var fromAccount = c.CustomerAccounts[fromIndex];
             var toAccount = c.CustomerAccounts[toIndex];
+
             if (fromAccount == toAccount)
             {
                 Console.WriteLine("Du kan inte överföra till samma konto.");
                 Console.ReadKey();
                 return;
             }
+
             decimal amount = Backup.ReadDecimal("Ange summa du vill föra över: ");
             if (amount < 1)
             {
-                Console.WriteLine($"Minsta belopp är 1.");
+                Console.WriteLine("Minsta belopp är 1.");
                 Console.ReadKey();
                 return;
             }
+
             if (amount > fromAccount.Balance)
             {
                 Console.WriteLine("Du har inte tillräckligt på kontot.");
                 Console.ReadKey();
                 return;
             }
-            if (fromAccount.AccountID == 0)
+            // VÄXELKURS
+            string fromCurrency = fromAccount.Currency;
+            string toCurrency = toAccount.Currency;
+            decimal finalAmount = amount;
+            // Konvertera endast om valutorna skiljer sig
+            if (fromCurrency != toCurrency)
             {
-                fromAccount.NewUserTransaction(amount, fromAccount, toAccount);
-                SuccessMessage();
-                Console.WriteLine($"{amount} {fromAccount.Currency} insatt på {fromAccount.AccountID}.");
-                Console.WriteLine($"Totala saldot: {fromAccount.Balance} {fromAccount.Currency}.");
-                Console.ReadKey();
+                finalAmount = BankSystem.ExchangeConverter(fromCurrency, amount, toCurrency);
             }
-            else
-            {
-                fromAccount.NewUserTransaction(amount, fromAccount, toAccount);
-                SuccessMessage();
-                Console.WriteLine($"{amount} {fromAccount.Currency} överfört.");
-                Console.WriteLine($"Till {toAccount.AccountID}: {toAccount.Balance} {fromAccount.Currency}.");
-                Console.ReadKey();
-                Console.WriteLine($"Från {fromAccount.AccountID}: {fromAccount.Balance} {fromAccount.Currency}.");
-            }
+            // SJÄLVA ÖVERFÖRINGEN – BYTER UT DITT GAMLA
+            fromAccount.Balance -= amount;       // Avdrag i FRÅN-kontots valuta
+            toAccount.Balance += finalAmount;    // Insättning i TILL-kontots valuta
+            // UTSKRIFT
+            SuccessMessage();
+            Console.WriteLine($"{amount} {fromCurrency} överfört från konto {fromAccount.AccountID}.");
+            Console.WriteLine($"Mottagaren fick {finalAmount} {toCurrency}.");
+            Console.WriteLine($"Nytt saldo på {fromAccount.AccountID}: {fromAccount.Balance} {fromCurrency}.");
+            Console.WriteLine($"Nytt saldo på {toAccount.AccountID}: {toAccount.Balance} {toCurrency}.");
+            Console.ReadKey();
         }
         public static void ErrorMessage()
         {
