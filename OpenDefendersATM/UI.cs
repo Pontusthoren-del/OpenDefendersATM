@@ -32,6 +32,8 @@ namespace OpenDefendersATM
                         Console.WriteLine(new string('-', 30));
                         Console.WriteLine("För många försök. Ditt konto har låsts.");
                         loggedIn = false;
+                        Console.ReadKey();
+                        RunBankApp();
                     }
                 }
             }
