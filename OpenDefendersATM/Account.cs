@@ -20,10 +20,10 @@ namespace OpenDefendersATM
         public string Currency { get; set; } = "Unknown";
         public string Name { get; set; }
 
-        // When you make a deposit, it is stored from account "CashDeposit" (00000000):
+        // When you make a deposit, it is stored from account "CashDeposit" (0):
         private static int CashDeposit = 0;
-        // When you make a withdrawl, it is stored from account "CashWithdrawl" (00000001):
-        public static int CashWithdrawl = 1;
+        // When you make a withdrawl, it is stored from account "CashWithdrawl" (1):
+        private static int CashWithdrawl = 1;
         public Account(int accountID,decimal balance, string currency, string name = "Nytt Konto.")
         {
             AccountID = accountID;
@@ -42,19 +42,27 @@ namespace OpenDefendersATM
             toAccount.Balance += amount;
             // Add the transaction to transactionLog:
             Transaction trans = new Transaction(amount, fromAccount.AccountID, toAccount.AccountID, Currency);
-            LogTransaction(trans);
+            trans.TransactionComplete();
+            fromAccount.LogTransaction(trans);
+            toAccount.LogTransaction(trans);
         }
         // Method that displays all transactions:
-        public void ViewAllTransactions()
+        public void ViewAllTransactions(Account account)
         {
-            if (_transactionLog.Count == 0)
+            Console.Clear();
+            if (account._transactionLog.Count == 0)
             {
-                Console.WriteLine($"Konto {AccountID} har ingen historik.");
+                Console.WriteLine($"Konto {account.AccountID} har ingen historik.");
+                Console.ReadKey();
+                return;
             }
-            Console.WriteLine($"Transaktionsloggen för {AccountID}");
+            Console.WriteLine($"Transaktionslogg för {account.AccountID}");
             Console.WriteLine(new string('-', 30));
-            foreach (var t in _transactionLog)
+            foreach (var t in account._transactionLog)
             {
+                Console.WriteLine($"Belopp: {t.Amount}");
+                Console.WriteLine($"Från konto: {t.FromAccount}");
+                Console.WriteLine($"Till konto: {t.ToAccount}");
                 t.GetTransactionStatus();
                 Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
                 Console.WriteLine(new string('-', 30));

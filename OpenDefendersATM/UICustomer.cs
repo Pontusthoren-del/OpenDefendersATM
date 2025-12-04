@@ -190,8 +190,7 @@ namespace OpenDefendersATM
                     case 5:
                         if (customer?.CustomerAccounts.Count > 0)
                         {
-
-                            customer?.CustomerAccounts[0].ViewAllTransactions();
+                            ChooseTransactionLogAccount(customer);
                         }
                         else
                         {
@@ -210,6 +209,32 @@ namespace OpenDefendersATM
                         break;
                 }
             }
+        }
+        public static void ChooseTransactionLogAccount(Customer c)
+        {
+            Console.Clear();
+            Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+            Console.WriteLine();
+            PrintAccounts(c);
+            Console.WriteLine();
+            Console.WriteLine("Ange konto-ID du vill se kontohistorik för:");
+            
+            if (c.CustomerAccounts.Count == 0)
+            {
+                Console.WriteLine("Du har inga öppna konton.");
+                Console.ReadLine();
+                return;
+            }
+            int selectedIndex = Backup.ReadInt("Välj konto att hantera (nummer): ") - 1;
+            if (selectedIndex < 0 || selectedIndex >= c.CustomerAccounts.Count)
+            {
+                Console.WriteLine("Felaktigt val.");
+                Console.ReadLine();
+                return;
+            }
+            Account selectedAccount = c.CustomerAccounts[selectedIndex];
+
+            c.CustomerAccounts[selectedIndex].ViewAllTransactions(c.CustomerAccounts[selectedIndex]);
         }
 
         public static void TransferToOtherCustomers(Customer c)
@@ -257,8 +282,6 @@ namespace OpenDefendersATM
                 Console.ReadKey();
                 return;
             }
-            //senderAccount.NewWithdrawl(amount);
-            //receiverAccount.NewDeposit(amount);
             senderAccount.NewUserTransaction(amount, senderAccount, receiverAccount);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\nÖverföring av {amount} {senderAccount.GetCurrency()} till konto {receiverAccount.GetAccountID()} genomförd.");
