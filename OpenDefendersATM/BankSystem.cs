@@ -21,7 +21,7 @@ namespace OpenDefendersATM
             decimal totalAmountInSEK = 0;
             foreach (var userAccount in c.CustomerAccounts)
             {
-                totalAmountInSEK = ExchangeConverter(userAccount.Currency, userAccount.Balance, "SEK");
+                totalAmountInSEK += ExchangeConverter(userAccount.Currency, userAccount.Balance, "SEK");
             }
             return totalAmountInSEK;
         }
