@@ -186,7 +186,8 @@ namespace OpenDefendersATM
                         UI.TransferMenu(customer);
                         break;
                     case 4:
-                        customer?.RequestLoan();
+                        LoanInteraction(customer);
+                        //customer?.RequestLoan();
                         break;
                     case 5:
                         if (customer?.CustomerAccounts.Count > 0)
@@ -299,6 +300,71 @@ namespace OpenDefendersATM
             Console.ResetColor();
             Console.WriteLine("\nTryck enter för att återgå till huvudmenyn.");
             Console.ReadKey();
+        }
+
+        public static void LoanInteraction(Customer c)
+        {
+            Console.Clear();
+            Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+            Console.WriteLine();
+
+            Console.WriteLine("Lån");
+            Console.WriteLine("mina lån, ansök om lån, visa mitt totala saldo ");
+            Console.WriteLine("1. Mina Lån");
+            Console.WriteLine("2. Ansök om Lån");
+            Console.WriteLine("3. Visa mitt Totala Saldo");
+
+            int input = Backup.ReadInt("Ditt val: ");
+            switch (input)
+            {
+                case 1:
+                    // Mina Lån(customer);
+                    break;
+                case 2:
+                    LoanApplication(c);
+                    break;
+                case 3:
+                    ShowTotalBalanceInSEK(c);
+                    break;
+                default:
+                    break;
+
+
+            }
+
+        }
+
+        // Method to show user's total balance in SEK. Keeping principle "you may borrow a total balance of 5 times your own SALDO
+        // Method done by Bella (bellas dator fick flip i VS med GitHub och vi orkade inte ta reda på hur man fixar detta, så vi frågar Petter om detta på Måndag
+        // istället
+        public static void ShowTotalBalanceInSEK(Customer c)
+        {
+            Console.Clear();
+            Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+            Console.WriteLine();
+
+            Console.WriteLine($"Ditt totala saldo är {BankSystem.AccountTotalBalanceSEK(c)} kr.");
+            Console.WriteLine($"ditt maximala lånebelopp är {BankSystem.AccountTotalBalanceSEK(c) * 5} kr.");
+            Console.ReadKey();
+        }
+
+        // Method to Apply for a Loan
+        // Deciding as we code: void or none-void
+        public static void LoanApplication(Customer c)
+        {
+            Console.Clear();
+            Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+            Console.WriteLine();
+
+            Console.WriteLine($"Ditt totala saldo är {BankSystem.AccountTotalBalanceSEK(c)} kr.");
+
+            decimal userInput = Backup.ReadDecimal("\nDu kan låna max 5 gånger ditt saldobelopp och minst 1000 kr. \n\nAnge summa vill du låna: ");
+            if (userInput > BankSystem.AccountTotalBalanceSEK(c) * 5 || userInput < 1000)
+            {
+                Console.WriteLine("Lånebeloppet får ej vara mer än 5 gånger ditt totala saldo eller under 1000 kr.");
+                Console.ReadKey();
+                return;
+            }
         }
     }
 }
