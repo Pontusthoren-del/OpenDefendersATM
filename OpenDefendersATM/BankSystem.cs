@@ -16,6 +16,15 @@ namespace OpenDefendersATM
             { "EUR", 11.50m }
         };
 
+        public static decimal AccountTotalBalanceSEK(Customer c)
+        {
+            decimal totalAmountInSEK = 0;
+            foreach (var userAccount in c.CustomerAccounts)
+            {
+                totalAmountInSEK = ExchangeConverter(userAccount.Currency, userAccount.Balance, "SEK");
+            }
+            return totalAmountInSEK;
+        }
         public static decimal ExchangeConverter(string fromCurrency, decimal Amount, string toCurrency)
         {
             decimal amountInSEK = Amount * _exchangeRates[fromCurrency];
