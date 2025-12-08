@@ -16,17 +16,19 @@ namespace OpenDefendersATM
             while (loggedin)
             {
                 Console.Clear();
-                Console.WriteLine($"\t[ADMIN] Inloggad som " + user.Name);
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine($"\t[KUND] Inloggad som " + user.Name);
+                Console.ResetColor();
                 Console.WriteLine();
                 Console.WriteLine("Välj ett alternativ.");
                 Console.WriteLine(new string('*', 30));
-                Console.WriteLine("1. Se låsta konton");
-                Console.WriteLine("2. Skapa ny användare");
-                Console.WriteLine("3. Aktuell växlingskurs");
+                Console.WriteLine("1. Skapa ny användare");
+                Console.WriteLine("2. Aktuell växlingskurs");
+                Console.WriteLine("3. Lås upp låsta konton.");
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("4. Logga ut.");
+                Console.ResetColor();
                 Console.WriteLine(new string('*', 30));
-                
-                
 
 
                 int input = Backup.ReadInt("Ditt val: ");
@@ -40,7 +42,7 @@ namespace OpenDefendersATM
                         CreateCustomerUI(user); //skapa ny användare
                         break;
                     case 3:
-                        admin?.ExChangeRate(); //se växlingskurs
+                        UnlockUsers();
                         break;
                     case 4:
                         UI.RunBankApp(); //ändrat så inte applikationen stängs ner
@@ -62,18 +64,18 @@ namespace OpenDefendersATM
 
             for (int i = 0; i < BankSystem.LockedOutUsers.Count; i++)
             {
-                Console.WriteLine($"{i+1}. {BankSystem.LockedOutUsers[0].Name}.");
+                Console.WriteLine($"{i + 1}. {BankSystem.LockedOutUsers[i].Name}.");
             }
             if (BankSystem.LockedOutUsers.Count == 0)
             {
                 Console.WriteLine("Inga låsta konton.");
                 return;
             }
-            int index = Backup.ReadInt("Välj användare att låsa upp: ");
+            int index = Backup.ReadInt("Välj användare att låsa upp: ") -1;
             if (index < 0 || index >= BankSystem.LockedOutUsers.Count)
             {
                 Console.WriteLine("Felaktigt val.");
-                return; 
+                return;
             }
             var user = BankSystem.LockedOutUsers[index];
             user.IsLocked = false;
@@ -91,7 +93,9 @@ namespace OpenDefendersATM
         private static void CreateCustomerUI(User user) //skapa ny användare som admin
         {
             Console.Clear();
-            Console.WriteLine($"\t[ADMIN] Inloggad som " + user.Name);
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine($"\t[KUND] Inloggad som " + user.Name);
+            Console.ResetColor();
             Console.WriteLine();
             Console.WriteLine(new string('*', 30));
             Console.WriteLine("Skapa ny användare");

@@ -53,7 +53,9 @@ namespace OpenDefendersATM
             while (true)
             {
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine($"\t[KUND] Inloggad som " + customer.Name);
+                Console.ResetColor();
                 Console.WriteLine();
                 UICustomer.PrintAccounts(customer);
                 Console.WriteLine();
@@ -83,6 +85,7 @@ namespace OpenDefendersATM
         }
         public static void WithdrawInteraction(Account account)
         {
+            Console.WriteLine(new string('*', 30));
             Console.WriteLine("=====|| Uttag ||=====\n");
 
             decimal withdrawl = Backup.ReadDecimal("Ange summa du vill ta ut:");
@@ -94,7 +97,7 @@ namespace OpenDefendersATM
         public static void DepositInteraction(Account account)
         {
             Console.WriteLine("=====|| Insättning ||=====\n");
-
+            Console.WriteLine(new string('*', 30));
             decimal deposit = Backup.ReadDecimal("Ange summa du vill sätta in (max 50 000):");
 
             // Create deposit-transaction:
@@ -118,14 +121,14 @@ namespace OpenDefendersATM
                 Console.ReadKey();
                 return;
             }
-            int fromIndex = Backup.ReadInt("Välj konto att föra över FRÅN (nummer): ") - 1;
+            int fromIndex = Backup.ReadInt("Välj kontonummer att föra över FRÅN: ") - 1;
             if (fromIndex < 0 || fromIndex >= c.CustomerAccounts.Count)
             {
                 Console.WriteLine("Felaktigt val.");
                 Console.ReadKey();
                 return;
             }
-            int toIndex = Backup.ReadInt("Välj konto att föra över TILL (nummer): ") - 1;
+            int toIndex = Backup.ReadInt("Välj kontonummer att föra över TILL: ") - 1;
             if (toIndex < 0 || toIndex >= c.CustomerAccounts.Count)
             {
                 Console.WriteLine("Felaktigt val.");
@@ -181,6 +184,7 @@ namespace OpenDefendersATM
             toAccount.LogTransaction(trans);
             Console.WriteLine("\nTryck enter för att återgå till huvudmenyn.");
             Console.ReadKey();
+            Console.Clear();
         }
         public static void ErrorMessage()
         {
