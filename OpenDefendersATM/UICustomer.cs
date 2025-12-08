@@ -126,7 +126,7 @@ namespace OpenDefendersATM
             Console.ResetColor();
             Console.WriteLine();
             PrintAccounts(c);
-            Console.WriteLine("Välj ett alternativ.");
+            Console.WriteLine("\nVälj ett alternativ.");
             Console.WriteLine(new string('*', 30));
             Console.WriteLine("1. Döp om befintligt konto.");
             Console.WriteLine("2. Öppna nytt konto.");
@@ -327,11 +327,15 @@ namespace OpenDefendersATM
             Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
             Console.ResetColor();
             Console.WriteLine();
+            PrintAccounts(c);
+            Console.WriteLine("\nVälj ett alternativ.");
+            Console.WriteLine(new string('*', 30));
             Console.WriteLine("1. Mina Lån");
             Console.WriteLine("2. Ansök om Lån");
             Console.WriteLine("3. Betala tillbaka Lån");
             Console.WriteLine("4. Hur mycket kan jag låna?");
             Console.WriteLine("5. Återgå");
+            Console.WriteLine(new string('*', 30));
 
             int input = Backup.ReadInt("Ditt val: ");
             switch (input)
@@ -347,6 +351,7 @@ namespace OpenDefendersATM
                     break;
                 case 4:
                     ShowTotalBalanceInSEK(c);
+                    LoanInteraction(c);
                     break;
                 case 5:
                     return;
@@ -360,14 +365,8 @@ namespace OpenDefendersATM
         // istället
         public static void ShowTotalBalanceInSEK(Customer c)
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
-            Console.ResetColor();
-            Console.WriteLine();
-
-            Console.WriteLine($"Ditt totala saldo är {BankSystem.AccountTotalBalanceSEK(c):F0} kr.");
-            Console.WriteLine($"\nDitt maximala lånebelopp är {BankSystem.AccountTotalBalanceSEK(c) * 5:F0} kr.");
+            Console.WriteLine($"\nDitt totala saldo är {BankSystem.AccountTotalBalanceSEK(c):F0} SEK.");
+            Console.WriteLine($"Ditt maximala lånebelopp är {BankSystem.AccountTotalBalanceSEK(c) * 5:F0} SEK.");
             Console.ReadKey();
         }
 
@@ -375,27 +374,33 @@ namespace OpenDefendersATM
         // Deciding as we code: void or none-void
         public static void LoanApplication(Customer c)
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
-            Console.ResetColor();
             Console.WriteLine();
-
-            decimal userInput = Backup.ReadDecimal("\nGodkänt lånebelopp måste vara minst 1000 kr och max 5 gånger ditt totala saldo. \n\nAnge summa vill du låna:\n");
+            decimal userInput = Backup.ReadDecimal("\nGodkänt lånebelopp måste vara minst 1000 kr och max 5 gånger ditt totala saldo. \n\nAnge summa vill du låna i SEK:\n");
             if (userInput > Loan.GetMaxLoanAmount(c))
             {
-                Console.WriteLine($"Högsta belopp du kan låna med nuvarande saldo är: {Loan.GetMaxLoanAmount(c):F0} kr.");
+                Console.WriteLine($"Högsta belopp du kan låna med nuvarande saldo är: {Loan.GetMaxLoanAmount(c):F0} SEK.");
                 Console.ReadKey();
                 return;
             }
             if (userInput < 1000)
             {
-                Console.WriteLine($"Minsta lånebelopp är 1000 kr.");
+                Console.WriteLine($"Minsta lånebelopp är 1000 SEK.");
                 Console.ReadKey();
                 return;
             }
             else
             {
+                if (c.CustomerAccounts.Count == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nDu har inga öppna konton.");
+                    Console.ResetColor();
+                    Console.ReadLine();
+                    return;
+                }
+                Account selectedAccount = c.CustomerAccounts[0];
+                selectedAccount.LoanDeposit(userInput);
+
                 var loan = new Loan(userInput, Loan.GetInterestRate(c));
                 c.AddLoanToList(loan);
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -428,8 +433,6 @@ namespace OpenDefendersATM
                 }
                 Console.ReadKey();
             }
-
         }
-
     }
 }
