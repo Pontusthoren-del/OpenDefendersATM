@@ -312,7 +312,7 @@ namespace OpenDefendersATM
             {
                 finalAmount = BankSystem.ExchangeConverter(fromCurrency, amount, toCurrency);
             }
-            senderAccount.NewUserTransaction(amount, senderAccount, receiverAccount);
+            senderAccount.NewUserTransaction(amount, finalAmount, senderAccount, receiverAccount);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\nÖverföring av {amount} {senderAccount.GetCurrency()} till konto {receiverAccount.GetAccountID()} genomförd.");
             Console.ResetColor();
@@ -327,31 +327,32 @@ namespace OpenDefendersATM
             Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
             Console.ResetColor();
             Console.WriteLine();
-
-            Console.WriteLine("Lån");
-            Console.WriteLine("mina lån, ansök om lån, visa mitt totala saldo ");
             Console.WriteLine("1. Mina Lån");
             Console.WriteLine("2. Ansök om Lån");
-            Console.WriteLine("3. Visa mitt Totala Saldo");
+            Console.WriteLine("3. Betala tillbaka Lån");
+            Console.WriteLine("4. Hur mycket kan jag låna?");
+            Console.WriteLine("5. Återgå");
 
             int input = Backup.ReadInt("Ditt val: ");
             switch (input)
             {
                 case 1:
-                    // Mina Lån(customer);
+                    PrintCustomerLoans(c);
                     break;
                 case 2:
                     LoanApplication(c);
                     break;
                 case 3:
+                    // pay back loan    // also add "show total debt"?
+                    break;
+                case 4:
                     ShowTotalBalanceInSEK(c);
                     break;
+                case 5:
+                    return;
                 default:
                     break;
-
-
             }
-
         }
 
         // Method to show user's total balance in SEK. Keeping principle "you may borrow a total balance of 5 times your own SALDO
@@ -365,8 +366,8 @@ namespace OpenDefendersATM
             Console.ResetColor();
             Console.WriteLine();
 
-            Console.WriteLine($"Ditt totala saldo är {BankSystem.AccountTotalBalanceSEK(c)} kr.");
-            Console.WriteLine($"ditt maximala lånebelopp är {BankSystem.AccountTotalBalanceSEK(c) * 5} kr.");
+            Console.WriteLine($"Ditt totala saldo är {BankSystem.AccountTotalBalanceSEK(c):F0} kr.");
+            Console.WriteLine($"\nDitt maximala lånebelopp är {BankSystem.AccountTotalBalanceSEK(c) * 5:F0} kr.");
             Console.ReadKey();
         }
 
@@ -380,15 +381,55 @@ namespace OpenDefendersATM
             Console.ResetColor();
             Console.WriteLine();
 
-            Console.WriteLine($"Ditt totala saldo är {BankSystem.AccountTotalBalanceSEK(c)} kr.");
-
-            decimal userInput = Backup.ReadDecimal("\nDu kan låna max 5 gånger ditt saldobelopp och minst 1000 kr. \n\nAnge summa vill du låna: ");
-            if (userInput > BankSystem.AccountTotalBalanceSEK(c) * 5 || userInput < 1000)
+            decimal userInput = Backup.ReadDecimal("\nGodkänt lånebelopp måste vara minst 1000 kr och max 5 gånger ditt totala saldo. \n\nAnge summa vill du låna:\n");
+            if (userInput > Loan.GetMaxLoanAmount(c))
             {
-                Console.WriteLine("Lånebeloppet får ej vara mer än 5 gånger ditt totala saldo eller under 1000 kr.");
+                Console.WriteLine($"Högsta belopp du kan låna med nuvarande saldo är: {Loan.GetMaxLoanAmount(c):F0} kr.");
                 Console.ReadKey();
                 return;
             }
+            if (userInput < 1000)
+            {
+                Console.WriteLine($"Minsta lånebelopp är 1000 kr.");
+                Console.ReadKey();
+                return;
+            }
+            else
+            {
+                var loan = new Loan(userInput, Loan.GetInterestRate(c));
+                c.AddLoanToList(loan);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\nDu tog ett nytt lån!\n");
+                Console.ResetColor();
+                loan.PrintLoanInfo(c);
+                Console.WriteLine("\nTryck enter för att återgå till huvudmenyn.");
+                Console.ReadKey();
+            }
         }
+        public static void PrintCustomerLoans(Customer c)
+        {
+            if (c.CustomerLoans.Count < 1)
+            {
+                Console.WriteLine("\nDu har inga aktiva lån just nu.");
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+                Console.WriteLine();
+                Console.WriteLine("\nMina lån: \n");
+                Console.WriteLine(new string('-', 30));
+                Console.WriteLine();
+                foreach (var loan in c.CustomerLoans)
+                {
+                    loan.PrintLoanInfo(c);
+                    Console.WriteLine(new string('-', 30));
+                }
+                Console.ReadKey();
+            }
+
+        }
+
     }
 }
