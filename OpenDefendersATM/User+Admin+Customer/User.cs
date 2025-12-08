@@ -59,14 +59,14 @@ namespace OpenDefendersATM
         public static User? Login(List<User> users)
         {
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("\t" + new string('*', 30));
-            Console.WriteLine("*****VÄLKOMNA TILL OPEN DEFENDERS ATM*****");
-            Console.ResetColor();
+            Console.WriteLine("_______                    ________     ________           _________                   \r\n__  __ \\______________________  __ \\_______  __/_________________  /___________________\r\n_  / / /__  __ \\  _ \\_  __ \\_  / / /  _ \\_  /_ _  _ \\_  __ \\  __  /_  _ \\_  ___/_  ___/\r\n/ /_/ /__  /_/ /  __/  / / /  /_/ //  __/  __/ /  __/  / / / /_/ / /  __/  /   _(__  ) \r\n\\____/ _  .___/\\___//_/ /_//_____/ \\___//_/    \\___//_/ /_/\\__,_/  \\___//_/    /____/  \r\n       /_/                                                                             \r\n                            ____________________  ___                                  \r\n                            ___    |__  __/__   |/  /                                  \r\n                            __  /| |_  /  __  /|_/ /                                   \r\n                            _  ___ |  /   _  /  / /                                    \r\n                            /_/  |_/_/    /_/  /_/                                     ");
             Console.WriteLine();
-            Console.Write("Användarnamn: ");
+            Console.WriteLine("\t" + new string('*', 60));
+            Console.WriteLine("\t         *****VÄLKOMNA TILL OPEN DEFENDERS ATM*****");
+            Console.WriteLine();
+            Console.Write("\t                          Användarnamn: ");
             string? name = Console.ReadLine();
-            Console.Write("PIN: ");
+            Console.Write("\t                               PIN: ");
             //A do/while for out pincode. Will show * instead of the numbers you put in.. 
             string? pinInput = string.Empty;
             ConsoleKeyInfo key;
