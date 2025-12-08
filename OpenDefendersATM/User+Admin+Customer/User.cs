@@ -42,11 +42,16 @@ namespace OpenDefendersATM
                 return true;
             }
             FailedAttempts++;
-            Console.WriteLine($"Fel PIN! Försök {FailedAttempts} av 3.");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"\nFel PIN! Försök {FailedAttempts} av 3.");
+            Console.ResetColor();
 
             IsLocked = FailedAttempts >= 3;
             if (IsLocked)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Kontot är låst.");
+                Console.ResetColor();
                 BankSystem.LockedOutUsers.Add(this);
             }
             return false;
@@ -100,13 +105,7 @@ namespace OpenDefendersATM
                 Console.WriteLine($"Välkommen {user.Name}");
                 return user;
             }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(user.IsLocked ? "\nKontot är låst." : "\nFel PIN!");
-                Console.ResetColor();
-                return null;
-            }
+            return null;
         }
         public void LogOut(User user)
         {
