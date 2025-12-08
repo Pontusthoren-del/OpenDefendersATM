@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
@@ -24,7 +25,7 @@ namespace OpenDefendersATM
         private static int CashDeposit = 0;
         // When you make a withdrawl, it is stored from account "CashWithdrawl" (1):
         private static int CashWithdrawl = 1;
-        public Account(int accountID,decimal balance, string currency, string name = "Nytt Konto.")
+        public Account(int accountID, decimal balance, string currency, string name = "Nytt Konto.")
         {
             AccountID = accountID;
             Balance = balance;
@@ -87,7 +88,7 @@ namespace OpenDefendersATM
                     Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
                     Console.WriteLine(new string('-', 30));
                 }
-                    
+
             }
             Console.ReadKey();
         }
@@ -156,6 +157,16 @@ namespace OpenDefendersATM
                 trans.TransactionComplete();
                 if (showMessage) trans.GetTransactionStatus();
             }
+        }
+        public void LoanDeposit(decimal deposit)
+        {
+            var trans = new Transaction(deposit, CashDeposit, AccountID, Currency);
+            // Add deposit to account balance:
+            Balance += deposit;
+            // Log transaction
+            LogTransaction(trans);
+            // Set status to complete
+            trans.TransactionComplete();
         }
         public int GetAccountID()
         {
