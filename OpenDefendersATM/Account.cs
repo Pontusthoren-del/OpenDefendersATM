@@ -102,6 +102,7 @@ namespace OpenDefendersATM
                 UI.ErrorMessage();
                 trans.TransactionDeclined();
                 trans.GetTransactionStatus();
+                Console.ReadKey();
             }
             else
             {
@@ -135,6 +136,7 @@ namespace OpenDefendersATM
                 if (showMessage)
                 {
                     UI.ErrorMessage();
+                    Console.ReadKey();
                 }
                 // Print fail-info;
                 trans.TransactionDeclined();

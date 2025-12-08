@@ -24,6 +24,8 @@ namespace OpenDefendersATM
         }
         
 
+
+
         // Method to bring/show a specific user's TOTAL balance within their account
         public decimal TotalBalance() // lämna kvar denna funktionella
         {

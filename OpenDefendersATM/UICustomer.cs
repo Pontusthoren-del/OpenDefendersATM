@@ -17,7 +17,7 @@ namespace OpenDefendersATM
                 Console.ReadLine();
                 return;
             }
-            int selectedIndex = Backup.ReadInt("Välj konto att hantera (nummer): ") - 1;
+            int selectedIndex = Backup.ReadInt("Välj kontonummer att hantera: ") - 1;
             if (selectedIndex < 0 || selectedIndex >= c.CustomerAccounts.Count)
             {
                 Console.WriteLine("Felaktigt val.");
@@ -28,14 +28,16 @@ namespace OpenDefendersATM
             while (true)
             {
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+                Console.ResetColor();
                 Console.WriteLine();
                 PrintAccounts(c);
                 Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine("1. Sätt in pengar");
-                Console.WriteLine("2. Ta ut pengar");
-                Console.WriteLine("3. Tillbaka");
+                Console.WriteLine(new string('*', 30));
+                Console.WriteLine("1. Sätt in pengar.");
+                Console.WriteLine("2. Ta ut pengar.");
+                Console.WriteLine("3. Tillbaka.");
                 int input = Backup.ReadInt("Ditt val: ");
                 switch (input)
                 {
@@ -85,7 +87,9 @@ namespace OpenDefendersATM
             while (true)
             {
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+                Console.ResetColor();
                 Console.WriteLine();
                 PrintAccounts(c);
                 Console.WriteLine("Välj ett alternativ.");
@@ -117,12 +121,14 @@ namespace OpenDefendersATM
         public static void HandleAccounts(Customer c)
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+            Console.ResetColor();
             Console.WriteLine();
             PrintAccounts(c);
             Console.WriteLine("Välj ett alternativ.");
             Console.WriteLine(new string('*', 30));
-            Console.WriteLine("1. Döp om befintligt konto");
+            Console.WriteLine("1. Döp om befintligt konto.");
             Console.WriteLine("2. Öppna nytt konto.");
             Console.WriteLine("3. Återgå.");
 
@@ -130,7 +136,7 @@ namespace OpenDefendersATM
             switch (input)
             {
                 case 1:
-                    Console.WriteLine("Välj konto att döpa om:");
+                    Console.WriteLine("Välj konto att döpa om: ");
                     for (int i = 0; i < c.CustomerAccounts.Count; i++)
                         Console.WriteLine($"{i + 1}. {c.CustomerAccounts[i].Name}");
                     int val = Backup.ReadInt("Ditt val: ") - 1;
@@ -158,7 +164,9 @@ namespace OpenDefendersATM
             while (running)
             {
                 Console.Clear();
-                Console.WriteLine($"\t[KUND] Inloggad som " + user.Name);
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine($"\t[KUND] Inloggad som " + customer.Name);
+                Console.ResetColor();
                 Console.WriteLine();
                 PrintAccounts(customer);
                 Console.WriteLine();
@@ -170,7 +178,9 @@ namespace OpenDefendersATM
                 Console.WriteLine("4. Lån.");
                 Console.WriteLine("5. Transaktionslog.");
                 Console.WriteLine("6. Logga ut.");
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("7. Avsluta applikationen.");
+                Console.ResetColor();
                 Console.WriteLine(new string('*', 30));
 
                 int input = Backup.ReadInt("Ditt val: ");
@@ -217,7 +227,9 @@ namespace OpenDefendersATM
         public static void ChooseTransactionLogAccount(Customer c)
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+            Console.ResetColor();
             Console.WriteLine();
             PrintAccounts(c);
             Console.WriteLine();
@@ -228,7 +240,7 @@ namespace OpenDefendersATM
                 Console.ReadLine();
                 return;
             }
-            int selectedIndex = Backup.ReadInt("Välj konto du vill se kontohistorik för: (nummer): ") - 1;
+            int selectedIndex = Backup.ReadInt("Välj kontonummer du vill se kontohistorik för: ") - 1;
             if (selectedIndex < 0 || selectedIndex >= c.CustomerAccounts.Count)
             {
                 Console.WriteLine("Felaktigt val.");
@@ -243,14 +255,20 @@ namespace OpenDefendersATM
         public static void TransferToOtherCustomers(Customer c)
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+            Console.ResetColor();
             Console.WriteLine();
             PrintAccounts(c);
             Console.WriteLine();
             Account receiverAccount = null;
             while (receiverAccount == null)
             {
-                int targetAccountID = Backup.ReadInt("\nAnge KontoID att föra över till: ");
+                int targetAccountID = Backup.ReadInt("\nAnge KontoID att föra över till: \nTryck 0 för att gå tillbaka...");
+                if (targetAccountID == 0)
+                {
+                    return;
+                }
                 foreach (User user in BankSystem.Users)
                 {
                     if (user is Customer cus)
@@ -266,7 +284,7 @@ namespace OpenDefendersATM
                 }
             }
             
-            int fromChoice = Backup.ReadInt("\nVälj konto att föra över från (nummer): ") - 1;
+            int fromChoice = Backup.ReadInt("\nVälj kontonummer att föra över från: ") - 1;
             if (fromChoice < 0 || fromChoice >= c.CustomerAccounts.Count)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -305,8 +323,9 @@ namespace OpenDefendersATM
         public static void LoanInteraction(Customer c)
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
-            
+            Console.ResetColor();
             Console.WriteLine();
             Console.WriteLine("1. Mina Lån");
             Console.WriteLine("2. Ansök om Lån");
@@ -342,7 +361,9 @@ namespace OpenDefendersATM
         public static void ShowTotalBalanceInSEK(Customer c)
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+            Console.ResetColor();
             Console.WriteLine();
 
             Console.WriteLine($"Ditt totala saldo är {BankSystem.AccountTotalBalanceSEK(c):F0} kr.");
@@ -355,7 +376,9 @@ namespace OpenDefendersATM
         public static void LoanApplication(Customer c)
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+            Console.ResetColor();
             Console.WriteLine();
 
             decimal userInput = Backup.ReadDecimal("\nGodkänt lånebelopp måste vara minst 1000 kr och max 5 gånger ditt totala saldo. \n\nAnge summa vill du låna:\n");
