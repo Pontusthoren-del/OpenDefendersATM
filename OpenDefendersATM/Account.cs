@@ -36,10 +36,10 @@ namespace OpenDefendersATM
         public void LogTransaction(Transaction trans) => _transactionLog.Add(trans);
 
         // Method that adds and logs transaction between users accounts:
-        public void NewUserTransaction(decimal amount, Account fromAccount, Account toAccount)
+        public void NewUserTransaction(decimal amount, decimal recieverAmount, Account fromAccount, Account toAccount)
         {
             fromAccount.Balance -= amount;
-            toAccount.Balance += amount;
+            toAccount.Balance += recieverAmount;
             // Add the transaction to transactionLog:
             Transaction trans = new Transaction(amount, fromAccount.AccountID, toAccount.AccountID, Currency);
             trans.TransactionComplete();

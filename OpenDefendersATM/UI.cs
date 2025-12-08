@@ -181,6 +181,7 @@ namespace OpenDefendersATM
             toAccount.LogTransaction(trans);
             Console.WriteLine("\nTryck enter för att återgå till huvudmenyn.");
             Console.ReadKey();
+            Console.Clear();
         }
         public static void ErrorMessage()
         {

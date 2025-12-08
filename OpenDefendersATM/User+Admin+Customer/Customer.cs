@@ -11,11 +11,18 @@ namespace OpenDefendersATM
         public decimal StartBalance = 0;
         public List<Account> CustomerAccounts { get; set; } = new();
 
+        public List<Loan> CustomerLoans = new List<Loan>();
+
         public Customer(string name, string role, int pin, decimal startbalance) : base(name, role, pin)
         {
             this.StartBalance = startbalance;
         }
 
+        public void AddLoanToList(Loan loan)
+        {
+            CustomerLoans.Add(loan);
+        }
+        
 
         // Method to bring/show a specific user's TOTAL balance within their account
         public decimal TotalBalance() // lämna kvar denna funktionella
