@@ -60,12 +60,34 @@ namespace OpenDefendersATM
             Console.WriteLine(new string('-', 30));
             foreach (var t in account._transactionLog)
             {
-                Console.WriteLine($"Belopp: {t.Amount}");
-                Console.WriteLine($"Från konto: {t.FromAccount}");
-                Console.WriteLine($"Till konto: {t.ToAccount}");
-                t.GetTransactionStatus();
-                Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
-                Console.WriteLine(new string('-', 30));
+                if (t.FromAccount == 0)
+                {
+                    Console.WriteLine($"Belopp: {t.Amount} {t.Currency}");
+                    Console.WriteLine($"- Insättning -");
+                    Console.WriteLine($"Till konto: {t.ToAccount}");
+                    t.GetTransactionStatus();
+                    Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
+                    Console.WriteLine(new string('-', 30));
+                }
+                if (t.ToAccount == 1)
+                {
+                    Console.WriteLine($"Belopp: {t.Amount} {t.Currency}");
+                    Console.WriteLine($"Från konto: {t.FromAccount}");
+                    Console.WriteLine($"- Uttag -");
+                    t.GetTransactionStatus();
+                    Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
+                    Console.WriteLine(new string('-', 30));
+                }
+                else if (t.FromAccount != 0 && t.ToAccount != 1)
+                {
+                    Console.WriteLine($"Belopp: {t.Amount} {t.Currency}");
+                    Console.WriteLine($"Från konto: {t.FromAccount}");
+                    Console.WriteLine($"Till konto: {t.ToAccount}");
+                    t.GetTransactionStatus();
+                    Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
+                    Console.WriteLine(new string('-', 30));
+                }
+                    
             }
             Console.ReadKey();
         }
@@ -89,7 +111,12 @@ namespace OpenDefendersATM
                 LogTransaction(trans);
 
                 // Print transaction info
-                UI.PrintTransactionInfo(withdrawl, AccountID, Currency, Balance);
+                //UI.PrintTransactionInfo(withdrawl, AccountID, Currency, Balance);
+                UI.SuccessMessage();
+                Console.WriteLine($"Från konto: {AccountID}");
+                Console.WriteLine($"{withdrawl:F2} - {Currency}");
+                Console.WriteLine($"Nytt saldo: {Balance:F2} {Currency}.");
+                Console.ReadKey();
 
                 // Set status to complete
                 trans.TransactionComplete();

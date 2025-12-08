@@ -42,9 +42,14 @@ namespace OpenDefendersATM
                 return true;
             }
             FailedAttempts++;
-            IsLocked = FailedAttempts >= 3;
-            return false;
+            Console.WriteLine($"Fel PIN! Försök {FailedAttempts} av 3.");
 
+            IsLocked = FailedAttempts >= 3;
+            if (IsLocked)
+            {
+                BankSystem.LockedOutUsers.Add(this);
+            }
+            return false;
         }
         public static User? Login(List<User> users)
         {
@@ -74,13 +79,17 @@ namespace OpenDefendersATM
             } while (key.Key != ConsoleKey.Enter);
             if (!int.TryParse(pinInput, out int pin))
             {
-                Console.WriteLine("Felaktigt format på PIN!");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nFelaktigt format på PIN!");
+                Console.ResetColor();
                 return null;
             }
             User? user = users.FirstOrDefault(u => u.Name == name);
             if (user == null)
             {
-                Console.WriteLine("Användaren finns inte.");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nAnvändaren finns inte.");
+                Console.ResetColor();
                 return null;
             }
             else if (user.CheckPin(pin))
@@ -90,7 +99,9 @@ namespace OpenDefendersATM
             }
             else
             {
-                Console.WriteLine(user.IsLocked ? "Kontot är låst." : "Fel PIN!");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(user.IsLocked ? "\nKontot är låst." : "\nFel PIN!");
+                Console.ResetColor();
                 return null;
             }
         }

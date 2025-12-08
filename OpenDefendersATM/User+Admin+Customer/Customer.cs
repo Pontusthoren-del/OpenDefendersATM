@@ -79,12 +79,6 @@ namespace OpenDefendersATM
         {
             //Begär ett lån
         }
-        public void ViewTransaction()
-        {
-            //Visar en transaktionslista
-        }
-        
-
     }
 }
 
