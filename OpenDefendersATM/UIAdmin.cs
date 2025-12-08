@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,12 +35,11 @@ namespace OpenDefendersATM
                 Admin? admin = user as Admin;
                 switch (input)
                 {
-                    case 1:
-                        CreateCustomerUI(user);
-                        break;
-
+                    ////case 1:
+                    ////    admin? här ska det eventuellt gå att se alla låsta konton som admin
+                    //    break;
                     case 2:
-                        admin?.ExChangeRate();
+                        CreateCustomerUI(user); //skapa ny användare
                         break;
                     case 3:
                         UnlockUsers();
@@ -84,6 +84,12 @@ namespace OpenDefendersATM
             Console.WriteLine($"{user.Name} är nu upplåst.");
         }
 
+
+
+
+
+       
+
         private static void CreateCustomerUI(User user) //skapa ny användare som admin
         {
             Console.Clear();
@@ -91,12 +97,15 @@ namespace OpenDefendersATM
             Console.WriteLine($"\t[KUND] Inloggad som " + user.Name);
             Console.ResetColor();
             Console.WriteLine();
+            Console.WriteLine(new string('*', 30));
             Console.WriteLine("Skapa ny användare");
             Console.WriteLine(new string('*', 30));
+            Console.WriteLine();
 
 
             //skapa nytt användarnamn
             string name = Backup.ReadString("Lägg till användarnamn: ");
+            Console.WriteLine();
 
 
             //kontrollera om användarnamn redan finns
@@ -109,11 +118,13 @@ namespace OpenDefendersATM
                 }
             }
 
-            //pin-kod
-            int pin = Backup.ReadInt("Lägg in PIN-kod. 4 siffror: ");
+            //skapa ny PIN-kod
+            int pin = ReadValidPinCode();
+            Console.WriteLine();
 
             //startbalans
             decimal startbalance = Backup.ReadDecimal("Startbelopp SEK: ");
+            Console.WriteLine();
 
             // skapa unikt kontoID (tar högsta befintliga +1)
             int newAccountID = 10000;
@@ -135,7 +146,6 @@ namespace OpenDefendersATM
 
             //skapa konto
             var firstAccount = new Account(newAccountID, startbalance, "SEK", "Privatkonto");
-
             //skapa kund
             var newCustomer = new Customer(name, "Customer", pin, startbalance)
             {
@@ -146,23 +156,43 @@ namespace OpenDefendersATM
             BankSystem.Users.Add(newCustomer);
 
             Console.WriteLine($"Ny kund skapad med användarnamn {name} och startbelopp {startbalance} SEK.");
+            Console.WriteLine($"Privatkonto med KontoID: {newAccountID}.");
+            Console.WriteLine();
+            
         }
 
-
-
-
-
-
-        private static void CreateAdminUI()
+        // hjälpmetod för att pin-kod ska bli rätt
+        private static int ReadValidPinCode()
         {
-            Console.WriteLine("Skapa ny admin");
-            Console.WriteLine(new string('*', 30));
+            int pin;
+            bool isValid;
 
-            string name = Backup.ReadString("Lägg till användarnamn: ");
-            int pin = Backup.ReadInt("Lägg in PIN-kod. 4 siffror: ");
+            do
+            {
+                pin = Backup.ReadInt("Lägg in PIN-kod (4 siffror mellan 1000 och 9999): ");
+                isValid = pin >= 1000 && pin <= 9999;
 
+                if (!isValid)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Ogiltig PIN-kod!");
+                    Console.WriteLine();
+                    Console.ResetColor();
+                    Console.WriteLine("Försök igen.");
+                    Console.WriteLine();
+                    
+                }
+            } while (!isValid);
+
+            return pin;
         }
-
-
     }
 }
+
+
+
+
+
+
+
+
