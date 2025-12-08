@@ -157,7 +157,7 @@ namespace OpenDefendersATM
             }
             Console.Clear();
         }
-        public static void CustomerMenu(User user)
+        public static bool CustomerMenu(User user)
         {
             bool running = true;
             Customer? customer = user as Customer;
@@ -197,7 +197,6 @@ namespace OpenDefendersATM
                         break;
                     case 4:
                         LoanInteraction(customer);
-                        //customer?.RequestLoan();
                         break;
                     case 5:
                         if (customer?.CustomerAccounts.Count > 0)
@@ -210,19 +209,17 @@ namespace OpenDefendersATM
                         }
                         break;
                     case 6:
-                        user.LogOut(user);
-                        UI.RunBankApp();
-                        break;
+                        UI.LogOut(user);
+                        return true;
                     case 7:
                         Console.WriteLine("\nProgrammet avslutas...\n");
-                        running = false;
-                        break;
-
+                        return false;
                     default:
                         Console.WriteLine("Felaktigt val.");
                         break;
                 }
             }
+            return true;
         }
         public static void ChooseTransactionLogAccount(Customer c)
         {
