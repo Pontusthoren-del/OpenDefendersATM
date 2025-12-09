@@ -8,8 +8,10 @@ namespace OpenDefendersATM
 {
     internal class Backup
     {
+        
         public static int ReadInt(string message)
         {
+            
             int number;
             while (true)
             {
@@ -17,9 +19,10 @@ namespace OpenDefendersATM
                 string input = Console.ReadLine();
 
                 if (int.TryParse(input, out number))
+                {
                     return number;
-
-                Console.WriteLine("Ogiltig inmatning. Ange ett heltal.");
+                }
+                Console.WriteLine("Felaktigt val.");
             }
         }
         public static float ReadFloat(string message)
@@ -31,9 +34,10 @@ namespace OpenDefendersATM
                 string input = Console.ReadLine();
 
                 if (float.TryParse(input, out number))
+                {
                     return number;
-
-                Console.WriteLine("Ogiltig inmatning. Ange ett tal, t.ex.");
+                }
+                Console.WriteLine("Felaktigt val.");
             }
         }
         public static decimal ReadDecimal(string message)
@@ -45,9 +49,10 @@ namespace OpenDefendersATM
                 string input = Console.ReadLine();
 
                 if (decimal.TryParse(input, out number))
+                {
                     return number;
-
-                Console.WriteLine("Ogiltig inmatning. Ange ett tal.");
+                }
+                Console.WriteLine("Felaktigt val.");
             }
         }
 
@@ -60,8 +65,10 @@ namespace OpenDefendersATM
                 string input = Console.ReadLine();
 
                 if (!string.IsNullOrWhiteSpace(input))
+                {
                     return input;
-                Console.WriteLine("Ogiltig inmatning. Försök igen.");
+                }
+                Console.WriteLine("Felaktigt val.");
             }
         }
     }

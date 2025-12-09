@@ -24,7 +24,6 @@ namespace OpenDefendersATM
             Role = role;
             _pin = pin;
         }
-
         public void SetPin(int pin)
         {
             _pin = pin;
@@ -43,14 +42,17 @@ namespace OpenDefendersATM
             }
             FailedAttempts++;
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\nFel PIN! Försök {FailedAttempts} av 3.");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine($"                          \tFel PIN! Försök {FailedAttempts} av 3.");
             Console.ResetColor();
 
             IsLocked = FailedAttempts >= 3;
             if (IsLocked)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Kontot är låst.");
+                Console.WriteLine();
+                Console.WriteLine("                               \t...Kontot är nu låst...");
                 Console.ResetColor();
                 BankSystem.LockedOutUsers.Add(this);
             }

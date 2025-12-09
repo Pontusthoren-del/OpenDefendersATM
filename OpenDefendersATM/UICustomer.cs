@@ -25,7 +25,8 @@ namespace OpenDefendersATM
                 return;
             }
             Account selectedAccount = c.CustomerAccounts[selectedIndex];
-            while (true)
+            bool running = true;
+            while (running)
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -34,10 +35,15 @@ namespace OpenDefendersATM
                 Console.WriteLine();
                 PrintAccounts(c);
                 Console.WriteLine();
+                Console.Write($"Hanterar konto: ");
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.Write($"{selectedAccount.Name}\n");
+                Console.ResetColor();
                 Console.WriteLine(new string('*', 30));
                 Console.WriteLine("1. Sätt in pengar.");
                 Console.WriteLine("2. Ta ut pengar.");
                 Console.WriteLine("3. Tillbaka.");
+                Console.WriteLine(new string('*', 30));
                 int input = Backup.ReadInt("Ditt val: ");
                 switch (input)
                 {
@@ -54,6 +60,7 @@ namespace OpenDefendersATM
                         Console.WriteLine("Felaktigt val.");
                         break;
                 }
+                running = false;
             }  
         }
         public static void PrintAccounts(Customer c)    
@@ -97,7 +104,7 @@ namespace OpenDefendersATM
                 Console.WriteLine("1. Öppna ett vanligt konto.");
                 Console.WriteLine("2. Öppna ett sparkonto med 2% ränta. ");
                 Console.WriteLine("3. Återgå.");
-
+                Console.WriteLine(new string('*', 30));
                 int input = Backup.ReadInt("Ditt val: ");
                 switch (input)
                 {
@@ -131,7 +138,7 @@ namespace OpenDefendersATM
             Console.WriteLine("1. Döp om befintligt konto.");
             Console.WriteLine("2. Öppna nytt konto.");
             Console.WriteLine("3. Återgå.");
-
+            Console.WriteLine(new string('*', 30));
             int input = Backup.ReadInt("Ditt val: ");
             switch (input)
             {
@@ -344,7 +351,7 @@ namespace OpenDefendersATM
                     LoanApplication(c);
                     break;
                 case 3:
-                    // pay back loan    // also add "show total debt"?
+                    LoanPayBack(c);
                     break;
                 case 4:
                     ShowTotalBalanceInSEK(c);
@@ -372,7 +379,7 @@ namespace OpenDefendersATM
         public static void LoanApplication(Customer c)
         {
             Console.WriteLine();
-            decimal userInput = Backup.ReadDecimal("\nGodkänt lånebelopp måste vara minst 1000 kr och max 5 gånger ditt totala saldo. \n\nAnge summa vill du låna i SEK:\n");
+            decimal userInput = Backup.ReadDecimal("Godkänt lånebelopp måste vara minst 1000 kr och max 5 gånger ditt totala saldo. \n\nAnge summa vill du låna i SEK: ");
             if (userInput > Loan.GetMaxLoanAmount(c))
             {
                 Console.WriteLine($"Högsta belopp du kan låna med nuvarande saldo är: {Loan.GetMaxLoanAmount(c):F0} SEK.");
@@ -398,7 +405,7 @@ namespace OpenDefendersATM
                 Account selectedAccount = c.CustomerAccounts[0];
                 selectedAccount.LoanDeposit(userInput);
 
-                var loan = new Loan(userInput, Loan.GetInterestRate(c));
+                var loan = new Loan(userInput, Loan.GetInterestRate(c, userInput));
                 c.AddLoanToList(loan);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\nDu tog ett nytt lån!\n");
@@ -418,7 +425,9 @@ namespace OpenDefendersATM
             else
             {
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+                Console.ResetColor();
                 Console.WriteLine();
                 Console.WriteLine("\nMina lån: \n");
                 Console.WriteLine(new string('-', 30));
@@ -427,6 +436,91 @@ namespace OpenDefendersATM
                 {
                     loan.PrintLoanInfo(c);
                     Console.WriteLine(new string('-', 30));
+                }
+                Console.ReadKey();
+            }
+        }
+        public static void LoanPayBack(Customer c)
+        {
+            if (c.CustomerLoans.Count < 1)
+            {
+                Console.WriteLine("\nDu har inga aktiva lån just nu.");
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
+                Console.ResetColor();
+                Console.WriteLine();
+                Console.WriteLine("\nBetala tillbaka lån: \n");
+                Console.WriteLine(new string('-', 30));
+                foreach (var loan in c.CustomerLoans)
+                {
+                    loan.PrintLoanInfo(c);
+                    Console.WriteLine(new string('-', 30));
+                }
+
+                int loanChoice = Backup.ReadInt("\nAnge lån-ID på det lån du vill betala tillbaka på: ") - 1;
+                if (loanChoice < 0 || loanChoice >= c.CustomerLoans.Count)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nFelaktigt val.");
+                    Console.ResetColor();
+                    Console.ReadKey();
+                    return;
+                }
+                Loan receiverAccount = c.CustomerLoans[loanChoice];
+                int fromChoice = Backup.ReadInt("\nAnge kontonummer för det konto du vill betala ifrån: ") - 1;
+                if (fromChoice < 0 || fromChoice >= c.CustomerAccounts.Count)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nFelaktigt val.");
+                    Console.ResetColor();
+                    Console.ReadKey();
+                    return;
+                }
+
+                Account senderAccount = c.CustomerAccounts[fromChoice];
+
+                decimal amount = Backup.ReadDecimal("Ange summa att betala tillbaka: ");
+                // VÄXELKURS
+                string fromCurrency = senderAccount.Currency;
+                decimal finalAmount = amount;
+                // Konvertera endast om valutorna skiljer sig
+                if (fromCurrency != "SEK")
+                {
+                    finalAmount = BankSystem.ExchangeConverter(fromCurrency, amount, "SEK");
+                }
+                
+
+                if (amount <= 0 || senderAccount.GetBalance() < amount || finalAmount > receiverAccount.Amount)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nFelaktigt belopp.");
+                    Console.ResetColor();
+                    Console.ReadKey();
+                    return;
+                }
+                receiverAccount.Amount -= finalAmount;
+                senderAccount.Balance -= amount;
+
+
+                if (receiverAccount.Amount == 0)
+                {
+                    c.CustomerLoans.Remove(receiverAccount);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Betalning genomfördes!\n");
+                    Console.ResetColor();
+                    Console.WriteLine($"Du har nu betalat av lån {receiverAccount.LoanID} och det kommer försvinna från din lånelista.");
+                    Console.WriteLine("\nTryck enter för att återgå till huvudmenyn.");
+
+                }
+                else
+                {
+                    Console.WriteLine($"\nDu betalade tillaka {amount} {senderAccount.GetCurrency()} på lån {receiverAccount.LoanID}.");
+                    Console.WriteLine("\nTryck enter för att återgå till huvudmenyn.");
                 }
                 Console.ReadKey();
             }
