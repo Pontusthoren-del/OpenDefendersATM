@@ -68,7 +68,8 @@ namespace OpenDefendersATM
             if (!int.TryParse(pinInput, out int pin))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nFelaktigt format på PIN!");
+                Console.WriteLine();
+                Console.WriteLine("\n                          \tFelaktigt format på PIN!");
                 Console.ResetColor();
                 return null;
             }
@@ -76,7 +77,8 @@ namespace OpenDefendersATM
             if (user == null)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nAnvändaren finns inte.");
+                Console.WriteLine();
+                Console.WriteLine("\n                          \tAnvändaren finns inte.");
                 Console.ResetColor();
                 return null;
             }
@@ -123,6 +125,7 @@ namespace OpenDefendersATM
                 Console.WriteLine("1. Överföring mellan egna konton.");
                 Console.WriteLine("2. Överföring till annan kund. ");
                 Console.WriteLine("3. Återgå.");
+                Console.WriteLine(new string('*', 30));
                 int input = Backup.ReadInt("Ditt val: ");
                 switch (input)
                 {
@@ -144,8 +147,10 @@ namespace OpenDefendersATM
         }
         public static void WithdrawInteraction(Account account)
         {
-            Console.WriteLine(new string('*', 30));
-            Console.WriteLine("=====|| Uttag ||=====\n");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("          \t=====|| Uttag ||=====\n");
+            Console.ResetColor();
 
             decimal withdrawl = Backup.ReadDecimal("Ange summa du vill ta ut:");
 
@@ -155,9 +160,11 @@ namespace OpenDefendersATM
         }
         public static void DepositInteraction(Account account)
         {
-            Console.WriteLine("=====|| Insättning ||=====\n");
-            Console.WriteLine(new string('*', 30));
-            decimal deposit = Backup.ReadDecimal("Ange summa du vill sätta in (max 50 000):");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("          \t=====|| Insättning ||=====\n");
+            Console.ResetColor();
+            decimal deposit = Backup.ReadDecimal("Ange summa du vill sätta in (max 50 000): ");
 
             // Create deposit-transaction:
             account.NewDeposit(deposit);
@@ -250,12 +257,14 @@ namespace OpenDefendersATM
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nTransaction misslyckades.");
             Console.ResetColor();
+            Console.ReadKey();
         }
         public static void SuccessMessage()
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\nTransaction lyckades.");
             Console.ResetColor();
+            Console.ReadKey();
         }
     }
 }
