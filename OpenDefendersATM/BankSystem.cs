@@ -60,9 +60,9 @@ namespace OpenDefendersATM
         }
         public static List<User> Users { get; set; } = new()
         {
-            new Admin("Petter", "Admin", 1234),
+            new Admin("Petter", "Admin", "1234"),
 
-            new Customer("Pontus", "Customer", 1111, 1000)
+            new Customer("Pontus", "Customer", "1111", 1000)
             {
                 CustomerAccounts = new List<Account>
                 {
@@ -72,7 +72,7 @@ namespace OpenDefendersATM
                 }
             },
 
-            new Customer("Bella", "Customer", 2222, 1000)
+            new Customer("Bella", "Customer","2222", 1000)
             {
                 CustomerAccounts = new List<Account>
                 {
@@ -81,7 +81,7 @@ namespace OpenDefendersATM
                 }
             },
 
-            new Customer("Robin", "Customer", 3333, 1000)
+            new Customer("Robin", "Customer", "3333", 1000)
             {
                 CustomerAccounts = new List<Account>
                 {
@@ -91,7 +91,7 @@ namespace OpenDefendersATM
                 }
             },
 
-            new Customer("Julia", "Customer", 4444, 1000)
+            new Customer("Julia", "Customer", "4444", 1000)
             {
                 CustomerAccounts = new List<Account>
                 {
@@ -100,7 +100,7 @@ namespace OpenDefendersATM
                 }
             },
 
-            new Customer("Kalle", "Customer", 5555, 1000)
+            new Customer("Kalle", "Customer", "5555", 1000)
             {
                 CustomerAccounts = new List<Account>
                 {
