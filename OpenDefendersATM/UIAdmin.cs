@@ -10,7 +10,7 @@ namespace OpenDefendersATM
     internal class UIAdmin
     {
 
-        public static void AdminMenu(User user) //meny för admin
+        public static bool AdminMenu(User user) //meny för admin
         {
             bool loggedin = true;
             while (loggedin)
@@ -38,13 +38,12 @@ namespace OpenDefendersATM
                 Admin? admin = user as Admin;
                 switch (input)
                 {
-
                     case 1:
                         CreateCustomerUI(user); //skapa ny användare
                         break;
-                    //case 2:
-
-                    //    break; //här ska gå att se aktuell växlingskurs
+                    case 2:
+                        //Växlningskurs
+                        break;
                     case 3:
                         UnlockUsers(); //lås upp låst konto
                         break;
@@ -65,6 +64,7 @@ namespace OpenDefendersATM
                 Console.WriteLine("Tryck Enter för att fortsätta...");
                 Console.ReadLine();
             }
+            return false;
         }
         public static void UnlockUsers()
         {
@@ -91,13 +91,6 @@ namespace OpenDefendersATM
             BankSystem.LockedOutUsers.Remove(user);
             Console.WriteLine($"{user.Name} är nu upplåst.");
         }
-
-
-
-
-
-
-
         private static void CreateCustomerUI(User user) //skapa ny användare som admin
         {
             Console.Clear();
@@ -168,7 +161,6 @@ namespace OpenDefendersATM
             Console.WriteLine();
 
         }
-
         // hjälpmetod för att pin-kod ska bli rätt
         private static int ReadValidPinCode()
         {
@@ -196,11 +188,3 @@ namespace OpenDefendersATM
         }
     }
 }
-
-
-
-
-
-
-
-

@@ -31,8 +31,8 @@ namespace OpenDefendersATM
         public void PrintLoanInfo(Customer c)
         {
             Console.WriteLine($"Lån-ID: {LoanID}");
-            Console.WriteLine($"Lånebelopp: {Amount}");
-            Console.WriteLine($"Att betala tillbaka: {Amount * GetInterestRate(c)} SEK");
+            Console.WriteLine($"Lånebelopp: {Amount} SEK");
+            Console.WriteLine($"Årlig ränta: {GetInterestRate(c, Amount)} %");
             Console.WriteLine($"Tidpunkt för lån: {Timestamp}\n");
         }
         public static decimal GetMaxLoanAmount(Customer c)
@@ -55,20 +55,20 @@ namespace OpenDefendersATM
             }
             return InterestRate * GetMaxLoanAmount(c);
         }
-        public static decimal GetInterestRate(Customer c)
+        public static decimal GetInterestRate(Customer c, decimal input)
         {
             decimal amount = 0;
-            if (GetMaxLoanAmount(c) < 9999)
+            if (input < 9999)
             {
-                amount = 1.5m;
+                amount = 5.0m;
             }
-            if (GetMaxLoanAmount(c) >= 10000 && GetMaxLoanAmount(c) < 29999)
+            if (input >= 10000 && input < 29999)
             {
-                amount = 1.3m;
+                amount = 3.8m;
             }
-            if (GetMaxLoanAmount(c) >= 30000)
+            if (input >= 30000)
             {
-                amount = 1.15m;
+                amount = 2.5m;
             }
             return amount;
         }

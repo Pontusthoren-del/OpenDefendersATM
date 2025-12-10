@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
@@ -24,7 +25,7 @@ namespace OpenDefendersATM
         private static int CashDeposit = 0;
         // When you make a withdrawl, it is stored from account "CashWithdrawl" (1):
         private static int CashWithdrawl = 1;
-        public Account(int accountID,decimal balance, string currency, string name = "Nytt Konto.")
+        public Account(int accountID, decimal balance, string currency, string name = "Nytt Konto.")
         {
             AccountID = accountID;
             Balance = balance;
@@ -62,8 +63,8 @@ namespace OpenDefendersATM
             {
                 if (t.FromAccount == 0)
                 {
-                    Console.WriteLine($"Belopp: {t.Amount} {t.Currency}");
                     Console.WriteLine($"- Insättning -");
+                    Console.WriteLine($"Belopp: {t.Amount} {t.Currency}");
                     Console.WriteLine($"Till konto: {t.ToAccount}");
                     t.GetTransactionStatus();
                     Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
@@ -71,15 +72,16 @@ namespace OpenDefendersATM
                 }
                 if (t.ToAccount == 1)
                 {
+                    Console.WriteLine($"- Uttag -");
                     Console.WriteLine($"Belopp: {t.Amount} {t.Currency}");
                     Console.WriteLine($"Från konto: {t.FromAccount}");
-                    Console.WriteLine($"- Uttag -");
                     t.GetTransactionStatus();
                     Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
                     Console.WriteLine(new string('-', 30));
                 }
                 else if (t.FromAccount != 0 && t.ToAccount != 1)
                 {
+                    Console.WriteLine($"- Överföring -");
                     Console.WriteLine($"Belopp: {t.Amount} {t.Currency}");
                     Console.WriteLine($"Från konto: {t.FromAccount}");
                     Console.WriteLine($"Till konto: {t.ToAccount}");
@@ -87,7 +89,7 @@ namespace OpenDefendersATM
                     Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
                     Console.WriteLine(new string('-', 30));
                 }
-                    
+
             }
             Console.ReadKey();
         }
@@ -100,8 +102,6 @@ namespace OpenDefendersATM
             {
                 // Print fail-info;
                 UI.ErrorMessage();
-                trans.TransactionDeclined();
-                trans.GetTransactionStatus();
                 Console.ReadKey();
             }
             else
@@ -156,6 +156,16 @@ namespace OpenDefendersATM
                 trans.TransactionComplete();
                 if (showMessage) trans.GetTransactionStatus();
             }
+        }
+        public void LoanDeposit(decimal deposit)
+        {
+            var trans = new Transaction(deposit, 0, AccountID, Currency);
+            // Add deposit to account balance:
+            Balance += deposit;
+            // Log transaction
+            LogTransaction(trans);
+            // Set status to complete
+            trans.TransactionComplete();
         }
         public int GetAccountID()
         {

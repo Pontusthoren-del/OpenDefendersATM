@@ -8,8 +8,8 @@ namespace OpenDefendersATM
 {
     internal class BankSystem
     {
-        // Private dictionary
-        private static Dictionary<string, decimal> _exchangeRates = new Dictionary<string, decimal> //här skapar vi en ny dictionary och den heter ExchangeRates
+        // Private dictionary that holds the banks exchange rates:
+        private static Dictionary<string, decimal> _exchangeRates = new Dictionary<string, decimal> 
         {
             { "SEK", 1m }, // base currency
             { "USD", 11m },
@@ -82,9 +82,9 @@ namespace OpenDefendersATM
             {
                 CustomerAccounts = new List<Account>
                 {
-                    new Account(33331, 1500, "EUR", "Privat Konto"),
+                    new Account(33331, 1500, "SEK", "Privat Konto"),
                     new Account(33332, 300, "USD", "Tradingkonto"),
-                    new Account(33333, 2000, "SEK", "Buffertkonto")
+                    new Account(33333, 2000, "EUR", "Buffertkonto")
                 }
             },
 
@@ -101,8 +101,8 @@ namespace OpenDefendersATM
             {
                 CustomerAccounts = new List<Account>
                 {
-                    new Account(55551, 400, "USD", "Privat Konto"),
-                    new Account(55552, 2500, "SEK", "Semesterkonto"),
+                    new Account(55551, 400, "SEK", "Privat Konto"),
+                    new Account(55552, 2500, "USD", "Semesterkonto"),
                     new SavingsAccount(55553, 1100, "EUR", 0.02f, "Utlandskonto"),
                     new Account(55554, 50, "SEK", "Spelkonto")
                 }

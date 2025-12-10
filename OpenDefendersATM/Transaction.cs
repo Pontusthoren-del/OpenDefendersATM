@@ -24,7 +24,6 @@ namespace OpenDefendersATM
             TransactionIDCounter++;
             Amount = amount;
             Currency = currency;
-            /*Status = "pending"; */// pending, complete, declined
             FromAccount = fromAccount;
             ToAccount = toAccount;
             Timestamp = DateTime.Now;
@@ -54,7 +53,7 @@ namespace OpenDefendersATM
 
         }
 
-        public static DateTime GetTimeStamp() // 
+        public static DateTime GetTimeStamp() 
         {
             return DateTime.Now;
         }
