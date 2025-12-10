@@ -45,23 +45,61 @@ namespace OpenDefendersATM
 
         //}
 
-        //Method to open a new account with a unique account ID and the print it.
+        //Method to open a new account with a unique account ID and the print it. // (sätt in valuta)
         public void OpenRegularAccount()
         {
             //Generate a random unique AccountID and put it in newID.
             Console.WriteLine("Ange namn för ditt konto: ");
             string? accountName = Console.ReadLine() ?? "Nytt konto";
+            Console.WriteLine("Ange valuta för kontot: ");
+            Console.WriteLine("1. SEK");
+            Console.WriteLine("2. EUR");
+            Console.WriteLine("3. USD");
+            bool inputOK = false;
+            string? currencyInput = null;
+            while (!inputOK)
+            {
+                currencyInput = Console.ReadLine();
+                if (currencyInput == "1" || currencyInput == "2" || currencyInput == "3")
+                {
+                    inputOK = true;
+                }
+                else
+                {
+                    Console.WriteLine("\nFelaktigt val.");
+                    inputOK = false;
+                }
+            }
+
+
+                string currency = null;
+            if (currencyInput == "1")
+            {
+                currency = "SEK";
+            }
+
+            
+            if (currencyInput == "2")
+            {
+                currency = "EUR";
+            }
+
+            if (currencyInput == "3")
+            {
+                currency = "USD";
+            }
+
 
             Random random = new Random();
             int newID;
             do
             {
-                newID = random.Next(100000, 999999);
+                newID = random.Next(10000, 99999);
             }
             while (BankSystem.AllAccounts().Any(a => a.GetAccountID() == newID)); //Keep generating a new ID **as long as** it already exists in the bank
-            Account newAccount = new Account(newID,0, "SEK", accountName);
+            Account newAccount = new Account(newID,0, currency, accountName);
             CustomerAccounts.Add(newAccount);
-            Console.WriteLine($"Nytt konto har skapats med KontoID: {newID} och i valören SEK.");
+            Console.WriteLine($"Nytt konto har skapats med KontoID: {newID} och i valören {currency}.");
             Console.ReadKey();
         }
         public void OpenSavingsAccount()

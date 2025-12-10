@@ -16,6 +16,7 @@ namespace OpenDefendersATM
             { "EUR", 11.50m }
         };
 
+        // Method that shows the users Total Balance within all accounts, in SEK
         public static decimal AccountTotalBalanceSEK(Customer c)
         {
             decimal totalAmountInSEK = 0;
@@ -25,12 +26,15 @@ namespace OpenDefendersATM
             }
             return totalAmountInSEK;
         }
+
+        // Method that works with Converting the Exchange Rate: using the currency the user starts off with, applying the amount, and choosing which currency the user wishes to convert to
         public static decimal ExchangeConverter(string fromCurrency, decimal Amount, string toCurrency)
         {
             decimal amountInSEK = Amount * _exchangeRates[fromCurrency];
             return amountInSEK / _exchangeRates[toCurrency];
         }
 
+        // Below is a list of Users
         public static List<User> Users { get; set; } = new()
         {
             new Admin("Petter", "Admin", 1234),
@@ -115,46 +119,4 @@ namespace OpenDefendersATM
             _exchangeRates.Add(currencyCode, value);
         }
     }
-
-    //private static readonly object _exchangeRatesLock = new();
-    //ABOVE: private dictionary(back store) and lock for thread-safety
-
-    //BELOW: public read-ony view of the exchange rates
-    //public static IReadOnlyDictionary<string, decimal> ExchangeRates
-    //{
-    //    get
-    //    {
-    //        lock (_exchangeRatesLock)
-    //        {
-    //            //return a snapshot to avoid exposing internal mutable dictionary
-    //            return new ReadOnlyDictionary<string, decimal>(new Dictionary<string, decimal>(_exchangeRates, StringComparer.OrdinalIgnoreCase));
-    //        }
-    //    }
-    //}
-
-
-    //public class MyExchangeRateProvider : IExchangeRateProvider // ha i baktänka att vi kanskse kan lägga in sen som en 'real-time' xchange rate thing typ.
-    //{
-    //    decimal toCurrency { get; set; }
-    //    decimal fromCurrency { get; set; }
-
-    //    GetExchangeRates( decimal fromCurrency, decimal toCurrency)
-    //    {
-    //        Console.WriteLine();
-    //    }
-    //    return something
-    //}
-
-
-    //Seeding default rates(relative to base currency, e.g.SEK = 1)// hämtad från google/gpt
-    //static BankSystem()
-    //{
-    //    _exchangeRates = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase)
-    //    {
-    //        {"SEK", 1m }, // base currency
-    //        {"USD", 0.09m },
-    //        {"EUR", 0,087m }
-    //    };
-    //}
-
 }
