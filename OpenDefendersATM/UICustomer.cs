@@ -184,9 +184,8 @@ namespace OpenDefendersATM
                 Console.WriteLine("3. Överföring.");
                 Console.WriteLine("4. Lån.");
                 Console.WriteLine("5. Transaktionslog.");
-                Console.WriteLine("6. Logga ut.");
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("7. Avsluta applikationen.");
+                Console.WriteLine("6. Logga ut.");
                 Console.ResetColor();
                 Console.WriteLine(new string('*', 30));
 
@@ -217,10 +216,8 @@ namespace OpenDefendersATM
                         break;
                     case 6:
                         UI.LogOut(user);
-                        return true;
-                    case 7:
-                        Console.WriteLine("\nProgrammet avslutas...\n");
                         return false;
+                        break;
                     default:
                         Console.WriteLine("Felaktigt val.");
                         break;

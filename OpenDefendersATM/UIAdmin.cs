@@ -51,11 +51,10 @@ namespace OpenDefendersATM
                         BankSystem.PrintAllUsers(); //se alla konton
                         break;
                     case 5:
-                        UI.RunBankApp(); //ändrat så inte applikationen stängs ner
+                        UI.LogOut(user);
+                        return false; //ändrat så inte applikationen stängs ner
                         break;
-                    //loggedin = false;
                     //break;
-
                     default:
                         Console.WriteLine("Felaktigt val.");
                         break;
