@@ -119,7 +119,7 @@ namespace OpenDefendersATM
             }
 
             //skapa ny PIN-kod
-            int pin = ReadValidPinCode();
+            string pin = ReadValidPinCode();
             Console.WriteLine();
 
             //startbalans
@@ -161,15 +161,15 @@ namespace OpenDefendersATM
 
         }
         // hjälpmetod för att pin-kod ska bli rätt
-        private static int ReadValidPinCode()
+        private static string ReadValidPinCode()
         {
-            int pin;
+            string pin;
             bool isValid;
 
             do
             {
-                pin = Backup.ReadInt("Lägg in PIN-kod (4 siffror mellan 1000 och 9999): ");
-                isValid = pin >= 1000 && pin <= 9999;
+                pin = Backup.ReadString("Lägg in PIN-kod (4 siffror): ");
+                isValid = pin.Length == 4 && pin.All(char.IsDigit);
 
                 if (!isValid)
                 {

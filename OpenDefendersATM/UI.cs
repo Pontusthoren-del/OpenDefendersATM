@@ -104,7 +104,7 @@ namespace OpenDefendersATM
                 Console.ResetColor();
                 return null;
             }
-            else if (user.CheckPin(pin))
+            else if (user.CheckPin(pinInput))
             {
                 Console.WriteLine($"Välkommen {user.Name}");
                 return user;
@@ -137,6 +137,7 @@ namespace OpenDefendersATM
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine();
                 Console.WriteLine($"\t[KUND] Inloggad som " + customer.Name);
                 Console.ResetColor();
                 Console.WriteLine();
