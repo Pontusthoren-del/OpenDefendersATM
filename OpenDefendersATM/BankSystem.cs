@@ -34,7 +34,30 @@ namespace OpenDefendersATM
             return amountInSEK / _exchangeRates[toCurrency];
         }
 
-        // Below is a list of Users
+        public static void PrintAllUsers() //metod som låter admin se alla användare
+        {
+            Console.WriteLine("Visar alla användare & antal konton:");
+            Console.WriteLine();
+            int customerCount = 0;
+            foreach (var user in Users)
+            {
+                if (user is Customer customer)
+                {
+                    customerCount++;
+
+                    Console.WriteLine($"{customerCount}. {customer.Name}");
+                    Console.WriteLine($"Antal konton: {customer.CustomerAccounts.Count}");
+                    Console.WriteLine();
+                    
+
+                }
+            }
+
+            if (customerCount == 0)
+            {
+                Console.WriteLine("Inga kunder hittades.");
+            }
+        }
         public static List<User> Users { get; set; } = new()
         {
             new Admin("Petter", "Admin", 1234),
