@@ -25,13 +25,16 @@ namespace OpenDefendersATM
                 Console.WriteLine("1. Skapa ny användare");
                 Console.WriteLine("2. Aktuell växlingskurs");
                 Console.WriteLine("3. Lås upp låsta konton.");
-                Console.WriteLine("4. Logga ut.");
+                Console.WriteLine("4. Visa alla konton.");
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("5. Avsluta applikationen.");
+                Console.WriteLine("5. Logga ut.");
                 Console.ResetColor();
                 Console.WriteLine(new string('*', 30));
 
+               
+
                 int input = Backup.ReadInt("Ditt val: ");
+                Console.WriteLine();
                 Admin? admin = user as Admin;
                 switch (input)
                 {
@@ -42,18 +45,22 @@ namespace OpenDefendersATM
                         //Växlningskurs
                         break;
                     case 3:
-                        UnlockUsers();
+                        UnlockUsers(); //lås upp låst konto
                         break;
                     case 4:
-                        UI.LogOut(user);
-                        return true;
+                        BankSystem.PrintAllUsers(); //se alla konton
+                        break;
                     case 5:
-                        Console.WriteLine("Programmet avslutas.");
-                        return false;
+                        UI.RunBankApp(); //ändrat så inte applikationen stängs ner
+                        break;
+                    //loggedin = false;
+                    //break;
+
                     default:
                         Console.WriteLine("Felaktigt val.");
                         break;
                 }
+                Console.WriteLine();
                 Console.WriteLine("Tryck Enter för att fortsätta...");
                 Console.ReadLine();
             }
@@ -72,7 +79,7 @@ namespace OpenDefendersATM
                 Console.WriteLine("Inga låsta konton.");
                 return;
             }
-            int index = Backup.ReadInt("Välj användare att låsa upp: ") -1;
+            int index = Backup.ReadInt("Välj användare att låsa upp: ") - 1;
             if (index < 0 || index >= BankSystem.LockedOutUsers.Count)
             {
                 Console.WriteLine("Felaktigt val.");
@@ -152,7 +159,7 @@ namespace OpenDefendersATM
             Console.WriteLine($"Ny kund skapad med användarnamn {name} och startbelopp {startbalance} SEK.");
             Console.WriteLine($"Privatkonto med KontoID: {newAccountID}.");
             Console.WriteLine();
-            
+
         }
         // hjälpmetod för att pin-kod ska bli rätt
         private static int ReadValidPinCode()
@@ -173,7 +180,7 @@ namespace OpenDefendersATM
                     Console.ResetColor();
                     Console.WriteLine("Försök igen.");
                     Console.WriteLine();
-                    
+
                 }
             } while (!isValid);
 
