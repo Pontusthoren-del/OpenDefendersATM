@@ -42,7 +42,7 @@ namespace OpenDefendersATM
                         CreateCustomerUI(user); //skapa ny användare
                         break;
                     case 2:
-                        //Växlningskurs
+                        BankSystem.UpdateRate();
                         break;
                     case 3:
                         UnlockUsers(); //lås upp låst konto
