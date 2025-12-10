@@ -30,6 +30,7 @@ namespace OpenDefendersATM
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine();
                 Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
                 Console.ResetColor();
                 Console.WriteLine();
@@ -95,6 +96,7 @@ namespace OpenDefendersATM
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine();
                 Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
                 Console.ResetColor();
                 Console.WriteLine();
@@ -129,6 +131,7 @@ namespace OpenDefendersATM
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine();
             Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
             Console.ResetColor();
             Console.WriteLine();
@@ -172,6 +175,7 @@ namespace OpenDefendersATM
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine();
                 Console.WriteLine($"\t[KUND] Inloggad som " + customer.Name);
                 Console.ResetColor();
                 Console.WriteLine();
@@ -232,6 +236,7 @@ namespace OpenDefendersATM
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine();
             Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
             Console.ResetColor();
             Console.WriteLine();
@@ -260,6 +265,7 @@ namespace OpenDefendersATM
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine();
             Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
             Console.ResetColor();
             Console.WriteLine();
@@ -328,6 +334,7 @@ namespace OpenDefendersATM
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine();
             Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
             Console.ResetColor();
             Console.WriteLine();
@@ -426,6 +433,7 @@ namespace OpenDefendersATM
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine();
                 Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
                 Console.ResetColor();
                 Console.WriteLine();
@@ -451,6 +459,7 @@ namespace OpenDefendersATM
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine();
                 Console.WriteLine($"\t[KUND] Inloggad som " + c.Name);
                 Console.ResetColor();
                 Console.WriteLine();
