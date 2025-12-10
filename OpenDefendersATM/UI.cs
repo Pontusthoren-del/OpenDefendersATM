@@ -82,7 +82,7 @@ namespace OpenDefendersATM
                 Console.ResetColor();
                 return null;
             }
-            else if (user.CheckPin(pin))
+            else if (user.CheckPin(pinInput))
             {
                 Console.WriteLine($"Välkommen {user.Name}");
                 return user;

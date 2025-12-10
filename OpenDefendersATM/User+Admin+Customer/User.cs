@@ -16,21 +16,21 @@ namespace OpenDefendersATM
         public int FailedAttempts { get; set; }
         public bool IsLocked { get; set; }
 
-        private int _pin;
+        private string _pin;
 
-        public User(string name, string role, int pin)
+        public User(string name, string role, string pin)
         {
             Name = name;
             Role = role;
             _pin = pin;
         }
-        public void SetPin(int pin)
+        public void SetPin(string pin)
         {
             _pin = pin;
             Console.WriteLine("PIN ändrad.");
             //Skapa en ny pin här också kanske?
         }
-        public bool CheckPin(int enteredPin)
+        public bool CheckPin(string enteredPin)
         {
             //If your account is locked, you get kicked out diretcly.
             if (IsLocked) return false;
