@@ -12,6 +12,28 @@ namespace OpenDefendersATM
 {
     internal class UI
     {
+        public static void StartProgram()
+        {
+            bool running = true;
+            while (running)
+            {
+                Console.Clear();
+                Console.WriteLine("1. Logga in.");
+                Console.WriteLine("2. Avsluta applikationen.");
+                int input = Backup.ReadInt("Ditt val: ");
+                switch (input)
+                {
+                    case 1:
+                        RunBankApp();
+                        break;
+                    case 2:
+                        running = false;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
         public static void RunBankApp()
         {
             bool loggedIn = true;
@@ -110,8 +132,8 @@ namespace OpenDefendersATM
         }
         public static void TransferMenu(Customer customer)
         {
-
-            while (true)
+            bool running = true;
+            while (running)
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -137,6 +159,7 @@ namespace OpenDefendersATM
                         UICustomer.TransferToOtherCustomers(customer);
                         break;
                     case 3:
+                        running = false;
                         return;
                     default:
                         Console.WriteLine("Felaktigt val.");
