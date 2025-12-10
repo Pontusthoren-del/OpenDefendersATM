@@ -9,13 +9,36 @@ namespace OpenDefendersATM
     internal class BankSystem
     {
         // Private dictionary that holds the banks exchange rates:
-        private static Dictionary<string, decimal> _exchangeRates = new Dictionary<string, decimal> 
+        private static Dictionary<string, decimal> _exchangeRates = new Dictionary<string, decimal>
         {
             { "SEK", 1m }, // base currency
             { "USD", 11m },
             { "EUR", 11.50m }
         };
+        public static void UpdateRate()
+        {
+            Console.WriteLine("Aktuella valutakurser:");
 
+            foreach (var x in _exchangeRates)
+            {
+                Console.WriteLine($"{x.Key}: {x.Value}");
+            }
+
+            Console.WriteLine();
+            decimal inputSEK = Backup.ReadDecimal("Ange dagens kurs för SEK: ");
+            _exchangeRates["SEK"] = inputSEK;
+            decimal inputUSD = Backup.ReadDecimal("Ange dagens kurs för USD: ");
+            _exchangeRates["USD"] = inputUSD;
+            decimal inputEUR = Backup.ReadDecimal("Ange dagens kurs för EUR: ");
+            _exchangeRates["EUR"] = inputEUR;
+            Console.WriteLine();
+            Console.WriteLine("Valutakurser uppdaterade:");
+
+            foreach (var x in _exchangeRates)
+            {
+                Console.WriteLine($"{x.Key}: {x.Value}");
+            }
+        }
         // Method that shows the users Total Balance within all accounts, in SEK
         public static decimal AccountTotalBalanceSEK(Customer c)
         {
@@ -48,7 +71,7 @@ namespace OpenDefendersATM
                     Console.WriteLine($"{customerCount}. {customer.Name}");
                     Console.WriteLine($"Antal konton: {customer.CustomerAccounts.Count}");
                     Console.WriteLine();
-                    
+
 
                 }
             }
