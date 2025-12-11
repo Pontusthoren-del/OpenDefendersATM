@@ -18,8 +18,17 @@ namespace OpenDefendersATM
             while (running)
             {
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("_______                    ________     ________           _________                   \r\n__  __ \\______________________  __ \\_______  __/_________________  /___________________\r\n_  / / /__  __ \\  _ \\_  __ \\_  / / /  _ \\_  /_ _  _ \\_  __ \\  __  /_  _ \\_  ___/_  ___/\r\n/ /_/ /__  /_/ /  __/  / / /  /_/ //  __/  __/ /  __/  / / / /_/ / /  __/  /   _(__  ) \r\n\\____/ _  .___/\\___//_/ /_//_____/ \\___//_/    \\___//_/ /_/\\__,_/  \\___//_/    /____/  \r\n       /_/                                                                             \r\n                            ____________________  ___                                  \r\n                            ___    |__  __/__   |/  /                                  \r\n                            __  /| |_  /  __  /|_/ /                                   \r\n                            _  ___ |  /   _  /  / /                                    \r\n                            /_/  |_/_/    /_/  /_/                                     ");
+                Console.ResetColor();
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine("1. Logga in.");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("2. Avsluta applikationen.");
+                Console.ResetColor();
+                Console.WriteLine();
                 int input = Backup.ReadInt("Ditt val: ");
                 switch (input)
                 {
@@ -279,14 +288,14 @@ namespace OpenDefendersATM
         public static void ErrorMessage()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\nTransaction misslyckades.");
+            Console.WriteLine("\nTransaktionen misslyckades.");
             Console.ResetColor();
             Console.ReadKey();
         }
         public static void SuccessMessage()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\nTransaction lyckades.");
+            Console.WriteLine("\nTransaktionen lyckades.");
             Console.ResetColor();
             Console.ReadKey();
         }
