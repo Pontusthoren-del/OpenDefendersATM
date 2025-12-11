@@ -8,6 +8,8 @@ namespace OpenDefendersATM
 {
     internal class BankSystem
     {
+        public static List<User> LockedOutUsers { get; set; } = new();
+        public static List<Account> Accounts { get; set; } = new List<Account>();
         // Private dictionary that holds the banks exchange rates:
         private static Dictionary<string, decimal> _exchangeRates = new Dictionary<string, decimal>
         {
@@ -15,72 +17,6 @@ namespace OpenDefendersATM
             { "USD", 11m },
             { "EUR", 11.50m }
         };
-        public static void UpdateRate()
-        {
-            Console.WriteLine("Aktuella valutakurser:");
-
-            foreach (var x in _exchangeRates)
-            {
-                Console.WriteLine($"{x.Key}: {x.Value}");
-            }
-
-            Console.WriteLine();
-            decimal inputSEK = Backup.ReadDecimal("Ange dagens kurs för SEK: ");
-            _exchangeRates["SEK"] = inputSEK;
-            decimal inputUSD = Backup.ReadDecimal("Ange dagens kurs för USD: ");
-            _exchangeRates["USD"] = inputUSD;
-            decimal inputEUR = Backup.ReadDecimal("Ange dagens kurs för EUR: ");
-            _exchangeRates["EUR"] = inputEUR;
-            Console.WriteLine();
-            Console.WriteLine("Valutakurser uppdaterade:");
-
-            foreach (var x in _exchangeRates)
-            {
-                Console.WriteLine($"{x.Key}: {x.Value}");
-            }
-        }
-        // Method that shows the users Total Balance within all accounts, in SEK
-        public static decimal AccountTotalBalanceSEK(Customer c)
-        {
-            decimal totalAmountInSEK = 0;
-            foreach (var userAccount in c.CustomerAccounts)
-            {
-                totalAmountInSEK += ExchangeConverter(userAccount.Currency, userAccount.Balance, "SEK");
-            }
-            return totalAmountInSEK;
-        }
-
-        // Method that works with Converting the Exchange Rate: using the currency the user starts off with, applying the amount, and choosing which currency the user wishes to convert to
-        public static decimal ExchangeConverter(string fromCurrency, decimal Amount, string toCurrency)
-        {
-            decimal amountInSEK = Amount * _exchangeRates[fromCurrency];
-            return amountInSEK / _exchangeRates[toCurrency];
-        }
-
-        public static void PrintAllUsers() //metod som låter admin se alla användare
-        {
-            Console.WriteLine("Visar alla användare & antal konton:");
-            Console.WriteLine();
-            int customerCount = 0;
-            foreach (var user in Users)
-            {
-                if (user is Customer customer)
-                {
-                    customerCount++;
-
-                    Console.WriteLine($"{customerCount}. {customer.Name}");
-                    Console.WriteLine($"Antal konton: {customer.CustomerAccounts.Count}");
-                    Console.WriteLine();
-
-
-                }
-            }
-
-            if (customerCount == 0)
-            {
-                Console.WriteLine("Inga kunder hittades.");
-            }
-        }
         public static List<User> Users { get; set; } = new()
         {
             new Admin("Petter", "Admin", "1234"),
@@ -133,15 +69,65 @@ namespace OpenDefendersATM
                     new Account(55554, 50, "SEK", "Spelkonto")
                 }
             }
-        };
-        public static List<User> LockedOutUsers { get; set; } = new();
+        }; 
+        public static void UpdateRate()
+        {
+            Console.WriteLine("Aktuella valutakurser: ");
+            foreach (var x in _exchangeRates)
+            {
+                Console.WriteLine($"{x.Key}: {x.Value}");
+            }
+            Console.WriteLine();
+            decimal inputSEK = Backup.ReadDecimal("Ange dagens kurs för SEK: ");
+            _exchangeRates["SEK"] = inputSEK;
+            decimal inputUSD = Backup.ReadDecimal("Ange dagens kurs för USD: ");
+            _exchangeRates["USD"] = inputUSD;
+            decimal inputEUR = Backup.ReadDecimal("Ange dagens kurs för EUR: ");
+            _exchangeRates["EUR"] = inputEUR;
+            Console.WriteLine();
+            Console.WriteLine("Valutakurser uppdaterade:");
+            foreach (var x in _exchangeRates)
+            {
+                Console.WriteLine($"{x.Key}: {x.Value}");
+            }
+        }
+        // Method that shows the users Total Balance within all accounts, in SEK
+        public static decimal AccountTotalBalanceSEK(Customer c)
+        {
+            decimal totalAmountInSEK = 0;
+            foreach (var userAccount in c.CustomerAccounts)
+            {
+                totalAmountInSEK += ExchangeConverter(userAccount.Currency, userAccount.Balance, "SEK");
+            }
+            return totalAmountInSEK;
+        }
+        // Method that works with Converting the Exchange Rate: using the currency the user starts off with, applying the amount, and choosing which currency the user wishes to convert to
+        public static decimal ExchangeConverter(string fromCurrency, decimal Amount, string toCurrency)
+        {
+            decimal amountInSEK = Amount * _exchangeRates[fromCurrency];
+            return amountInSEK / _exchangeRates[toCurrency];
+        }
+        public static void PrintAllUsers() //Method that shows all users and accounts
+        {
+            Console.WriteLine("Visar alla användare & antal konton:");
+            Console.WriteLine();
+            int customerCount = 0;
+            foreach (var user in Users)
+            {
+                if (user is Customer customer)
+                {
+                    customerCount++;
 
-        public static List<Account> Accounts { get; set; } = new List<Account>();
-
-        //private List<Transaction> _transactions { get; set; }  // Do we need this one?
-
-        public static Dictionary<string, decimal> ExchangeRates { get; } // Visual dictionary
-
+                    Console.WriteLine($"{customerCount}. {customer.Name}");
+                    Console.WriteLine($"Antal konton: {customer.CustomerAccounts.Count}");
+                    Console.WriteLine();
+                }
+            }
+            if (customerCount == 0)
+            {
+                Console.WriteLine("Inga kunder hittades.");
+            }
+        }     
         //A list with AllAccounts, but we just sorting out the customers.
         public static List<Account> AllAccounts()
         {
@@ -149,20 +135,6 @@ namespace OpenDefendersATM
                 .OfType<Customer>() //Only Customers
                 .SelectMany(c => c.CustomerAccounts) //Adding all accounts to a list.
                 .ToList();
-        }
-
-        // Method for adding exchange rates to private dictionary _exchangeRates
-        public static void AddExchangeRate(string currencyCode, decimal value)
-        {
-            if (value <= 0)
-            {
-                // - "Värdet måste vara över 0."
-            }
-            if (currencyCode.Length != 3)
-            {
-                // - "En landskod måste ha 3 tecken." 
-            }
-            _exchangeRates.Add(currencyCode, value);
         }
     }
 }

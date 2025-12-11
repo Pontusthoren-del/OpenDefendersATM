@@ -24,10 +24,6 @@ namespace OpenDefendersATM
         {
             CustomerLoans.Add(loan);
         }
-        
-
-
-
         // Method to bring/show a specific user's TOTAL balance within their account
         public decimal TotalBalance() // lämna kvar denna funktionella
         {
@@ -38,15 +34,6 @@ namespace OpenDefendersATM
             }
             return totalBalance;
         }
-        //Method to show our accounts.
-        //Method to transfer betweeen our own accounts
-        //public void TransferBetweenAccounts(decimal amount, Account fromAccount, Account toAccount)
-        //{
-            
-        //    fromAccount.AddTransaction(amount, fromAccount, toAccount);
-
-        //}
-
         //Method to open a new account with a unique account ID and the print it. // (sätt in valuta)
         public void OpenRegularAccount()
         {
@@ -72,26 +59,19 @@ namespace OpenDefendersATM
                     inputOK = false;
                 }
             }
-
-
                 string currency = null;
             if (currencyInput == "1")
             {
                 currency = "SEK";
-            }
-
-            
+            }      
             if (currencyInput == "2")
             {
                 currency = "EUR";
             }
-
             if (currencyInput == "3")
             {
                 currency = "USD";
             }
-
-
             Random random = new Random();
             int newID;
             do
@@ -115,11 +95,8 @@ namespace OpenDefendersATM
             Console.WriteLine("2. USD ");
             Console.WriteLine("3. EUR ");
             while (!inputOK)
-            {
-                
+            {   
                 currencyInput = Console.ReadLine();
-
-
                 if (currencyInput == "1" || currencyInput == "2" || currencyInput == "3")
                 {
                     
@@ -130,8 +107,7 @@ namespace OpenDefendersATM
                     Console.WriteLine("Felaktigt val.");
                     inputOK = false;
                 }
-            }
-            
+            }         
             string currency = null;
             if (currencyInput == "1")
             {
@@ -157,12 +133,7 @@ namespace OpenDefendersATM
             Console.WriteLine($"Nytt sparkonto har skapats med KontoID: {newID} och i valören {currency}.");
             Console.WriteLine($"Räntan: {newAccount.GetInterestRate() * 100}% per år.");
             Console.ReadKey();
-        }
-      
-        public void RequestLoan()
-        {
-            //Begär ett lån
-        }
+        }   
     }
 }
 

@@ -89,7 +89,6 @@ namespace OpenDefendersATM
                     Console.WriteLine($"Tidpunkt: {t.Timestamp}.");
                     Console.WriteLine(new string('-', 30));
                 }
-
             }
             Console.ReadKey();
         }
@@ -97,7 +96,6 @@ namespace OpenDefendersATM
         public void NewWithdrawl(decimal withdrawl)
         {
             Transaction trans = new Transaction(withdrawl, AccountID, CashWithdrawl, Currency);
-
             if (withdrawl > Balance || withdrawl < 1)
             {
                 // Print fail-info;
@@ -110,7 +108,6 @@ namespace OpenDefendersATM
                 Balance -= withdrawl;
                 // Log transaction
                 LogTransaction(trans);
-
                 // Print transaction info
                 //UI.PrintTransactionInfo(withdrawl, AccountID, Currency, Balance);
                 UI.SuccessMessage();
@@ -118,7 +115,6 @@ namespace OpenDefendersATM
                 Console.WriteLine($"{withdrawl:F2} - {Currency}");
                 Console.WriteLine($"Nytt saldo: {Balance:F2} {Currency}.");
                 Console.ReadKey();
-
                 // Set status to complete
                 trans.TransactionComplete();
                 trans.GetTransactionStatus();
@@ -129,7 +125,6 @@ namespace OpenDefendersATM
         {
             // Create transaction:
             var trans = new Transaction(deposit, CashDeposit, AccountID, Currency);
-
             // If the user puts in unvalid numbers, transaction status = declined:
             if (deposit <= 0 || deposit > 50000)
             {
@@ -148,10 +143,8 @@ namespace OpenDefendersATM
                 Balance += deposit;
                 // Log transaction
                 LogTransaction(trans);
-
                 // Print transaction info
                 if (showMessage) UI.PrintTransactionInfo(deposit, AccountID, Currency, Balance);
-
                 // Set status to complete
                 trans.TransactionComplete();
                 if (showMessage) trans.GetTransactionStatus();
@@ -179,6 +172,5 @@ namespace OpenDefendersATM
         {
             return Currency;
         }
-
     }
 }

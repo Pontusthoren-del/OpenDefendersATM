@@ -28,7 +28,6 @@ namespace OpenDefendersATM
         {
             _pin = pin;
             Console.WriteLine("PIN ändrad.");
-            //Skapa en ny pin här också kanske?
         }
         public bool CheckPin(string enteredPin)
         {
@@ -46,7 +45,6 @@ namespace OpenDefendersATM
             Console.WriteLine();
             Console.WriteLine($"                          \tFel PIN! Försök {FailedAttempts} av 3.");
             Console.ResetColor();
-
             IsLocked = FailedAttempts >= 3;
             if (IsLocked)
             {
