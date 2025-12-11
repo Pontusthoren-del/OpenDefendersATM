@@ -12,10 +12,5 @@ namespace OpenDefendersATM
         {
 
         }
-
-        public void ExChangeRate()
-        {
-            //Växlningskursen
-        }
     }
 }

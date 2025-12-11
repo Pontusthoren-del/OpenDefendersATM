@@ -24,10 +24,6 @@ namespace OpenDefendersATM
             InterestRate = interestRate;
             Timestamp = DateTime.Now;
         }
-        public void GetLoanID()
-        {
-            
-        }
         public void PrintLoanInfo(Customer c)
         {
             Console.WriteLine($"Lån-ID: {LoanID}");
@@ -72,21 +68,5 @@ namespace OpenDefendersATM
             }
             return amount;
         }
-
-
-        //public void CheckLoanLimit(Customer customer)
-        //{
-        //    Console.WriteLine("Ange det lönebelopp du vill låna:");
-        //    decimal loanLimit = customer.TotalBalance();
-        //    MaxLoan = loanLimit * 5;
-
-        //    decimal userInput;
-        //    while (!decimal.TryParse(Console.ReadLine(), out userInput) || userInput <= 0 || userInput > MaxLoan)
-        //    {
-        //        Console.WriteLine("Du kan inte låna ett negativt belopp. Vänligen ange din önskad lånesumma." +
-        //            "Du får låna max 5 gånger ditt totala saldo");
-        //    }
-
-        //}
     }
 }

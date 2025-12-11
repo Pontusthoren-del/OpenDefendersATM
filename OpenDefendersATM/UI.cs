@@ -125,7 +125,6 @@ namespace OpenDefendersATM
             Console.WriteLine($"\n{user.Name} har loggats ut.");
             Console.ReadKey();
         }
-
         public static bool ShowMainMenu(User loggedinUser)
         {
             {
@@ -184,12 +183,9 @@ namespace OpenDefendersATM
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine("          \t=====|| Uttag ||=====\n");
             Console.ResetColor();
-
             decimal withdrawl = Backup.ReadDecimal("Ange summa du vill ta ut:");
-
             // Create withdrawl-transaction
             account.NewWithdrawl(withdrawl);
-
         }
         public static void DepositInteraction(Account account)
         {
@@ -198,7 +194,6 @@ namespace OpenDefendersATM
             Console.WriteLine("          \t=====|| Insättning ||=====\n");
             Console.ResetColor();
             decimal deposit = Backup.ReadDecimal("Ange summa du vill sätta in (max 50 000): ");
-
             // Create deposit-transaction:
             account.NewDeposit(deposit);
         }
@@ -209,7 +204,6 @@ namespace OpenDefendersATM
             Console.WriteLine($"{deposit:F2} - {currency}");
             Console.WriteLine($"Nytt saldo: {balance:F2} {currency}.");
             Console.ReadKey();
-            //Console.WriteLine($"Tidpunkt: {trans.Timestamp}");
             return deposit;
         }
         public static void TransferInteraction(Customer c)
@@ -236,14 +230,12 @@ namespace OpenDefendersATM
             }
             var fromAccount = c.CustomerAccounts[fromIndex];
             var toAccount = c.CustomerAccounts[toIndex];
-
             if (fromAccount == toAccount)
             {
                 Console.WriteLine("Du kan inte överföra till samma konto.");
                 Console.ReadKey();
                 return;
             }
-
             decimal amount = Backup.ReadDecimal("Ange summa du vill föra över: ");
             if (amount < 1)
             {
@@ -251,7 +243,6 @@ namespace OpenDefendersATM
                 Console.ReadKey();
                 return;
             }
-
             if (amount > fromAccount.Balance)
             {
                 Console.WriteLine("Du har inte tillräckligt på kontot.");
