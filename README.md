@@ -1,9 +1,4 @@
 
-______________________________________  ____________
-___  __ \__  ____/__    |__  __ \__   |/  /__  ____/
-__  /_/ /_  __/  __  /| |_  / / /_  /|_/ /__  __/   
-_  _, _/_  /___  _  ___ |  /_/ /_  /  / / _  /___   
-/_/ |_| /_____/  /_/  |_/_____/ /_/  /_/  /_____/   
 
 ## OpenDefendersATM
 This is an awesomely-simplified console-based banking simulation implemented in C# (.NET 8). It supports users: admin and customers, accounts, deposits/withdrawals, transfers which includes cross-currency conversion, loans, and a transaction log. 
