@@ -269,7 +269,7 @@ namespace OpenDefendersATM
             Account receiverAccount = null;
             while (receiverAccount == null)
             {
-                int targetAccountID = Backup.ReadInt("\nAnge KontoID att föra över till: \nTryck 0 för att gå tillbaka...");
+                int targetAccountID = Backup.ReadInt("\nTryck 0 för att gå tillbaka...\nAnge KontoID att föra över till: ");
                 if (targetAccountID == 0)
                 {
                     return;
