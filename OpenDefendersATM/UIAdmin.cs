@@ -91,7 +91,7 @@ namespace OpenDefendersATM
             Console.ResetColor();
             Console.WriteLine();
             Console.WriteLine(new string('*', 30));
-            Console.WriteLine("Skapa ny användare");
+            Console.WriteLine("Skapa ny kund");
             Console.WriteLine(new string('*', 30));
             Console.WriteLine();
             string name = Backup.ReadString("Lägg till användarnamn: ");

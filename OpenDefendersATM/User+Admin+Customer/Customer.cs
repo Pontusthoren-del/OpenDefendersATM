@@ -88,12 +88,12 @@ namespace OpenDefendersATM
         {
             Console.WriteLine("Ange namn för ditt sparkonto: ");
             string? accountName = Console.ReadLine() ?? "Nytt sparkonto";
-            bool inputOK = false;
-            string currencyInput = null;
             Console.WriteLine("\nAnge valuta för kontot: ");
             Console.WriteLine("1. SEK ");
             Console.WriteLine("2. USD ");
             Console.WriteLine("3. EUR ");
+            bool inputOK = false;
+            string currencyInput = null;
             while (!inputOK)
             {   
                 currencyInput = Console.ReadLine();
@@ -128,7 +128,7 @@ namespace OpenDefendersATM
                 newID = random.Next(10000, 99999);
             }
             while (BankSystem.AllAccounts().Any(a => a.GetAccountID() == newID)); //Keep generating a new ID **as long as** it already exists in the bank
-            SavingsAccount newAccount = new SavingsAccount(newID, 0, currency,0.02f,"Nytt sparkonto");
+            SavingsAccount newAccount = new SavingsAccount(newID, 0, currency,0.02f,accountName);
             CustomerAccounts.Add(newAccount);
             Console.WriteLine($"Nytt sparkonto har skapats med KontoID: {newID} och i valören {currency}.");
             Console.WriteLine($"Räntan: {newAccount.GetInterestRate() * 100}% per år.");
